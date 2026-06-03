@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stock — TRAVEX Finance</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="shared.css">
 <style>
 .progress-bar{height:8px;background:var(--border);border-radius:20px;overflow:hidden;min-width:80px;}
-.progress-fill{height:100%;border-radius:20px;transition:width 0.3s;}
+.progress-fill{height:100%;border-radius:20px;}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -24,18 +24,15 @@
       <div class="table-card-header">
         <div><div class="table-card-title">Orodha ya Bidhaa</div></div>
         <div class="table-actions">
-          <div class="search-box"><i class="ti ti-search"></i><input id="searchInput" placeholder="Tafuta bidhaa..."></div>
-          <button class="btn btn-gold" onclick="openModal('modalBidhaa')"><i class="ti ti-plus"></i> Ongeza Bidhaa</button>
+          <div class="search-box"><i class="ti ti-search"></i><input id="searchInput" placeholder="Tafuta bidhaa..." oninput="filterTable(this.value)"></div>
+          <button class="btn btn-gold" onclick="openAdd()"><i class="ti ti-plus"></i> Ongeza Bidhaa</button>
         </div>
       </div>
-      <table><thead><tr>
-        <th>Bidhaa</th><th>Kategoria</th><th>Kiwango cha Stock</th><th>Hali</th><th>Bei ya Kuuza</th><th>Thamani</th><th></th>
-      </tr></thead>
+      <table><thead><tr><th>Bidhaa</th><th>Kategoria</th><th>Kiwango</th><th>Hali</th><th>Bei Kuuza</th><th>Thamani</th><th></th></tr></thead>
       <tbody id="stockBody"></tbody></table>
     </div>
   </div>
 </div>
-
 <!-- MODAL -->
 <div class="modal-overlay" id="modalBidhaa">
   <div class="modal">
@@ -43,7 +40,6 @@
       <div class="modal-title" id="modalTitle">Ongeza Bidhaa Mpya</div>
       <button class="modal-close" onclick="closeModal('modalBidhaa');resetForm()"><i class="ti ti-x"></i></button>
     </div>
-    <input type="hidden" id="editId">
     <div class="form-group"><label class="form-label">Jina la Bidhaa *</label><input class="form-control" id="fJina" placeholder="Mfano: Unga 2kg"></div>
     <div class="grid-2">
       <div class="form-group"><label class="form-label">Kategoria</label>
@@ -55,70 +51,74 @@
       <div class="form-group"><label class="form-label">Bei ya Kununua (TZS)</label><input type="number" class="form-control" id="fBeiKununua" placeholder="0"></div>
       <div class="form-group"><label class="form-label">Bei ya Kuuza (TZS) *</label><input type="number" class="form-control" id="fBeiKuuza" placeholder="0"></div>
     </div>
-    <div class="form-group"><label class="form-label">Kiwango cha Chini cha Tahadhari</label><input type="number" class="form-control" id="fKiwango" placeholder="Mfano: 10"></div>
-    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveBidhaa()"><i class="ti ti-check"></i> Hifadhi</button>
+    <div class="form-group"><label class="form-label">Kiwango cha Chini cha Tahadhari</label><input type="number" class="form-control" id="fKiwango" placeholder="10"></div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" id="saveBtn" onclick="saveBidhaa()"><i class="ti ti-check"></i> Hifadhi</button>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script>
-(async()=>{const s=await Auth.getSession();if(!s)window.location.replace("login.html");})();
-loadSidebar('stock');
+let allStock = [];
+let editingId = null;
 
-function loadStock() {
-  const stock = DB.get('stock');
-  const total = stock.reduce((a,s)=>a+s.idadi,0);
-  const thamani = stock.reduce((a,s)=>a+(s.idadi*s.bei_kuuza),0);
-  const low = stock.filter(s=>s.idadi>0&&s.idadi<=s.kiwango_chini).length;
-  const nje = stock.filter(s=>s.idadi===0).length;
+(async()=>{
+  const session = await Auth.getSession();
+  if(!session){window.location.replace('login.html');return;}
+  await loadSidebar('stock');
+  await loadStock();
+})();
 
-  document.getElementById('statsGrid').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Bidhaa Zote</div><div class="stat-value">${stock.length}</div><div class="stat-sub">${total} vitu jumla</div></div>
+async function loadStock(){
+  allStock = await DB.stock.getAll();
+  const total = allStock.reduce((a,s)=>a+Number(s.idadi),0);
+  const thamani = allStock.reduce((a,s)=>a+(Number(s.idadi)*Number(s.bei_kuuza)),0);
+  const low = allStock.filter(s=>Number(s.idadi)>0&&Number(s.idadi)<=Number(s.kiwango_chini)).length;
+  const nje = allStock.filter(s=>Number(s.idadi)===0).length;
+
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Bidhaa Zote</div><div class="stat-value">${allStock.length}</div><div class="stat-sub">${total} vitu jumla</div></div>
     <div class="stat-card"><div class="stat-label">Thamani ya Stock</div><div class="stat-value" style="font-size:16px">${formatTZS(thamani)}</div><div class="stat-sub">Bei ya kuuza</div></div>
-    <div class="stat-card"><div class="stat-label">Inakwisha</div><div class="stat-value" style="color:${low>0?'var(--warning)':'var(--gold)'}">${low}</div><div class="stat-sub">Bidhaa chini ya kiwango</div></div>
-    <div class="stat-card"><div class="stat-label">Imeisha Kabisa</div><div class="stat-value" style="color:${nje>0?'var(--danger)':'var(--gold)'}">${nje}</div><div class="stat-sub">Zinahitaji kujazwa</div></div>
-  `;
+    <div class="stat-card"><div class="stat-label">Inakwisha</div><div class="stat-value" style="color:${low>0?'var(--warning)':'var(--gold)'}"><b>${low}</b></div><div class="stat-sub">Chini ya kiwango</div></div>
+    <div class="stat-card"><div class="stat-label">Imeisha Kabisa</div><div class="stat-value" style="color:${nje>0?'var(--danger)':'var(--gold)'}"><b>${nje}</b></div><div class="stat-sub">Zinahitaji kujazwa</div></div>`;
 
-  if (low>0||nje>0) {
-    document.getElementById('alertBox').innerHTML = `<div class="alert alert-warning" style="margin-bottom:16px"><i class="ti ti-alert-triangle" style="font-size:18px"></i> <strong>${nje} bidhaa zimeisha</strong> na <strong>${low} bidhaa zinakwisha</strong> — tafadhali jaza hivi karibuni</div>`;
+  if(low>0||nje>0){
+    document.getElementById('alertBox').innerHTML=`<div class="alert alert-warning" style="margin-bottom:16px"><i class="ti ti-alert-triangle" style="font-size:18px"></i> <strong>${nje} bidhaa zimeisha</strong> na <strong>${low} zinakwisha</strong> — tafadhali jaza hivi karibuni</div>`;
   }
+  renderTable(allStock);
+}
 
-  document.getElementById('stockBody').innerHTML = stock.length ? stock.map(s => {
-    const pct = Math.min((s.idadi/(s.kiwango_chini*3||30))*100,100);
-    const hali = s.idadi===0?['badge-danger','Imeisha']:s.idadi<=s.kiwango_chini?['badge-warning','Inakwisha']:['badge-success','Inatosha'];
+function renderTable(stock){
+  document.getElementById('stockBody').innerHTML = stock.length ? stock.map(s=>{
+    const max = Number(s.kiwango_chini)*3||30;
+    const pct = Math.min((Number(s.idadi)/max)*100,100);
+    const hali = Number(s.idadi)===0?['badge-danger','Imeisha']:Number(s.idadi)<=Number(s.kiwango_chini)?['badge-warning','Inakwisha']:['badge-success','Inatosha'];
     return `<tr>
-      <td><div class="text-navy" style="font-weight:600">${s.jina}</div></td>
+      <td><div style="font-weight:600;color:var(--navy)">${s.jina}</div></td>
       <td><span class="badge badge-info">${s.kategoria||'Nyingine'}</span></td>
-      <td>
-        <div style="display:flex;align-items:center;gap:10px">
-          <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${pct}%;background:${s.idadi===0?'var(--danger)':s.idadi<=s.kiwango_chini?'var(--warning)':'var(--navy)'}"></div></div>
-          <span style="font-size:12px;color:var(--text-muted);white-space:nowrap">${s.idadi} / ${s.kiwango_chini*3||30}</span>
-        </div>
-      </td>
+      <td><div style="display:flex;align-items:center;gap:8px"><div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${pct}%;background:${Number(s.idadi)===0?'var(--danger)':Number(s.idadi)<=Number(s.kiwango_chini)?'var(--warning)':'var(--navy)'}"></div></div><span style="font-size:11px;color:var(--text-muted);white-space:nowrap">${s.idadi}</span></div></td>
       <td><span class="badge ${hali[0]}">${hali[1]}</span></td>
       <td class="text-gold">${formatTZS(s.bei_kuuza)}</td>
-      <td class="font-bold">${formatTZS(s.idadi*s.bei_kuuza)}</td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-outline btn-sm" onclick="editBidhaa(${s.id})"><i class="ti ti-edit"></i></button>
-          <button class="btn btn-danger btn-sm" onclick="deleteBidhaa(${s.id})"><i class="ti ti-trash"></i></button>
-        </div>
-      </td>
+      <td class="font-bold">${formatTZS(Number(s.idadi)*Number(s.bei_kuuza))}</td>
+      <td><div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm" onclick='editBidhaa(${s.id})'><i class="ti ti-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick='deleteBidhaa(${s.id})'><i class="ti ti-trash"></i></button>
+      </div></td>
     </tr>`;
   }).join('') : '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted)"><i class="ti ti-package" style="font-size:32px;display:block;margin-bottom:8px"></i>Hakuna bidhaa bado — Ongeza bidhaa yako ya kwanza!</td></tr>';
 }
-loadStock();
-searchTable('searchInput','stockBody');
 
-let editingId = null;
-function resetForm() { editingId=null; ['fJina','fIdadi','fBeiKununua','fBeiKuuza','fKiwango'].forEach(id=>document.getElementById(id).value=''); document.getElementById('modalTitle').textContent='Ongeza Bidhaa Mpya'; }
+function filterTable(q){
+  const filtered = allStock.filter(s=>s.jina.toLowerCase().includes(q.toLowerCase()));
+  renderTable(filtered);
+}
 
-function editBidhaa(id) {
-  const s = DB.get('stock').find(s=>s.id===id);
-  if (!s) return;
-  editingId = id;
+function openAdd(){editingId=null;resetForm();document.getElementById('modalTitle').textContent='Ongeza Bidhaa Mpya';openModal('modalBidhaa');}
+
+function editBidhaa(id){
+  const s=allStock.find(s=>s.id===id);
+  if(!s) return;
+  editingId=id;
   document.getElementById('fJina').value=s.jina;
   document.getElementById('fKat').value=s.kategoria||'Nyingine';
   document.getElementById('fIdadi').value=s.idadi;
@@ -129,20 +129,26 @@ function editBidhaa(id) {
   openModal('modalBidhaa');
 }
 
-function saveBidhaa() {
+function resetForm(){editingId=null;['fJina','fIdadi','fBeiKununua','fBeiKuuza','fKiwango'].forEach(id=>document.getElementById(id).value='');}
+
+async function saveBidhaa(){
   const jina=document.getElementById('fJina').value.trim();
-  const idadi=parseFloat(document.getElementById('fIdadi').value)||0;
   const bei_kuuza=parseFloat(document.getElementById('fBeiKuuza').value)||0;
-  if (!jina||!bei_kuuza) { showToast('Jaza jina na bei ya kuuza','error'); return; }
-  const data={jina,kategoria:document.getElementById('fKat').value,idadi,bei_kununua:parseFloat(document.getElementById('fBeiKununua').value)||0,bei_kuuza,kiwango_chini:parseFloat(document.getElementById('fKiwango').value)||10};
-  if (editingId) { DB.update('stock',editingId,data); showToast('Bidhaa imesasishwa!'); }
-  else { DB.add('stock',data); showToast('Bidhaa imeongezwa!'); }
-  closeModal('modalBidhaa'); resetForm(); loadStock();
+  if(!jina||!bei_kuuza){showToast('Jaza jina na bei ya kuuza','error');return;}
+  const btn=document.getElementById('saveBtn');
+  btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Inahifadhi...';
+  btn.style.pointerEvents='none';
+  const data={jina,kategoria:document.getElementById('fKat').value,idadi:parseFloat(document.getElementById('fIdadi').value)||0,bei_kununua:parseFloat(document.getElementById('fBeiKununua').value)||0,bei_kuuza,kiwango_chini:parseFloat(document.getElementById('fKiwango').value)||10};
+  if(editingId){await DB.stock.update(editingId,data);showToast('Bidhaa imesasishwa!');}
+  else{await DB.stock.add(data);showToast('Bidhaa imeongezwa!');}
+  btn.innerHTML='<i class="ti ti-check"></i> Hifadhi';
+  btn.style.pointerEvents='';
+  closeModal('modalBidhaa');resetForm();await loadStock();
 }
 
-function deleteBidhaa(id) {
-  if (!confirm('Una uhakika wa kufuta bidhaa hii?')) return;
-  DB.delete('stock',id); showToast('Bidhaa imefutwa!'); loadStock();
+async function deleteBidhaa(id){
+  if(!confirm('Una uhakika wa kufuta bidhaa hii?')) return;
+  await DB.stock.delete(id);showToast('Bidhaa imefutwa!');await loadStock();
 }
 </script>
 

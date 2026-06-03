@@ -94,69 +94,62 @@
 (async()=>{const s=await Auth.getSession();if(!s)window.location.replace("login.html");})();
 loadSidebar('mipangilio');
 
-const user = Session.getUser();
+// profile loaded async above
 
-// Load current data
-document.getElementById('sBiashara').value = user?.biashara||'';
-document.getElementById('sAina').value = user?.aina||'';
-document.getElementById('sMkoa').value = user?.mkoa||'';
-document.getElementById('sSimu').value = user?.simu_biashara||user?.simu||'';
-document.getElementById('sTin').value = user?.tin||'';
-document.getElementById('sJina').value = user?.jina||'';
-document.getElementById('sUserSimu').value = user?.simu||'';
-document.getElementById('sEmail').value = user?.email||'';
+function loadProfileForm(){
+  if(!profile) return;
+  document.getElementById('sBiashara').value=profile.biashara||'';
+  document.getElementById('sAina').value=profile.aina_biashara||'';
+  document.getElementById('sMkoa').value=profile.mkoa||'';
+  document.getElementById('sSimu').value=profile.simu||'';
+  document.getElementById('sTin').value=profile.tin||'';
+  document.getElementById('sJina').value=profile.jina||'';
+  document.getElementById('sUserSimu').value=profile.simu||'';
+  const user=supabaseClient.auth.getUser().then(({data})=>{ if(data.user) document.getElementById('sEmail').value=data.user.email||''; });
+  const plan=profile.plan||'retailer';
+  document.getElementById('planName').textContent=plan==='wholesaler'?'Wholesaler':'Retailer';
+  document.getElementById('planPrice').textContent=plan==='wholesaler'?'TZS 25,000 / mwezi':'TZS 10,000 / mwezi';
+  const elapsed=Math.floor((new Date()-new Date(profile.trial_start||new Date()))/(1000*60*60*24));
+  document.getElementById('trialLeft').textContent=Math.max(0,(profile.trial_days||7)-elapsed);
+}
 
-// Plan info
-const plan = user?.plan||'retailer';
-document.getElementById('planName').textContent = plan==='wholesaler'?'Wholesaler':'Retailer';
-document.getElementById('planPrice').textContent = plan==='wholesaler'?'TZS 25,000 / mwezi':'TZS 10,000 / mwezi';
-const elapsed = Math.floor((new Date()-new Date(user?.trialStart||new Date()))/(1000*60*60*24));
-document.getElementById('trialLeft').textContent = Math.max(0,(user?.trialDays||7)-elapsed);
 
-function saveBiashara() {
-  const updated = {...user,
-    biashara: document.getElementById('sBiashara').value.trim(),
-    aina: document.getElementById('sAina').value.trim(),
-    mkoa: document.getElementById('sMkoa').value.trim(),
-    simu_biashara: document.getElementById('sSimu').value.trim(),
-    tin: document.getElementById('sTin').value.trim()
-  };
-  Session.set('tx_user',updated);
+
+async function saveBiashara() {
+  await DB.profile.update({biashara:document.getElementById('sBiashara').value.trim(),aina_biashara:document.getElementById('sAina').value.trim(),mkoa:document.getElementById('sMkoa').value.trim(),simu:document.getElementById('sSimu').value.trim(),tin:document.getElementById('sTin').value.trim()});
+  profile = await DB.profile.get();
+  Auth.cacheUser(profile);
   showToast('Taarifa za biashara zimehifadhiwa! ✅');
-  loadSidebar('mipangilio');
+  await loadSidebar('mipangilio');
 }
 
-function saveUser() {
-  const updated = {...user,
-    jina: document.getElementById('sJina').value.trim(),
-    simu: document.getElementById('sUserSimu').value.trim(),
-    email: document.getElementById('sEmail').value.trim()
-  };
-  Session.set('tx_user',updated);
+async function saveUser() {
+  await DB.profile.update({jina:document.getElementById('sJina').value.trim(),simu:document.getElementById('sUserSimu').value.trim()});
+  profile = await DB.profile.get();
+  Auth.cacheUser(profile);
   showToast('Taarifa zako zimehifadhiwa! ✅');
-  loadSidebar('mipangilio');
+  await loadSidebar('mipangilio');
 }
 
-function changePass() {
-  const np = document.getElementById('sNewPass').value;
-  const cp = document.getElementById('sConfPass').value;
+async function changePass() {
+  const np=document.getElementById('sNewPass').value;
+  const cp=document.getElementById('sConfPass').value;
   if(np.length<6){showToast('Neno la siri lazima liwe na herufi 6+','error');return;}
   if(np!==cp){showToast('Maneno ya siri hayafanani','error');return;}
+  const {error}=await supabaseClient.auth.updateUser({password:np});
+  if(error){showToast(error.message,'error');return;}
   showToast('Neno la siri limebadilishwa! ✅');
   document.getElementById('sNewPass').value='';
   document.getElementById('sConfPass').value='';
 }
 
 function clearData() {
-  if(!confirm('Una uhakika? Data YOTE itafutwa — mauzo, stock, madeni, invoice, wafanyakazi. Haitaweza kurejeshwa!')) return;
-  ['mauzo','stock','madeni','invoice','wafanyakazi'].forEach(k=>DB.set(k,[]));
-  showToast('Data yote imefutwa!');
+  showToast('Wasiliana na msaMinisters wa TRAVEX Finance kufuta data','error');
 }
 
-function deleteAccount() {
+async function deleteAccount() {
   if(!confirm('Una uhakika wa kufuta akaunti yako? Hatua hii haiwezi kurejeshwa!')) return;
-  Session.clear();
-  window.location.href='index.html';
+  await Auth.logout();
 }
 </script>
 

@@ -99,13 +99,10 @@ initTabs();
 
 const MIEZI=['Januari','Februari','Machi','Aprili','Mei','Juni','Julai','Agosti','Septemba','Oktoba','Novemba','Desemba'];
 const now = new Date();
-document.getElementById('selMishaharaMwezi').value = now.getMonth();
-document.getElementById('wTarehe').value = today();
-document.getElementById('attDate').value = today();
-document.getElementById('attDateLabel').textContent = formatDate(today());
 
-function loadWaf() {
-  const waf = DB.get('wafanyakazi');
+
+async function loadWaf() {
+  const waf = await DB.wafanyakazi.getAll();
   const totalMshahara = waf.reduce((a,w)=>a+w.mshahara,0);
   document.getElementById('statsGrid').innerHTML = `
     <div class="stat-card"><div class="stat-label">Wafanyakazi Wote</div><div class="stat-value">${waf.length}</div><div class="stat-sub">Wanaofanya kazi</div></div>
@@ -127,25 +124,25 @@ function loadWaf() {
 loadWaf();
 searchTable('searchWaf','wafBody');
 
-function saveWaf() {
+async function saveWaf() {
   const jina=document.getElementById('wJina').value.trim();
   const nafasi=document.getElementById('wNafasi').value.trim();
   const mshahara=parseFloat(document.getElementById('wMshahara').value)||0;
   if(!jina||!nafasi||!mshahara){showToast('Jaza taarifa zote muhimu','error');return;}
-  DB.add('wafanyakazi',{jina,nafasi,simu:document.getElementById('wSimu').value.trim(),mshahara,tarehe_kuanza:document.getElementById('wTarehe').value});
+  await DB.wafanyakazi.add({jina,nafasi,simu:document.getElementById('wSimu').value.trim(),mshahara,tarehe_kuanza:document.getElementById('wTarehe').value});
   closeModal('modalWaf');
   showToast('Mfanyakazi ameongezwa!');
-  loadWaf();
-  loadMishahara();
+  await loadWaf();
+  await loadMishahara();
 }
 
-function deleteWaf(id){if(!confirm('Futa mfanyakazi?'))return;DB.delete('wafanyakazi',id);showToast('Imefutwa!');loadWaf();}
+async function deleteWaf(id){if(!confirm('Futa mfanyakazi?'))return;await DB.wafanyakazi.delete(id);showToast('Imefutwa!');await loadWaf();}
 
-function loadMishahara() {
-  const waf = DB.get('wafanyakazi');
+async function loadMishahara() {
+  const waf = await DB.wafanyakazi.getAll();
   const m = parseInt(document.getElementById('selMishaharaMwezi').value);
-  const mKey = `mishahara_${now.getFullYear()}_${m}`;
-  const paid = DB.get(mKey);
+  const paidList = await DB.mishahara.getByMonth(m, now.getFullYear());
+  const paid = paidList.filter(p=>p.imelipwa).map(p=>p.mfanyakazi_id);
   document.getElementById('mishaharaBody').innerHTML = waf.length ? waf.map(w=>{
     const imelipwa = paid.includes(w.id);
     return `<tr>
@@ -159,35 +156,33 @@ function loadMishahara() {
 }
 loadMishahara();
 
-function lipaKimoja(id) {
+async function lipaKimoja(id) {
   const m = parseInt(document.getElementById('selMishaharaMwezi').value);
-  const mKey = `mishahara_${now.getFullYear()}_${m}`;
-  const paid = DB.get(mKey);
-  if (!paid.includes(id)) { paid.push(id); DB.set(mKey,paid); }
-  showToast('Mshahara umelipwa!'); loadMishahara();
+  await DB.mishahara.lipa(id,m,now.getFullYear());
+  showToast('Mshahara umelipwa!');
+  await loadMishahara();
 }
 
-function lipa() {
-  const waf = DB.get('wafanyakazi');
+async function lipa() {
+  const waf = await DB.wafanyakazi.getAll();
   const m = parseInt(document.getElementById('selMishaharaMwezi').value);
-  const mKey = `mishahara_${now.getFullYear()}_${m}`;
-  DB.set(mKey, waf.map(w=>w.id));
-  showToast('Mishahara yote imelipwa! ✅'); loadMishahara();
+  for(const w of waf) await DB.mishahara.lipa(w.id,m,now.getFullYear());
+  showToast('Mishahara yote imelipwa! ✅');
+  await loadMishahara();
 }
 
 function setAttDate(d,btn) {
   document.getElementById('attDate').value=d;
-  loadAttendance();
+  
 }
 
-function loadAttendance() {
+async function loadAttendance() {
   const date = document.getElementById('attDate').value;
   document.getElementById('attDateLabel').textContent = formatDate(date);
-  const waf = DB.get('wafanyakazi');
-  const attKey = `att_${date}`;
-  const att = DB.get(attKey);
+  const waf = await DB.wafanyakazi.getAll();
+  const att = await DB.attendance.getByDate(date);
   document.getElementById('attBody').innerHTML = waf.length ? waf.map(w=>{
-    const rec = att.find(a=>a.wafId===w.id);
+    const rec = att.find(a=>a.mfanyakazi_id===w.id);
     const hali = rec?.hali || 'haijawekwa';
     return `<tr>
       <td><div style="font-weight:600;color:var(--navy)">${w.jina}</div></td>
@@ -204,7 +199,7 @@ function loadAttendance() {
     </tr>`;
   }).join('') : '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)">Hakuna wafanyakazi</td></tr>';
 }
-loadAttendance();
+
 
 function setAtt(wafId, hali, date) {
   const attKey = `att_${date}`;
@@ -212,7 +207,7 @@ function setAtt(wafId, hali, date) {
   att.push({wafId,hali,muda:hali==='alikuja'?new Date().toLocaleTimeString('sw-TZ',{hour:'2-digit',minute:'2-digit'}):''});
   DB.set(attKey,att);
   showToast('Attendance imewekwa!');
-  loadAttendance();
+  
 }
 </script>
 

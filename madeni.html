@@ -91,7 +91,7 @@ document.getElementById('dTarehe').value = today();
 document.getElementById('mTarehe').value = today();
 
 function loadMadeni() {
-  const madeni = DB.get('madeni');
+  const madeni = await DB.madeni.getAll();
   const unaodai = madeni.filter(m=>m.aina==='unaodai');
   const unadaiwa = madeni.filter(m=>m.aina==='unadaiwa');
   const totalUnaodai = unaodai.reduce((a,m)=>a+m.kiasi,0);
@@ -136,18 +136,19 @@ function openAddDeni(aina) {
   openModal('modalDeni');
 }
 
-function saveDeni() {
+async function saveDeni() {
   const jina=document.getElementById('dJina').value.trim();
   const kiasi=parseFloat(document.getElementById('dKiasi').value)||0;
   if(!jina||!kiasi){showToast('Jaza jina na kiasi','error');return;}
-  DB.add('madeni',{jina,simu:document.getElementById('dSimu').value.trim(),kiasi,tarehe:document.getElementById('dTarehe').value,maelezo:document.getElementById('dMaelezo').value.trim(),aina:currentAina});
+  await DB.madeni.add({jina,simu:document.getElementById('dSimu').value.trim(),kiasi,tarehe:document.getElementById('dTarehe').value,maelezo:document.getElementById('dMaelezo').value.trim(),aina:currentAina});
   closeModal('modalDeni');
   showToast('Deni limeongezwa!');
-  loadMadeni();
+  await loadMadeni();
 }
 
-function openMalipo(id) {
-  const d = DB.get('madeni').find(m=>m.id===id);
+async function openMalipo(id) {
+  const all = await DB.madeni.getAll();
+  const d = all.find(m=>m.id===id);
   if(!d) return;
   currentDeniId = id;
   document.getElementById('malipoInfo').innerHTML = `<strong>${d.jina}</strong><br>Deni: <strong style="color:var(--danger)">${formatTZS(d.kiasi)}</strong>`;
@@ -156,21 +157,22 @@ function openMalipo(id) {
   openModal('modalMalipo');
 }
 
-function saveMalipo() {
+async function saveMalipo() {
   const kiasi=parseFloat(document.getElementById('mKiasi').value)||0;
   if(!kiasi){showToast('Ingiza kiasi','error');return;}
-  const d = DB.get('madeni').find(m=>m.id===currentDeniId);
+  const all = await DB.madeni.getAll();
+  const d = all.find(m=>m.id===currentDeniId);
   if(!d) return;
-  const bakaa = d.kiasi - kiasi;
-  if(bakaa<=0){DB.delete('madeni',currentDeniId);showToast('Deni limelipwa kabisa! ✅');}
-  else{DB.update('madeni',currentDeniId,{kiasi:bakaa});showToast(`Imelipwa. Bakaa: ${formatTZS(bakaa)}`);}
+  const bakaa = Number(d.kiasi) - kiasi;
+  if(bakaa<=0){await DB.madeni.delete(currentDeniId);showToast('Deni limelipwa kabisa! ✅');}
+  else{await DB.madeni.update(currentDeniId,{kiasi:bakaa});showToast(`Imelipwa. Bakaa: ${formatTZS(bakaa)}`);}
   closeModal('modalMalipo');
-  loadMadeni();
+  await loadMadeni();
 }
 
-function deleteDeni(id){
+async function deleteDeni(id){
   if(!confirm('Una uhakika wa kufuta deni hili?'))return;
-  DB.delete('madeni',id);showToast('Deni limefutwa!');loadMadeni();
+  await DB.madeni.delete(id);showToast('Deni limefutwa!');await loadMadeni();
 }
 </script>
 

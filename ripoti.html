@@ -80,15 +80,15 @@ loadSidebar('ripoti');
 initTabs();
 
 const now = new Date();
-document.getElementById('selMwezi').value = now.getMonth();
-document.getElementById('selMweziMwaka').value = now.getFullYear();
+
 
 const MIEZI = ['Januari','Februari','Machi','Aprili','Mei','Juni','Julai','Agosti','Septemba','Oktoba','Novemba','Desemba'];
 
-function loadMwezi() {
+async function loadMwezi() {
   const m = parseInt(document.getElementById('selMwezi').value);
   const y = parseInt(document.getElementById('selMweziMwaka').value);
-  const all = DB.get('mauzo').filter(d => {
+  const allData = await DB.mauzo.getByMonth(m, y);
+  const all = allData.filter(d => {
     const dt = new Date(d.tarehe);
     return dt.getMonth()===m && dt.getFullYear()===y;
   });
@@ -135,9 +135,10 @@ function loadMwezi() {
 }
 loadMwezi();
 
-function loadMwaka() {
+async function loadMwaka() {
   const y = parseInt(document.getElementById('selMwaka').value);
-  const all = DB.get('mauzo').filter(d => new Date(d.tarehe).getFullYear()===y);
+  const allData = await DB.mauzo.getAll();
+  const all = allData.filter(d => new Date(d.tarehe).getFullYear()===y);
   const mapato_total = all.filter(d=>d.aina==='mapato').reduce((a,d)=>a+d.jumla,0);
   const matumizi_total = all.filter(d=>d.aina==='matumizi').reduce((a,d)=>a+d.jumla,0);
 

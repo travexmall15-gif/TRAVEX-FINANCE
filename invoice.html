@@ -107,7 +107,7 @@ initTabs();
 let invItems = [{bidhaa:'',idadi:1,bei:0}];
 document.getElementById('fTarehe').value = today();
 
-const user = Session.getUser();
+const user = Auth.getCachedUser();
 document.getElementById('prevFrom').textContent = user?.biashara || 'Biashara Yangu';
 document.getElementById('prevFromSub').textContent = user?.mkoa || '';
 
@@ -115,14 +115,10 @@ function switchTab() {
   document.querySelectorAll('.tab-btn')[1].click();
 }
 
-function getNextNamba() {
-  const invs = DB.get('invoice');
-  const n = invs.length + 1;
-  return 'INV-' + String(n).padStart(3,'0');
-}
 
-function loadStats() {
-  const invs = DB.get('invoice');
+
+async function loadStats() {
+  const invs = await DB.invoice.getAll();
   const total = invs.reduce((a,i)=>a+i.jumla,0);
   const paid = invs.filter(i=>i.hali==='imelipwa').reduce((a,i)=>a+i.jumla,0);
   const pending = invs.filter(i=>i.hali==='inasubiri').length;
@@ -135,8 +131,8 @@ function loadStats() {
 }
 loadStats();
 
-function loadInvoices() {
-  const invs = DB.get('invoice');
+async function loadInvoices() {
+  const invs = await DB.invoice.getAll();
   document.getElementById('invBody').innerHTML = invs.length ? invs.reverse().map(i=>`<tr>
     <td class="text-navy font-bold">${i.namba}</td>
     <td>${i.mteja}</td>
@@ -182,24 +178,24 @@ function updatePreview() {
   </tr>`).join('');
 }
 
-function saveInvoice() {
+async function saveInvoice() {
   const mteja = document.getElementById('fMteja').value.trim();
   if (!mteja) { showToast('Ingiza jina la mteja','error'); return; }
   const bidhaa = invItems.filter(i=>i.bidhaa);
   if (!bidhaa.length) { showToast('Ongeza bidhaa angalau moja','error'); return; }
   const jumla = bidhaa.reduce((a,i)=>a+(i.idadi*i.bei),0);
-  DB.add('invoice',{namba:getNextNamba(),mteja,simu:document.getElementById('fMtejaSimu').value,bidhaa,jumla,hali:'inasubiri',tarehe:document.getElementById('fTarehe').value});
+  await DB.invoice.add({namba:await DB.invoice.getNextNamba(),mteja,simu:document.getElementById('fMtejaSimu').value,bidhaa,jumla,hali:'inasubiri',tarehe:document.getElementById('fTarehe').value});
   showToast('Invoice imehifadhiwa! ✅');
   invItems=[{bidhaa:'',idadi:1,bei:0}];
   document.getElementById('fMteja').value='';
   document.getElementById('fMtejaSimu').value='';
   renderInvItems();
-  loadInvoices();
-  loadStats();
+  await loadInvoices();
+  await loadStats();
 }
 
-function markPaid(id) { DB.update('invoice',id,{hali:'imelipwa'}); showToast('Invoice imelipwa! ✅'); loadInvoices(); loadStats(); }
-function deleteInv(id) { if(!confirm('Futa invoice?'))return; DB.delete('invoice',id); showToast('Imefutwa!'); loadInvoices(); loadStats(); }
+async function markPaid(id) { await DB.invoice.update(id,{hali:'imelipwa'}); showToast('Invoice imelipwa! ✅'); await loadInvoices(); await loadStats(); }
+async function deleteInv(id) { if(!confirm('Futa invoice?'))return; await DB.invoice.delete(id); showToast('Imefutwa!'); await loadInvoices(); await loadStats(); }
 
 function printInvoice() { window.print(); }
 
@@ -213,7 +209,7 @@ function waInvoice() {
 }
 
 renderInvItems();
-document.getElementById('prevNamba').textContent = getNextNamba();
+
 </script>
 
 <nav class="bottom-nav">
