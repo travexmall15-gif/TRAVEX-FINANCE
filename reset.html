@@ -17,6 +17,24 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;bac
 .alert-success{background:var(--success-bg);border:1px solid #6ee7b7;color:var(--success-text);}
 .alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger);}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* MOBILE */
+  @media(max-width:768px){
+    body{flex-direction:column;}
+    .left-panel{width:100%;padding:28px 20px;min-height:auto;flex-direction:row;align-items:center;gap:16px;}
+    .left-panel .testimonial{display:none;}
+    .left-panel .left-sub{display:none;}
+    .left-panel .left-footer{display:none;}
+    .left-logo{margin-bottom:0;font-size:16px;}
+    .left-title{display:none;}
+    .right-panel{padding:24px 16px;align-items:flex-start;}
+    .login-card,.form-wrap{padding:24px 16px;border-radius:12px;}
+    .login-title{font-size:20px;}
+    /* Signup step 1 */
+    .plan-grid{grid-template-columns:1fr!important;gap:12px!important;}
+    .content{padding:16px;}
+  }
+
 </style>
 </head>
 <body>

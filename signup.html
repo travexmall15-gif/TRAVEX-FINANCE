@@ -6,59 +6,74 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="shared.css">
 <style>
-body{min-height:100vh;display:flex;flex-direction:column;}
-.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;}
-.logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--navy);cursor:pointer;}
+body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg);}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--navy);cursor:pointer;}
 .logo span{color:var(--gold);}
-.steps-bar{background:var(--white);border-bottom:1px solid var(--border);padding:16px 40px;}
-.steps{display:flex;align-items:center;justify-content:center;gap:0;max-width:500px;margin:0 auto;}
+.steps-bar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 24px;}
+.steps{display:flex;align-items:center;justify-content:center;gap:0;max-width:400px;margin:0 auto;}
 .step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;}
-.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:all 0.3s;}
+.step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:all 0.3s;}
 .step-num.done{background:var(--gold);color:var(--navy);}
 .step-num.active{background:var(--navy);color:var(--white);}
 .step-num.pending{background:var(--bg);color:var(--text-muted);border:2px solid var(--border);}
+.step-label{font-size:12px;}
 .step-label.active{color:var(--navy);}
 .step-label.pending{color:var(--text-muted);}
-.step-line{width:60px;height:2px;background:var(--border);margin:0 8px;flex-shrink:0;transition:background 0.3s;}
+.step-line{width:48px;height:2px;background:var(--border);margin:0 6px;flex-shrink:0;transition:background 0.3s;}
 .step-line.done{background:var(--gold);}
-.content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
-.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
-.plan-card{background:var(--white);border-radius:14px;padding:28px 24px;border:2px solid var(--border);cursor:pointer;transition:all 0.2s;position:relative;}
+.content{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;}
+/* PLAN CARDS */
+.plan-wrap{max-width:640px;width:100%;text-align:center;}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.plan-card{background:var(--white);border-radius:14px;padding:22px 18px;border:2px solid var(--border);cursor:pointer;transition:all 0.2s;position:relative;text-align:left;}
 .plan-card:hover{border-color:var(--navy);}
 .plan-card.selected{border-color:var(--gold);box-shadow:0 4px 20px rgba(255,215,0,0.2);}
-.plan-card.selected::after{content:'✓';position:absolute;top:12px;right:14px;width:24px;height:24px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);}
-.plan-icon{width:48px;height:48px;border-radius:10px;background:#f0f9ff;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
-.plan-icon i{font-size:22px;color:var(--navy);}
-.plan-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;}
-.plan-price{font-size:13px;color:var(--gold-dark);font-weight:600;margin-bottom:10px;}
+.plan-card.selected::after{content:'✓';position:absolute;top:10px;right:12px;width:22px;height:22px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--navy);}
+.plan-icon{width:40px;height:40px;border-radius:10px;background:#f0f9ff;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.plan-icon i{font-size:20px;color:var(--navy);}
+.plan-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.plan-price{font-size:12px;color:var(--gold-dark);font-weight:600;margin-bottom:8px;}
 .plan-features{list-style:none;}
-.plan-features li{font-size:12px;color:var(--text-secondary);padding:4px 0;display:flex;align-items:center;gap:6px;}
-.plan-features li i{font-size:13px;color:var(--gold-dark);}
-.form-wrap{background:var(--white);border-radius:16px;padding:36px;max-width:520px;width:100%;box-shadow:0 2px 20px rgba(0,0,0,0.06);}
-.spb{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:20px;}
-.alert-success{background:var(--success-bg);border:1px solid #6ee7b7;color:var(--success-text);border-radius:8px;padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px;}
-.alert-success.show,.alert-error.show{display:flex;}
-.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger);border-radius:8px;padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px;}
+.plan-features li{font-size:11px;color:var(--text-secondary);padding:3px 0;display:flex;align-items:center;gap:5px;}
+.plan-features li i{font-size:11px;color:var(--gold-dark);}
+/* FORM */
+.form-wrap{background:var(--white);border-radius:16px;padding:28px 24px;max-width:500px;width:100%;box-shadow:0 2px 16px rgba(0,0,0,0.06);}
+.spb{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:18px;}
+.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none;align-items:center;gap:8px;}
+.alert-error.show{display:flex;}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* MOBILE */
+@media(max-width:600px){
+  .plan-grid{grid-template-columns:1fr;}
+  .plan-card{padding:16px;}
+  .form-wrap{padding:20px 16px;}
+  .content{padding:16px;}
+  .grid-2{grid-template-columns:1fr!important;gap:0!important;}
+}
 </style>
 </head>
 <body>
+
 <div class="topbar">
   <div class="logo" onclick="location.href='index.html'">TX <span>TRAVEX</span> Finance</div>
-  <div style="font-size:13px;color:var(--text-muted)">Una akaunti? <a href="login.html" style="color:var(--navy);font-weight:600;">Ingia hapa</a></div>
+  <div style="font-size:12px;color:var(--text-muted)">Una akaunti? <a href="login.html" style="color:var(--navy);font-weight:700">Ingia</a></div>
 </div>
+
 <div class="steps-bar">
   <div class="steps">
     <div class="step"><div class="step-num active" id="s1num">1</div><div class="step-label active">Chagua Mpango</div></div>
     <div class="step-line" id="line1"></div>
-    <div class="step"><div class="step-num pending" id="s2num">2</div><div class="step-label pending" id="s2lbl">Taarifa za Biashara</div></div>
+    <div class="step"><div class="step-num pending" id="s2num">2</div><div class="step-label pending">Taarifa za Biashara</div></div>
   </div>
 </div>
+
 <div class="content" id="mainContent">
 
   <!-- STEP 1 -->
-  <div style="max-width:700px;width:100%;text-align:center;" id="step1">
-    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--navy);margin-bottom:8px">Chagua Aina ya Biashara Yako</h2>
-    <p style="font-size:14px;color:var(--text-muted);margin-bottom:36px">Chagua mpango unaofaa — unaweza kubadilisha baadaye</p>
+  <div class="plan-wrap" id="step1">
+    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:6px">Chagua Aina ya Biashara</h2>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Chagua mpango unaofaa — unaweza kubadilisha baadaye</p>
     <div class="plan-grid">
       <div class="plan-card" id="card-retailer" onclick="selectPlan('retailer')">
         <div class="plan-icon"><i class="ti ti-building-store"></i></div>
@@ -68,8 +83,7 @@ body{min-height:100vh;display:flex;flex-direction:column;}
           <li><i class="ti ti-check"></i> Mauzo ya haraka (POS)</li>
           <li><i class="ti ti-check"></i> Stock na Madeni</li>
           <li><i class="ti ti-check"></i> Invoice + WhatsApp</li>
-          <li><i class="ti ti-check"></i> Ripoti za mwezi na mwaka</li>
-          <li><i class="ti ti-check"></i> Wafanyakazi na Mishahara</li>
+          <li><i class="ti ti-check"></i> Ripoti + Wafanyakazi</li>
         </ul>
       </div>
       <div class="plan-card" id="card-wholesaler" onclick="selectPlan('wholesaler')">
@@ -79,36 +93,35 @@ body{min-height:100vh;display:flex;flex-direction:column;}
         <ul class="plan-features">
           <li><i class="ti ti-check"></i> Yote ya Retailer +</li>
           <li><i class="ti ti-check"></i> Wasambazaji kamili</li>
-          <li><i class="ti ti-check"></i> Bulk orders na Discounts</li>
-          <li><i class="ti ti-check"></i> Watumiaji wengi</li>
+          <li><i class="ti ti-check"></i> Bulk orders</li>
           <li><i class="ti ti-check"></i> Uchambuzi wa kina</li>
         </ul>
       </div>
     </div>
-    <div style="background:#fff8dc;border:1px solid #fcd34d;border-radius:8px;padding:10px 16px;font-size:12px;color:#92400e;font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:8px;justify-content:center">
-      <i class="ti ti-gift"></i> Siku 7 za bure kwa mpango wote — hakuna kadi ya benki inayohitajika
+    <div style="background:#fff8dc;border:1px solid #fcd34d;border-radius:8px;padding:10px 14px;font-size:12px;color:#92400e;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:6px;justify-content:center">
+      <i class="ti ti-gift"></i> Siku 7 za bure — hakuna kadi ya benki inayohitajika
     </div>
-    <button class="btn btn-navy" style="padding:14px 40px;font-size:15px" id="btnNext" onclick="goStep2()" disabled>
+    <button class="btn btn-navy" style="padding:13px 36px;font-size:14px" id="btnNext" onclick="goStep2()" disabled>
       Endelea <i class="ti ti-arrow-right"></i>
     </button>
   </div>
 
   <!-- STEP 2 -->
-  <div id="step2" style="display:none;width:100%;justify-content:center;align-items:center;">
+  <div id="step2" style="display:none;width:100%;justify-content:center">
     <div class="form-wrap">
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:4px">Taarifa za Biashara Yako</div>
-      <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Jaza taarifa zako ili tuanzishe akaunti yako</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:4px">Taarifa za Biashara Yako</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Jaza taarifa zako ili tuanzishe akaunti yako</div>
       <div class="alert-error" id="signupError"><i class="ti ti-alert-circle"></i><span id="signupErrorMsg"></span></div>
       <div class="spb">
-        <div style="font-size:13px;font-weight:600;color:var(--navy)" id="spbPlan"><i class="ti ti-check-circle"></i> Retailer</div>
-        <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-size:13px;font-weight:600;color:var(--navy)" id="spbPlan"><i class="ti ti-check-circle" style="color:var(--gold-dark)"></i> Retailer</div>
+        <div style="display:flex;align-items:center;gap:10px">
           <div style="font-size:12px;color:var(--gold-dark);font-weight:600" id="spbPrice">TZS 10,000/mwezi</div>
           <span onclick="goStep1()" style="font-size:11px;color:var(--text-muted);text-decoration:underline;cursor:pointer">Badilisha</span>
         </div>
       </div>
       <div class="grid-2">
-        <div class="form-group"><label class="form-label">Jina Lako Kamili *</label><input class="form-control" id="fName" placeholder="Jumanne Margeri"></div>
-        <div class="form-group"><label class="form-label">Namba ya Simu *</label><input class="form-control" id="fPhone" placeholder="+255 7XX XXX XXX"></div>
+        <div class="form-group"><label class="form-label">Jina Lako Kamili *</label><input class="form-control" id="fName" placeholder="Jina lako kamili"></div>
+        <div class="form-group"><label class="form-label">Namba ya Simu *</label><input class="form-control" id="fPhone" placeholder="+255 7XX XXX XXX" type="tel"></div>
       </div>
       <div class="form-group"><label class="form-label">Jina la Biashara *</label><input class="form-control" id="fBiashara" placeholder="Mfano: Duka la Amani"></div>
       <div class="grid-2">
@@ -129,17 +142,17 @@ body{min-height:100vh;display:flex;flex-direction:column;}
           </select>
         </div>
       </div>
-      <div style="height:1px;background:var(--border);margin:16px 0"></div>
-      <div class="form-group"><label class="form-label">Barua Pepe (Email) *</label><input type="email" class="form-control" id="fEmail" placeholder="mfano@email.com"></div>
+      <div style="height:1px;background:var(--border);margin:14px 0"></div>
+      <div class="form-group"><label class="form-label">Barua Pepe (Email) *</label><input type="email" class="form-control" id="fEmail" placeholder="mfano@email.com" autocomplete="email"></div>
       <div class="grid-2">
         <div class="form-group"><label class="form-label">Neno la Siri *</label><input type="password" class="form-control" id="fPassword" placeholder="Angalau herufi 6"></div>
         <div class="form-group"><label class="form-label">Thibitisha Neno la Siri *</label><input type="password" class="form-control" id="fConfirm" placeholder="Rudia neno la siri"></div>
       </div>
-      <button class="btn btn-gold" style="width:100%;justify-content:center;padding:13px;font-size:15px;margin-top:4px" id="signupBtn" onclick="submitForm()">
+      <button class="btn btn-gold" style="width:100%;justify-content:center;padding:13px;font-size:14px;margin-top:4px" id="signupBtn" onclick="submitForm()">
         <i class="ti ti-rocket"></i> Anza Siku 7 za Bure
       </button>
-      <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:12px;line-height:1.6">
-        Kwa kujiandikisha unakubali <a href="#" style="color:var(--navy);font-weight:600">Masharti ya Matumizi</a> ya TRAVEX Finance
+      <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:10px;line-height:1.6">
+        Kwa kujiandikisha unakubali <a href="#" style="color:var(--navy);font-weight:600">Masharti ya Matumizi</a>
       </div>
     </div>
   </div>
@@ -148,76 +161,85 @@ body{min-height:100vh;display:flex;flex-direction:column;}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script>
-(async () => { if (await Auth.isLoggedIn()) window.location.href = 'dashboard.html'; })();
+(async()=>{ if(await Auth.isLoggedIn()) window.location.replace('dashboard.html'); })();
 
-let selectedPlan = '';
-const params = new URLSearchParams(window.location.search);
-if (params.get('plan')) selectPlan(params.get('plan'));
+let selectedPlan='';
+const params=new URLSearchParams(window.location.search);
+if(params.get('plan')) selectPlan(params.get('plan'));
 
-function selectPlan(plan) {
-  selectedPlan = plan;
-  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('card-' + plan).classList.add('selected');
-  document.getElementById('btnNext').disabled = false;
+function selectPlan(plan){
+  selectedPlan=plan;
+  document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('card-'+plan).classList.add('selected');
+  document.getElementById('btnNext').disabled=false;
 }
 
-function goStep2() {
-  if (!selectedPlan) return;
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'flex';
-  document.getElementById('s1num').className = 'step-num done';
-  document.getElementById('s1num').innerHTML = '<i class="ti ti-check" style="font-size:12px"></i>';
-  document.getElementById('s2num').className = 'step-num active';
+function goStep2(){
+  if(!selectedPlan) return;
+  document.getElementById('step1').style.display='none';
+  document.getElementById('step2').style.display='flex';
+  document.getElementById('s1num').className='step-num done';
+  document.getElementById('s1num').innerHTML='<i class="ti ti-check" style="font-size:11px"></i>';
+  document.getElementById('s2num').className='step-num active';
   document.getElementById('line1').classList.add('done');
-  document.getElementById('spbPlan').innerHTML = `<i class="ti ti-check-circle"></i> ${selectedPlan === 'wholesaler' ? 'Wholesaler' : 'Retailer'}`;
-  document.getElementById('spbPrice').textContent = selectedPlan === 'wholesaler' ? 'TZS 25,000/mwezi' : 'TZS 10,000/mwezi';
+  document.getElementById('spbPlan').innerHTML=`<i class="ti ti-check-circle" style="color:var(--gold-dark)"></i> ${selectedPlan==='wholesaler'?'Wholesaler':'Retailer'}`;
+  document.getElementById('spbPrice').textContent=selectedPlan==='wholesaler'?'TZS 25,000/mwezi':'TZS 10,000/mwezi';
+  window.scrollTo(0,0);
 }
 
-function goStep1() {
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('step1').style.display = 'block';
-  document.getElementById('s1num').className = 'step-num active';
-  document.getElementById('s1num').textContent = '1';
-  document.getElementById('s2num').className = 'step-num pending';
+function goStep1(){
+  document.getElementById('step2').style.display='none';
+  document.getElementById('step1').style.display='block';
+  document.getElementById('s1num').className='step-num active';
+  document.getElementById('s1num').textContent='1';
+  document.getElementById('s2num').className='step-num pending';
   document.getElementById('line1').classList.remove('done');
 }
 
-async function submitForm() {
-  const jina = document.getElementById('fName').value.trim();
-  const simu = document.getElementById('fPhone').value.trim();
-  const biashara = document.getElementById('fBiashara').value.trim();
-  const mkoa = document.getElementById('fMkoa').value;
-  const email = document.getElementById('fEmail').value.trim();
-  const pass = document.getElementById('fPassword').value;
-  const conf = document.getElementById('fConfirm').value;
-
-  if (!jina||!simu||!biashara||!mkoa||!email||!pass) { showSignupError('Jaza taarifa zote muhimu'); return; }
-  if (pass.length < 6) { showSignupError('Neno la siri lazima liwe na herufi 6+'); return; }
-  if (pass !== conf) { showSignupError('Maneno ya siri hayafanani'); return; }
-
-  const btn = document.getElementById('signupBtn');
-  btn.innerHTML = '<i class="ti ti-loader-2"></i> Inaandikisha...';
-  btn.style.pointerEvents = 'none';
-
-  const { error } = await Auth.signup(email, pass, {
-    jina, simu, biashara, mkoa,
-    aina_biashara: document.getElementById('fAina').value,
-    plan: selectedPlan
-  });
-
-  if (error) {
-    btn.innerHTML = '<i class="ti ti-rocket"></i> Anza Siku 7 za Bure';
-    btn.style.pointerEvents = '';
-    showSignupError(error.message.includes('already') ? 'Email hii imetumika tayari — Ingia badala yake' : error.message);
+async function submitForm(){
+  const jina=document.getElementById('fName').value.trim();
+  const simu=document.getElementById('fPhone').value.trim();
+  const biashara=document.getElementById('fBiashara').value.trim();
+  const mkoa=document.getElementById('fMkoa').value;
+  const email=document.getElementById('fEmail').value.trim();
+  const pass=document.getElementById('fPassword').value;
+  const conf=document.getElementById('fConfirm').value;
+  if(!jina||!simu||!biashara||!mkoa||!email||!pass){showErr('Jaza taarifa zote muhimu');return;}
+  if(pass.length<6){showErr('Neno la siri lazima liwe na herufi 6+');return;}
+  if(pass!==conf){showErr('Maneno ya siri hayafanani');return;}
+  const btn=document.getElementById('signupBtn');
+  btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Inaandikisha...';
+  btn.style.pointerEvents='none';
+  const {error}=await Auth.signup(email,pass,{jina,simu,biashara,mkoa,aina_biashara:document.getElementById('fAina').value,plan:selectedPlan});
+  if(error){
+    btn.innerHTML='<i class="ti ti-rocket"></i> Anza Siku 7 za Bure';
+    btn.style.pointerEvents='';
+    showErr(error.message.includes('already')?'Email hii imetumika tayari — Ingia badala yake':error.message);
     return;
   }
-  window.location.href = 'dashboard.html';
+  // Show success — email confirmation sent
+  document.getElementById('step2').innerHTML=`
+    <div style="text-align:center;padding:40px 20px;max-width:400px">
+      <div style="width:64px;height:64px;background:var(--success-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+        <i class="ti ti-mail" style="font-size:28px;color:var(--success)"></i>
+      </div>
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:10px">Angalia Email Yako!</h2>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:24px">
+        Tumekutumia email ya kuthibitisha kwenye <strong>${email}</strong>.<br>
+        Bonyeza kiungo katika email hiyo — kisha urudi hapa kuingia.
+      </p>
+      <div style="background:#fff8dc;border:1px solid #fcd34d;border-radius:8px;padding:12px 16px;font-size:12px;color:#92400e;margin-bottom:20px">
+        ⚠️ Angalia <strong>Spam / Junk</strong> folder pia kama email haija inbox
+      </div>
+      <a href="login.html" class="btn btn-gold" style="display:inline-flex;justify-content:center;padding:12px 28px;font-size:14px">
+        <i class="ti ti-login"></i> Nenda Kuingia
+      </a>
+    </div>`;
 }
 
-function showSignupError(msg) {
-  const el = document.getElementById('signupError');
-  document.getElementById('signupErrorMsg').textContent = msg;
-  el.classList.add('show');
+function showErr(msg){
+  document.getElementById('signupErrorMsg').textContent=msg;
+  document.getElementById('signupError').classList.add('show');
 }
 </script>
 </body>
