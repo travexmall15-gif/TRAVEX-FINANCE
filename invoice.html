@@ -100,8 +100,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script>
-(async()=>{const s=await Auth.getSession();if(!s)window.location.replace("login.html");})();
-loadSidebar('invoice');
+(async()=>{const s=await Auth.getSession();if(!s){window.location.replace('login.html');return;}
+await loadSidebar('invoice');
+})();
 initTabs();
 
 let invItems = [{bidhaa:'',idadi:1,bei:0}];
