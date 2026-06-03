@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wafanyakazi — TRAVEX Finance</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div><div class="header-title">Wafanyakazi</div><div class="header-sub">Simamia wafanyakazi, mishahara na attendance</div></div>
+  </div>
+  <div class="main-content">
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <div class="tabs tab-group">
+      <button class="tab-btn active" data-tab="tab-orodha">Orodha ya Wafanyakazi</button>
+      <button class="tab-btn" data-tab="tab-mishahara">Mishahara</button>
+      <button class="tab-btn" data-tab="tab-attendance">Attendance</button>
+    </div>
+
+    <!-- ORODHA -->
+    <div class="tab-content active" id="tab-orodha">
+      <div class="table-card">
+        <div class="table-card-header">
+          <div><div class="table-card-title">Wafanyakazi Wote</div></div>
+          <div class="table-actions">
+            <div class="search-box"><i class="ti ti-search"></i><input id="searchWaf" placeholder="Tafuta mfanyakazi..."></div>
+            <button class="btn btn-gold" onclick="openModal('modalWaf')"><i class="ti ti-plus"></i> Ongeza Mfanyakazi</button>
+          </div>
+        </div>
+        <table><thead><tr><th>Mfanyakazi</th><th>Nafasi</th><th>Simu</th><th>Alianza</th><th class="text-right">Mshahara</th><th></th></tr></thead>
+        <tbody id="wafBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- MISHAHARA -->
+    <div class="tab-content" id="tab-mishahara">
+      <div class="filter-row">
+        <select class="form-control" id="selMishaharaMwezi" style="width:auto" onchange="loadMishahara()">
+          <option value="0">Januari</option><option value="1">Februari</option><option value="2">Machi</option>
+          <option value="3">Aprili</option><option value="4">Mei</option><option value="5">Juni</option>
+          <option value="6">Julai</option><option value="7">Agosti</option><option value="8">Septemba</option>
+          <option value="9">Oktoba</option><option value="10">Novemba</option><option value="11">Desemba</option>
+        </select>
+      </div>
+      <div class="table-card">
+        <div class="table-card-header">
+          <div><div class="table-card-title">Mishahara ya Mwezi</div></div>
+          <button class="btn btn-gold" onclick="lipa()"><i class="ti ti-cash"></i> Lipa Mishahara Yote</button>
+        </div>
+        <table><thead><tr><th>Mfanyakazi</th><th>Nafasi</th><th class="text-right">Mshahara</th><th>Hali</th><th></th></tr></thead>
+        <tbody id="mishaharaBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ATTENDANCE -->
+    <div class="tab-content" id="tab-attendance">
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="setAttDate(today(),this)" id="attTodayBtn">Leo</button>
+      </div>
+      <div class="table-card">
+        <div class="table-card-header">
+          <div><div class="table-card-title">Attendance — <span id="attDateLabel"></span></div></div>
+          <input type="date" class="form-control" id="attDate" style="width:auto" onchange="loadAttendance()">
+        </div>
+        <table><thead><tr><th>Mfanyakazi</th><th>Nafasi</th><th>Hali</th><th>Muda wa Kuja</th><th></th></tr></thead>
+        <tbody id="attBody"></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL WAFANYAKAZI -->
+<div class="modal-overlay" id="modalWaf">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Ongeza Mfanyakazi</div>
+      <button class="modal-close" onclick="closeModal('modalWaf')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="form-group"><label class="form-label">Jina Kamili *</label><input class="form-control" id="wJina" placeholder="Jina la mfanyakazi"></div>
+    <div class="form-group"><label class="form-label">Nafasi / Kazi *</label><input class="form-control" id="wNafasi" placeholder="Mfano: Msaidizi wa Duka"></div>
+    <div class="form-group"><label class="form-label">Namba ya Simu</label><input class="form-control" id="wSimu" placeholder="+255 7XX XXX XXX"></div>
+    <div class="form-group"><label class="form-label">Mshahara (TZS) *</label><input type="number" class="form-control" id="wMshahara" placeholder="0"></div>
+    <div class="form-group"><label class="form-label">Tarehe ya Kuanza</label><input type="date" class="form-control" id="wTarehe"></div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveWaf()"><i class="ti ti-check"></i> Hifadhi</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+requireAuth();
+loadSidebar('wafanyakazi');
+initTabs();
+
+const MIEZI=['Januari','Februari','Machi','Aprili','Mei','Juni','Julai','Agosti','Septemba','Oktoba','Novemba','Desemba'];
+const now = new Date();
+document.getElementById('selMishaharaMwezi').value = now.getMonth();
+document.getElementById('wTarehe').value = today();
+document.getElementById('attDate').value = today();
+document.getElementById('attDateLabel').textContent = formatDate(today());
+
+function loadWaf() {
+  const waf = DB.get('wafanyakazi');
+  const totalMshahara = waf.reduce((a,w)=>a+w.mshahara,0);
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Wafanyakazi Wote</div><div class="stat-value">${waf.length}</div><div class="stat-sub">Wanaofanya kazi</div></div>
+    <div class="stat-card"><div class="stat-label">Mishahara/Mwezi</div><div class="stat-value" style="font-size:16px">${formatTZS(totalMshahara)}</div><div class="stat-sub">Jumla ya mwezi</div></div>
+    <div class="stat-card"><div class="stat-label">Mishahara/Mwaka</div><div class="stat-value" style="font-size:14px">${formatTZS(totalMshahara*12)}</div><div class="stat-sub">Jumla ya mwaka</div></div>
+  `;
+  document.getElementById('wafBody').innerHTML = waf.length ? waf.map(w=>`<tr>
+    <td><div style="display:flex;align-items:center;gap:10px">
+      <div class="avatar">${w.jina.substring(0,2).toUpperCase()}</div>
+      <div><div style="font-weight:600;color:var(--navy)">${w.jina}</div></div>
+    </div></td>
+    <td><span class="badge badge-info">${w.nafasi}</span></td>
+    <td><a href="tel:${w.simu}" style="color:var(--navy);font-size:12px">${w.simu||'—'}</a></td>
+    <td class="text-muted">${w.tarehe_kuanza?formatDate(w.tarehe_kuanza):'—'}</td>
+    <td class="text-right text-gold font-bold">${formatTZS(w.mshahara)}</td>
+    <td><button class="btn btn-danger btn-sm" onclick="deleteWaf(${w.id})"><i class="ti ti-trash"></i></button></td>
+  </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">Hakuna wafanyakazi bado</td></tr>';
+}
+loadWaf();
+searchTable('searchWaf','wafBody');
+
+function saveWaf() {
+  const jina=document.getElementById('wJina').value.trim();
+  const nafasi=document.getElementById('wNafasi').value.trim();
+  const mshahara=parseFloat(document.getElementById('wMshahara').value)||0;
+  if(!jina||!nafasi||!mshahara){showToast('Jaza taarifa zote muhimu','error');return;}
+  DB.add('wafanyakazi',{jina,nafasi,simu:document.getElementById('wSimu').value.trim(),mshahara,tarehe_kuanza:document.getElementById('wTarehe').value});
+  closeModal('modalWaf');
+  showToast('Mfanyakazi ameongezwa!');
+  loadWaf();
+  loadMishahara();
+}
+
+function deleteWaf(id){if(!confirm('Futa mfanyakazi?'))return;DB.delete('wafanyakazi',id);showToast('Imefutwa!');loadWaf();}
+
+function loadMishahara() {
+  const waf = DB.get('wafanyakazi');
+  const m = parseInt(document.getElementById('selMishaharaMwezi').value);
+  const mKey = `mishahara_${now.getFullYear()}_${m}`;
+  const paid = DB.get(mKey);
+  document.getElementById('mishaharaBody').innerHTML = waf.length ? waf.map(w=>{
+    const imelipwa = paid.includes(w.id);
+    return `<tr>
+      <td><div style="font-weight:600;color:var(--navy)">${w.jina}</div></td>
+      <td class="text-muted">${w.nafasi}</td>
+      <td class="text-right text-gold font-bold">${formatTZS(w.mshahara)}</td>
+      <td><span class="badge ${imelipwa?'badge-success':'badge-warning'}">${imelipwa?'Imelipwa':'Haijapwa'}</span></td>
+      <td><button class="btn btn-gold btn-sm" onclick="lipaKimoja(${w.id})" ${imelipwa?'disabled':''}>Lipa</button></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)">Hakuna wafanyakazi</td></tr>';
+}
+loadMishahara();
+
+function lipaKimoja(id) {
+  const m = parseInt(document.getElementById('selMishaharaMwezi').value);
+  const mKey = `mishahara_${now.getFullYear()}_${m}`;
+  const paid = DB.get(mKey);
+  if (!paid.includes(id)) { paid.push(id); DB.set(mKey,paid); }
+  showToast('Mshahara umelipwa!'); loadMishahara();
+}
+
+function lipa() {
+  const waf = DB.get('wafanyakazi');
+  const m = parseInt(document.getElementById('selMishaharaMwezi').value);
+  const mKey = `mishahara_${now.getFullYear()}_${m}`;
+  DB.set(mKey, waf.map(w=>w.id));
+  showToast('Mishahara yote imelipwa! ✅'); loadMishahara();
+}
+
+function setAttDate(d,btn) {
+  document.getElementById('attDate').value=d;
+  loadAttendance();
+}
+
+function loadAttendance() {
+  const date = document.getElementById('attDate').value;
+  document.getElementById('attDateLabel').textContent = formatDate(date);
+  const waf = DB.get('wafanyakazi');
+  const attKey = `att_${date}`;
+  const att = DB.get(attKey);
+  document.getElementById('attBody').innerHTML = waf.length ? waf.map(w=>{
+    const rec = att.find(a=>a.wafId===w.id);
+    const hali = rec?.hali || 'haijawekwa';
+    return `<tr>
+      <td><div style="font-weight:600;color:var(--navy)">${w.jina}</div></td>
+      <td class="text-muted">${w.nafasi}</td>
+      <td><span class="badge ${hali==='alikuja'?'badge-success':hali==='hakuja'?'badge-danger':hali==='likizo'?'badge-info':'badge-gray'}">${hali==='alikuja'?'Alikuja':hali==='hakuja'?'Hakuja':hali==='likizo'?'Likizo':'—'}</span></td>
+      <td class="text-muted">${rec?.muda||'—'}</td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-gold btn-sm" onclick="setAtt(${w.id},'alikuja','${date}')">✓ Alikuja</button>
+          <button class="btn btn-danger btn-sm" onclick="setAtt(${w.id},'hakuja','${date}')">✗ Hakuja</button>
+          <button class="btn btn-outline btn-sm" onclick="setAtt(${w.id},'likizo','${date}')">Likizo</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)">Hakuna wafanyakazi</td></tr>';
+}
+loadAttendance();
+
+function setAtt(wafId, hali, date) {
+  const attKey = `att_${date}`;
+  const att = DB.get(attKey).filter(a=>a.wafId!==wafId);
+  att.push({wafId,hali,muda:hali==='alikuja'?new Date().toLocaleTimeString('sw-TZ',{hour:'2-digit',minute:'2-digit'}):''});
+  DB.set(attKey,att);
+  showToast('Attendance imewekwa!');
+  loadAttendance();
+}
+</script>
+</body>
+</html>

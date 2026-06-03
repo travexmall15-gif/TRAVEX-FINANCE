@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice — TRAVEX Finance</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+.inv-preview{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:32px;max-width:600px;}
+.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:20px;border-bottom:2px solid var(--navy);}
+.inv-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--navy);}
+.inv-logo span{color:var(--gold);}
+.inv-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--navy);}
+.inv-namba{font-size:13px;color:var(--text-muted);}
+.inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.inv-party-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.inv-party-name{font-size:15px;font-weight:700;color:var(--navy);}
+.inv-party-sub{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.inv-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+.inv-table th{background:var(--navy);color:var(--white);padding:10px 14px;font-size:12px;text-align:left;}
+.inv-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.inv-total{text-align:right;padding-top:12px;border-top:2px solid var(--navy);}
+.inv-total-label{font-size:13px;color:var(--text-muted);}
+.inv-total-amount{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--navy);}
+</style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div><div class="header-title">Invoice</div><div class="header-sub">Tengeneza na simamia ankara za biashara yako</div></div>
+  </div>
+  <div class="main-content">
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <div class="tabs tab-group">
+      <button class="tab-btn active" data-tab="tab-orodha">Orodha ya Invoice</button>
+      <button class="tab-btn" data-tab="tab-unda">Unda Invoice Mpya</button>
+    </div>
+
+    <!-- ORODHA -->
+    <div class="tab-content active" id="tab-orodha">
+      <div class="table-card">
+        <div class="table-card-header">
+          <div><div class="table-card-title">Invoice Zote</div></div>
+          <div class="table-actions">
+            <div class="search-box"><i class="ti ti-search"></i><input id="searchInv" placeholder="Tafuta..."></div>
+            <button class="btn btn-gold" onclick="switchTab()"><i class="ti ti-plus"></i> Invoice Mpya</button>
+          </div>
+        </div>
+        <table><thead><tr><th>Namba</th><th>Mteja</th><th>Tarehe</th><th>Hali</th><th class="text-right">Jumla</th><th></th></tr></thead>
+        <tbody id="invBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- UNDA -->
+    <div class="tab-content" id="tab-unda">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div class="table-card" style="padding:20px;border:1px solid var(--border)">
+            <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px">Taarifa za Invoice</div>
+            <div class="form-group"><label class="form-label">Jina la Mteja *</label><input class="form-control" id="fMteja" placeholder="Jina la mteja" oninput="updatePreview()"></div>
+            <div class="form-group"><label class="form-label">Simu ya Mteja</label><input class="form-control" id="fMtejaSimu" placeholder="+255 7XX XXX XXX" oninput="updatePreview()"></div>
+            <div class="form-group"><label class="form-label">Tarehe ya Invoice</label><input type="date" class="form-control" id="fTarehe" oninput="updatePreview()"></div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy);margin:16px 0 12px">Bidhaa / Huduma</div>
+            <div id="invItems"></div>
+            <button class="btn btn-outline btn-sm" onclick="addInvItem()" style="width:100%;margin-bottom:16px"><i class="ti ti-plus"></i> Ongeza Bidhaa</button>
+            <div class="form-group"><label class="form-label">Maelezo ya Ziada</label><textarea class="form-control" id="fMaelezo" rows="2" placeholder="Asante kwa biashara!" oninput="updatePreview()"></textarea></div>
+            <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveInvoice()"><i class="ti ti-check"></i> Hifadhi Invoice</button>
+          </div>
+        </div>
+        <div>
+          <div class="inv-preview" id="invPreview">
+            <div class="inv-header">
+              <div><div class="inv-logo">TX <span>TRAVEX</span> Finance</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="prevBiashara">Biashara Yako</div></div>
+              <div style="text-align:right"><div class="inv-title">INVOICE</div><div class="inv-namba" id="prevNamba">INV-001</div></div>
+            </div>
+            <div class="inv-parties">
+              <div><div class="inv-party-label">Kutoka</div><div class="inv-party-name" id="prevFrom">—</div><div class="inv-party-sub" id="prevFromSub">—</div></div>
+              <div><div class="inv-party-label">Kwenda</div><div class="inv-party-name" id="prevTo">Mteja</div><div class="inv-party-sub" id="prevToSub">—</div></div>
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Tarehe: <strong id="prevDate">—</strong></div>
+            <table class="inv-table">
+              <thead><tr><th>Bidhaa/Huduma</th><th style="text-align:center">Idadi</th><th style="text-align:right">Bei</th><th style="text-align:right">Jumla</th></tr></thead>
+              <tbody id="prevItems"></tbody>
+            </table>
+            <div class="inv-total"><div class="inv-total-label">JUMLA YA KULIPA</div><div class="inv-total-amount" id="prevTotal">TZS 0</div></div>
+            <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--text-muted)" id="prevNote">Asante kwa biashara!</div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="printInvoice()"><i class="ti ti-printer"></i> Chapisha</button>
+            <button class="btn btn-gold" style="flex:1;justify-content:center" onclick="waInvoice()"><i class="ti ti-brand-whatsapp"></i> WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+requireAuth();
+loadSidebar('invoice');
+initTabs();
+
+let invItems = [{bidhaa:'',idadi:1,bei:0}];
+document.getElementById('fTarehe').value = today();
+
+const user = Session.getUser();
+document.getElementById('prevFrom').textContent = user?.biashara || 'Biashara Yangu';
+document.getElementById('prevFromSub').textContent = user?.mkoa || '';
+
+function switchTab() {
+  document.querySelectorAll('.tab-btn')[1].click();
+}
+
+function getNextNamba() {
+  const invs = DB.get('invoice');
+  const n = invs.length + 1;
+  return 'INV-' + String(n).padStart(3,'0');
+}
+
+function loadStats() {
+  const invs = DB.get('invoice');
+  const total = invs.reduce((a,i)=>a+i.jumla,0);
+  const paid = invs.filter(i=>i.hali==='imelipwa').reduce((a,i)=>a+i.jumla,0);
+  const pending = invs.filter(i=>i.hali==='inasubiri').length;
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Invoice Zote</div><div class="stat-value">${invs.length}</div><div class="stat-sub">Jumla ya rekodi</div></div>
+    <div class="stat-card"><div class="stat-label">Zilizolipwa</div><div class="stat-value">${formatTZS(paid)}</div><div class="stat-sub">${invs.filter(i=>i.hali==='imelipwa').length} invoice</div></div>
+    <div class="stat-card"><div class="stat-label">Zinazosubiri</div><div class="stat-value" style="color:var(--warning)">${pending}</div><div class="stat-sub">Bado hazijalipwa</div></div>
+    <div class="stat-card"><div class="stat-label">Jumla Yote</div><div class="stat-value" style="font-size:16px">${formatTZS(total)}</div><div class="stat-sub">Thamani zote</div></div>
+  `;
+}
+loadStats();
+
+function loadInvoices() {
+  const invs = DB.get('invoice');
+  document.getElementById('invBody').innerHTML = invs.length ? invs.reverse().map(i=>`<tr>
+    <td class="text-navy font-bold">${i.namba}</td>
+    <td>${i.mteja}</td>
+    <td class="text-muted">${formatDate(i.tarehe)}</td>
+    <td><span class="badge ${i.hali==='imelipwa'?'badge-success':i.hali==='inasubiri'?'badge-warning':'badge-gray'}">${i.hali==='imelipwa'?'Imelipwa':i.hali==='inasubiri'?'Inasubiri':'Rasimu'}</span></td>
+    <td class="text-right font-bold text-gold">${formatTZS(i.jumla)}</td>
+    <td>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-gold btn-sm" onclick="markPaid(${i.id})"><i class="ti ti-check"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="deleteInv(${i.id})"><i class="ti ti-trash"></i></button>
+      </div>
+    </td>
+  </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">Hakuna invoice bado</td></tr>';
+}
+loadInvoices();
+searchTable('searchInv','invBody');
+
+function renderInvItems() {
+  document.getElementById('invItems').innerHTML = invItems.map((item,i)=>`
+    <div style="display:grid;grid-template-columns:1fr 60px 90px 30px;gap:8px;margin-bottom:8px;align-items:center">
+      <input class="form-control" value="${item.bidhaa}" placeholder="Bidhaa/Huduma" oninput="invItems[${i}].bidhaa=this.value;updatePreview()">
+      <input class="form-control" type="number" value="${item.idadi}" min="1" oninput="invItems[${i}].idadi=parseFloat(this.value)||1;updatePreview()">
+      <input class="form-control" type="number" value="${item.bei}" oninput="invItems[${i}].bei=parseFloat(this.value)||0;updatePreview()">
+      <button class="remove-btn" style="background:none;border:none;cursor:pointer;color:var(--danger)" onclick="invItems.splice(${i},1);renderInvItems();updatePreview()"><i class="ti ti-trash"></i></button>
+    </div>`).join('');
+  updatePreview();
+}
+
+function addInvItem() { invItems.push({bidhaa:'',idadi:1,bei:0}); renderInvItems(); }
+
+function updatePreview() {
+  const namba = getNextNamba();
+  document.getElementById('prevNamba').textContent = namba;
+  document.getElementById('prevTo').textContent = document.getElementById('fMteja').value || 'Mteja';
+  document.getElementById('prevToSub').textContent = document.getElementById('fMtejaSimu').value || '';
+  document.getElementById('prevDate').textContent = document.getElementById('fTarehe').value ? formatDate(document.getElementById('fTarehe').value) : '—';
+  document.getElementById('prevNote').textContent = document.getElementById('fMaelezo').value || 'Asante kwa biashara!';
+  const total = invItems.reduce((a,i)=>a+(i.idadi*i.bei),0);
+  document.getElementById('prevTotal').textContent = formatTZS(total);
+  document.getElementById('prevItems').innerHTML = invItems.map(i=>`<tr>
+    <td>${i.bidhaa||'—'}</td><td style="text-align:center">${i.idadi}</td>
+    <td style="text-align:right">${formatTZS(i.bei)}</td><td style="text-align:right;font-weight:700">${formatTZS(i.idadi*i.bei)}</td>
+  </tr>`).join('');
+}
+
+function saveInvoice() {
+  const mteja = document.getElementById('fMteja').value.trim();
+  if (!mteja) { showToast('Ingiza jina la mteja','error'); return; }
+  const bidhaa = invItems.filter(i=>i.bidhaa);
+  if (!bidhaa.length) { showToast('Ongeza bidhaa angalau moja','error'); return; }
+  const jumla = bidhaa.reduce((a,i)=>a+(i.idadi*i.bei),0);
+  DB.add('invoice',{namba:getNextNamba(),mteja,simu:document.getElementById('fMtejaSimu').value,bidhaa,jumla,hali:'inasubiri',tarehe:document.getElementById('fTarehe').value});
+  showToast('Invoice imehifadhiwa! ✅');
+  invItems=[{bidhaa:'',idadi:1,bei:0}];
+  document.getElementById('fMteja').value='';
+  document.getElementById('fMtejaSimu').value='';
+  renderInvItems();
+  loadInvoices();
+  loadStats();
+}
+
+function markPaid(id) { DB.update('invoice',id,{hali:'imelipwa'}); showToast('Invoice imelipwa! ✅'); loadInvoices(); loadStats(); }
+function deleteInv(id) { if(!confirm('Futa invoice?'))return; DB.delete('invoice',id); showToast('Imefutwa!'); loadInvoices(); loadStats(); }
+
+function printInvoice() { window.print(); }
+
+function waInvoice() {
+  const mteja = document.getElementById('fMteja').value;
+  const simu = document.getElementById('fMtejaSimu').value.replace(/\D/g,'');
+  const total = invItems.reduce((a,i)=>a+(i.idadi*i.bei),0);
+  const msg = `*INVOICE - ${user?.biashara||'Biashara'}*\nMteja: ${mteja}\nJumla: ${formatTZS(total)}\nTarehe: ${formatDate(today())}\n\nAsante kwa biashara! 🙏\n\n_TRAVEX Finance_`;
+  const url = simu ? `https://wa.me/255${simu.slice(-9)}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  window.open(url,'_blank');
+}
+
+renderInvItems();
+document.getElementById('prevNamba').textContent = getNextNamba();
+</script>
+</body>
+</html>

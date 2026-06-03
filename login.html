@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingia — TRAVEX Finance</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+body{display:flex;min-height:100vh;}
+.left-panel{width:420px;background:var(--navy);display:flex;flex-direction:column;padding:48px 40px;flex-shrink:0;}
+.left-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--gold);margin-bottom:48px;cursor:pointer;}
+.left-logo span{color:rgba(255,255,255,0.6);font-weight:400;font-size:13px;display:block;margin-top:3px;}
+.left-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;color:var(--white);line-height:1.3;margin-bottom:16px;}
+.left-title em{color:var(--gold);font-style:normal;}
+.left-sub{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:40px;}
+.testimonial{background:rgba(255,255,255,0.05);border-radius:12px;padding:20px;border-left:3px solid var(--gold);}
+.test-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;font-style:italic;margin-bottom:10px;}
+.test-author{font-size:12px;color:var(--gold);font-weight:600;}
+.left-footer{margin-top:auto;font-size:12px;color:rgba(255,255,255,0.25);}
+.right-panel{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:var(--bg);}
+.login-card{background:var(--white);border-radius:16px;padding:40px;max-width:420px;width:100%;box-shadow:0 2px 20px rgba(0,0,0,0.06);}
+.login-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:6px;}
+.login-sub{font-size:13px;color:var(--text-secondary);margin-bottom:28px;}
+.input-wrap{position:relative;}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:16px;}
+.forgot{font-size:12px;color:var(--navy);font-weight:600;text-align:right;display:block;margin-bottom:20px;margin-top:-8px;}
+.divider{display:flex;align-items:center;gap:12px;margin:16px 0;}
+.divider span{font-size:12px;color:var(--text-muted);}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.signup-link{text-align:center;font-size:13px;color:var(--text-secondary);}
+.signup-link a{color:var(--navy);font-weight:700;}
+.alert-box{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px;}
+.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger);}
+.alert-error.show,.alert-success.show{display:flex;}
+.loading-btn{opacity:0.7;pointer-events:none;}
+</style>
+</head>
+<body>
+<div class="left-panel">
+  <div class="left-logo" onclick="location.href='index.html'">TX TRAVEX Finance<span>Smart Finance for Every Business</span></div>
+  <h2 class="left-title">Karibu Tena<br>kwenye<br><em>TRAVEX Finance</em></h2>
+  <p class="left-sub">Simamia fedha za biashara yako, fuatilia mauzo na jua faida yako kila siku — yote mahali pamoja.</p>
+  <div class="testimonial">
+    <div class="test-text">"Tangu nilianza kutumia TRAVEX Finance, sasa najua faida yangu kila siku. Simu moja tu — kila kitu kipo!"</div>
+    <div class="test-author">— Amina Hassan, Mwenye Duka, Arusha</div>
+  </div>
+  <div class="left-footer">© 2026 TRAVEX Digital Group</div>
+</div>
+<div class="right-panel">
+  <div class="login-card">
+    <div class="login-title">Ingia Akaunti Yako</div>
+    <div class="login-sub">Ingiza taarifa zako ili uendelee</div>
+    <div class="alert-box alert-error" id="alertError"><i class="ti ti-alert-circle"></i><span id="alertMsg">Hitilafu imetokea</span></div>
+    <div class="form-group">
+      <label class="form-label">Barua Pepe (Email)</label>
+      <input type="email" class="form-control" id="fEmail" placeholder="mfano@email.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Neno la Siri</label>
+      <div class="input-wrap">
+        <input type="password" class="form-control" id="fPassword" placeholder="Neno la siri" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="eye-btn" onclick="togglePass()" type="button"><i class="ti ti-eye" id="eyeIcon"></i></button>
+      </div>
+    </div>
+    <a href="#" class="forgot">Umesahau neno la siri?</a>
+    <button class="btn btn-navy" style="width:100%;justify-content:center;padding:13px;font-size:15px;margin-bottom:16px" id="loginBtn" onclick="doLogin()">
+      <i class="ti ti-login"></i> Ingia
+    </button>
+    <div class="divider"><span>au</span></div>
+    <div class="signup-link">Huna akaunti? <a href="signup.html">Jiandikishe hapa — Bure siku 7</a></div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="shared.css" type="text/css"></script>
+<script src="supabase.js"></script>
+<script>
+(async () => { if (await Auth.isLoggedIn()) window.location.href = 'dashboard.html'; })();
+
+function togglePass() {
+  const inp = document.getElementById('fPassword');
+  const icon = document.getElementById('eyeIcon');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  icon.className = inp.type === 'password' ? 'ti ti-eye' : 'ti ti-eye-off';
+}
+
+async function doLogin() {
+  const email = document.getElementById('fEmail').value.trim();
+  const pass = document.getElementById('fPassword').value;
+  if (!email || !pass) { showError('Jaza email na neno la siri'); return; }
+
+  const btn = document.getElementById('loginBtn');
+  btn.innerHTML = '<i class="ti ti-loader-2"></i> Ingia...';
+  btn.classList.add('loading-btn');
+
+  const { error } = await Auth.login(email, pass);
+  if (error) {
+    btn.innerHTML = '<i class="ti ti-login"></i> Ingia';
+    btn.classList.remove('loading-btn');
+    showError(error.message.includes('Invalid') ? 'Email au neno la siri si sahihi' : error.message);
+    return;
+  }
+  window.location.href = 'dashboard.html';
+}
+
+function showError(msg) {
+  const el = document.getElementById('alertError');
+  document.getElementById('alertMsg').textContent = msg;
+  el.classList.add('show');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mipangilio — TRAVEX Finance</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+.settings-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:16px;}
+.settings-card-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.settings-card-sub{font-size:12px;color:var(--text-muted);margin-bottom:20px;}
+.plan-info{background:var(--navy);border-radius:var(--radius);padding:20px;color:var(--white);display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.plan-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--gold);}
+.plan-price{font-size:13px;color:rgba(255,255,255,0.6);margin-top:2px;}
+.danger-zone{background:#fff5f5;border:1px solid #fecaca;border-radius:var(--radius);padding:20px;margin-top:20px;}
+.danger-title{font-size:14px;font-weight:700;color:var(--danger);margin-bottom:8px;}
+</style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div><div class="header-title">Mipangilio</div><div class="header-sub">Simamia taarifa za biashara yako na akaunti</div></div>
+  </div>
+  <div class="main-content" style="max-width:700px">
+
+    <!-- PLAN INFO -->
+    <div class="plan-info">
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px">Mpango Wako wa Sasa</div>
+        <div class="plan-name" id="planName">Retailer</div>
+        <div class="plan-price" id="planPrice">TZS 10,000 / mwezi</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px">Siku za Bure Zimebaki</div>
+        <div style="font-family:Plus Jakarta Sans;font-size:28px;font-weight:800;color:var(--gold)" id="trialLeft">7</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4)">Kisha lipa ili uendelee</div>
+      </div>
+    </div>
+
+    <!-- TAARIFA ZA BIASHARA -->
+    <div class="settings-card">
+      <div class="settings-card-title"><i class="ti ti-building-store"></i> Taarifa za Biashara</div>
+      <div class="settings-card-sub">Taarifa hizi zitatumika kwenye invoice na ripoti zako</div>
+      <div class="grid-2">
+        <div class="form-group"><label class="form-label">Jina la Biashara</label><input class="form-control" id="sBiashara"></div>
+        <div class="form-group"><label class="form-label">Aina ya Biashara</label><input class="form-control" id="sAina"></div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group"><label class="form-label">Mkoa / Wilaya</label><input class="form-control" id="sMkoa"></div>
+        <div class="form-group"><label class="form-label">Namba ya Simu ya Biashara</label><input class="form-control" id="sSimu"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Namba ya TIN (Tax)</label><input class="form-control" id="sTin" placeholder="Kama una TIN namba"></div>
+      <button class="btn btn-gold" onclick="saveBiashara()"><i class="ti ti-check"></i> Hifadhi Mabadiliko</button>
+    </div>
+
+    <!-- TAARIFA ZA MTUMIAJI -->
+    <div class="settings-card">
+      <div class="settings-card-title"><i class="ti ti-user"></i> Taarifa Zangu</div>
+      <div class="settings-card-sub">Taarifa za akaunti yako ya TRAVEX Finance</div>
+      <div class="grid-2">
+        <div class="form-group"><label class="form-label">Jina Langu Kamili</label><input class="form-control" id="sJina"></div>
+        <div class="form-group"><label class="form-label">Namba ya Simu</label><input class="form-control" id="sUserSimu"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Barua Pepe (Email)</label><input class="form-control" id="sEmail" type="email"></div>
+      <button class="btn btn-navy" onclick="saveUser()"><i class="ti ti-check"></i> Hifadhi Taarifa</button>
+    </div>
+
+    <!-- NENO LA SIRI -->
+    <div class="settings-card">
+      <div class="settings-card-title"><i class="ti ti-lock"></i> Badilisha Neno la Siri</div>
+      <div class="settings-card-sub">Badilisha neno la siri la akaunti yako</div>
+      <div class="form-group"><label class="form-label">Neno la Siri Jipya</label><input type="password" class="form-control" id="sNewPass" placeholder="Angalau herufi 6"></div>
+      <div class="form-group"><label class="form-label">Thibitisha Neno Jipya</label><input type="password" class="form-control" id="sConfPass" placeholder="Rudia neno la siri jipya"></div>
+      <button class="btn btn-outline" onclick="changePass()"><i class="ti ti-lock"></i> Badilisha</button>
+    </div>
+
+    <!-- DANGER ZONE -->
+    <div class="danger-zone">
+      <div class="danger-title"><i class="ti ti-alert-triangle"></i> Hatua za Tahadhari</div>
+      <div style="font-size:13px;color:var(--text);margin-bottom:16px">Hatua hizi haziwezi kurejeshwa. Uwe makini.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-danger btn-sm" onclick="clearData()"><i class="ti ti-trash"></i> Futa Data Yote</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteAccount()"><i class="ti ti-user-x"></i> Futa Akaunti</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+requireAuth();
+loadSidebar('mipangilio');
+
+const user = Session.getUser();
+
+// Load current data
+document.getElementById('sBiashara').value = user?.biashara||'';
+document.getElementById('sAina').value = user?.aina||'';
+document.getElementById('sMkoa').value = user?.mkoa||'';
+document.getElementById('sSimu').value = user?.simu_biashara||user?.simu||'';
+document.getElementById('sTin').value = user?.tin||'';
+document.getElementById('sJina').value = user?.jina||'';
+document.getElementById('sUserSimu').value = user?.simu||'';
+document.getElementById('sEmail').value = user?.email||'';
+
+// Plan info
+const plan = user?.plan||'retailer';
+document.getElementById('planName').textContent = plan==='wholesaler'?'Wholesaler':'Retailer';
+document.getElementById('planPrice').textContent = plan==='wholesaler'?'TZS 25,000 / mwezi':'TZS 10,000 / mwezi';
+const elapsed = Math.floor((new Date()-new Date(user?.trialStart||new Date()))/(1000*60*60*24));
+document.getElementById('trialLeft').textContent = Math.max(0,(user?.trialDays||7)-elapsed);
+
+function saveBiashara() {
+  const updated = {...user,
+    biashara: document.getElementById('sBiashara').value.trim(),
+    aina: document.getElementById('sAina').value.trim(),
+    mkoa: document.getElementById('sMkoa').value.trim(),
+    simu_biashara: document.getElementById('sSimu').value.trim(),
+    tin: document.getElementById('sTin').value.trim()
+  };
+  Session.set('tx_user',updated);
+  showToast('Taarifa za biashara zimehifadhiwa! ✅');
+  loadSidebar('mipangilio');
+}
+
+function saveUser() {
+  const updated = {...user,
+    jina: document.getElementById('sJina').value.trim(),
+    simu: document.getElementById('sUserSimu').value.trim(),
+    email: document.getElementById('sEmail').value.trim()
+  };
+  Session.set('tx_user',updated);
+  showToast('Taarifa zako zimehifadhiwa! ✅');
+  loadSidebar('mipangilio');
+}
+
+function changePass() {
+  const np = document.getElementById('sNewPass').value;
+  const cp = document.getElementById('sConfPass').value;
+  if(np.length<6){showToast('Neno la siri lazima liwe na herufi 6+','error');return;}
+  if(np!==cp){showToast('Maneno ya siri hayafanani','error');return;}
+  showToast('Neno la siri limebadilishwa! ✅');
+  document.getElementById('sNewPass').value='';
+  document.getElementById('sConfPass').value='';
+}
+
+function clearData() {
+  if(!confirm('Una uhakika? Data YOTE itafutwa — mauzo, stock, madeni, invoice, wafanyakazi. Haitaweza kurejeshwa!')) return;
+  ['mauzo','stock','madeni','invoice','wafanyakazi'].forEach(k=>DB.set(k,[]));
+  showToast('Data yote imefutwa!');
+}
+
+function deleteAccount() {
+  if(!confirm('Una uhakika wa kufuta akaunti yako? Hatua hii haiwezi kurejeshwa!')) return;
+  Session.clear();
+  window.location.href='index.html';
+}
+</script>
+</body>
+</html>

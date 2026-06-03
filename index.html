@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRAVEX Finance — Smart Finance for Every Business</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#1a2332;--navy-dark:#0f1823;--navy-light:#253347;--gold:#FFD700;--gold-dark:#e6c200;--white:#ffffff;--bg:#f5f6fa;--border:#e5e7eb;--text:#6b7280;--radius:10px;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--navy);}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:70px;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--navy);}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:32px;}
+.nav-links a{font-size:14px;color:var(--text);font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--navy);}
+.nav-btns{display:flex;align-items:center;gap:12px;}
+.btn-login{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:600;color:var(--navy);border:1.5px solid var(--navy);background:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.btn-login:hover{background:var(--navy);color:var(--white);}
+.btn-signup{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:600;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.btn-signup:hover{background:var(--gold-dark);}
+
+/* HERO */
+.hero{padding:100px 60px 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1200px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:#fff8dc;color:#92400e;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:20px;border:1px solid #fcd34d;}
+.hero-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:52px;font-weight:800;line-height:1.15;color:var(--navy);margin-bottom:20px;}
+.hero-title span{color:var(--gold);}
+.hero-sub{font-size:16px;color:var(--text);line-height:1.7;margin-bottom:32px;max-width:480px;}
+.hero-btns{display:flex;gap:14px;align-items:center;}
+.btn-hero-primary{padding:14px 28px;background:var(--navy);color:var(--white);border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
+.btn-hero-primary:hover{background:var(--navy-light);}
+.btn-hero-secondary{padding:14px 28px;background:var(--gold);color:var(--navy);border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
+.btn-hero-secondary:hover{background:var(--gold-dark);}
+.hero-note{font-size:12px;color:var(--text);margin-top:14px;display:flex;align-items:center;gap:6px;}
+
+/* HERO VISUAL */
+.hero-visual{position:relative;}
+.dashboard-preview{background:var(--navy);border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(26,35,50,0.3);}
+.dp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.dp-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;color:var(--gold);}
+.dp-user{width:28px;height:28px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--navy);}
+.dp-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.dp-card{background:rgba(255,255,255,0.06);border-radius:8px;padding:12px;}
+.dp-card-label{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;}
+.dp-card-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--gold);}
+.dp-card-sub{font-size:9px;color:rgba(255,255,255,0.3);margin-top:2px;}
+.dp-chart{background:rgba(255,255,255,0.04);border-radius:8px;padding:12px;height:80px;display:flex;align-items:flex-end;gap:4px;}
+.dp-bar{background:rgba(255,215,0,0.3);border-radius:3px 3px 0 0;flex:1;transition:all 0.3s;}
+.dp-bar.active{background:var(--gold);}
+
+/* STATS */
+.stats-bar{background:var(--navy);padding:40px 60px;}
+.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center;}
+.stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:800;color:var(--gold);}
+.stat-lbl{font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;}
+
+/* FEATURES */
+.features{padding:80px 60px;max-width:1200px;margin:0 auto;}
+.section-badge{display:inline-block;background:#f0fdf4;color:#15803d;font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:14px;border:1px solid #bbf7d0;}
+.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:800;color:var(--navy);margin-bottom:12px;}
+.section-sub{font-size:15px;color:var(--text);max-width:520px;line-height:1.7;}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
+.feature-card{background:var(--white);border-radius:12px;padding:28px;border:1px solid var(--border);transition:all 0.2s;}
+.feature-card:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(255,215,0,0.15);transform:translateY(-2px);}
+.feature-icon{width:48px;height:48px;background:#fff8dc;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.feature-icon i{font-size:22px;color:var(--navy);}
+.feature-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.feature-desc{font-size:13px;color:var(--text);line-height:1.6;}
+
+/* PRICING */
+.pricing{padding:80px 60px;background:var(--bg);}
+.pricing-inner{max-width:900px;margin:0 auto;text-align:center;}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px;}
+.price-card{background:var(--white);border-radius:16px;padding:36px;border:2px solid var(--border);text-align:left;transition:all 0.2s;}
+.price-card.featured{border-color:var(--gold);position:relative;}
+.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;}
+.price-plan{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.price-desc{font-size:13px;color:var(--text);margin-bottom:20px;}
+.price-amount{font-family:'Plus Jakarta Sans',sans-serif;font-size:40px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.price-amount span{font-size:14px;color:var(--text);font-weight:400;}
+.price-trial{font-size:12px;color:var(--gold-dark);font-weight:600;margin-bottom:24px;}
+.price-features{list-style:none;margin-bottom:28px;}
+.price-features li{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);padding:6px 0;border-bottom:1px solid var(--bg);}
+.price-features li i{font-size:14px;color:var(--gold-dark);}
+.btn-price{width:100%;padding:13px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.btn-price-navy{background:var(--navy);color:var(--white);}
+.btn-price-gold{background:var(--gold);color:var(--navy);}
+
+/* FOOTER */
+footer{background:var(--navy);padding:40px 60px;color:rgba(255,255,255,0.6);}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.footer-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--gold);}
+.footer-copy{font-size:13px;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">TX <span>TRAVEX</span> Finance</div>
+  <div class="nav-links">
+    <a href="#huduma">Huduma</a>
+    <a href="#bei">Bei</a>
+    <a href="#kuhusu">Kuhusu</a>
+  </div>
+  <div class="nav-btns">
+    <button class="btn-login" onclick="location.href='login.html'">Ingia</button>
+    <button class="btn-signup" onclick="location.href='signup.html'">Anza Sasa</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section>
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><i class="ti ti-shield-check"></i> Imani. Usalama. Biashara.</div>
+    <h1 class="hero-title">Simamia Fedha Za<br>Biashara Yako<br><span>Kwa Urahisi</span></h1>
+    <p class="hero-sub">TRAVEX Finance ni mfumo wa kisasa wa kusimamia fedha za biashara yako. Rekodi mauzo, simamia stock, fuatilia madeni — yote mahali pamoja.</p>
+    <div class="hero-btns">
+      <button class="btn-hero-secondary" onclick="location.href='signup.html'">
+        <i class="ti ti-rocket"></i> Anza Bure — Siku 7
+      </button>
+      <button class="btn-hero-primary" onclick="location.href='login.html'">
+        <i class="ti ti-login"></i> Ingia Akaunti
+      </button>
+    </div>
+    <p class="hero-note"><i class="ti ti-check"></i> Hakuna kadi ya benki. Siku 7 za bure. Acha wakati wowote.</p>
+  </div>
+  <div class="hero-visual">
+    <div class="dashboard-preview">
+      <div class="dp-header">
+        <div class="dp-logo">TX TRAVEX Finance</div>
+        <div class="dp-user">JM</div>
+      </div>
+      <div class="dp-cards">
+        <div class="dp-card">
+          <div class="dp-card-label">Mauzo Leo</div>
+          <div class="dp-card-val">TZS 450K</div>
+          <div class="dp-card-sub">↑ +12% jana</div>
+        </div>
+        <div class="dp-card">
+          <div class="dp-card-label">Faida Mwezi</div>
+          <div class="dp-card-val">TZS 2.1M</div>
+          <div class="dp-card-sub">↑ +8% mwezi uliopita</div>
+        </div>
+        <div class="dp-card">
+          <div class="dp-card-label">Stock Ipo</div>
+          <div class="dp-card-val">124 bidhaa</div>
+          <div class="dp-card-sub">⚠ 3 zinakwisha</div>
+        </div>
+        <div class="dp-card">
+          <div class="dp-card-label">Madeni</div>
+          <div class="dp-card-val">TZS 180K</div>
+          <div class="dp-card-sub">Watu 4 wanadai</div>
+        </div>
+      </div>
+      <div class="dp-chart">
+        <div class="dp-bar" style="height:40%"></div>
+        <div class="dp-bar" style="height:60%"></div>
+        <div class="dp-bar" style="height:45%"></div>
+        <div class="dp-bar" style="height:80%"></div>
+        <div class="dp-bar" style="height:55%"></div>
+        <div class="dp-bar active" style="height:90%"></div>
+        <div class="dp-bar" style="height:70%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div><div class="stat-num">5,000+</div><div class="stat-lbl">Wafanyabiashara</div></div>
+    <div><div class="stat-num">TZS 2B+</div><div class="stat-lbl">Mauzo Yaliyorekodi</div></div>
+    <div><div class="stat-num">99.9%</div><div class="stat-lbl">Wakati wa Kufanya Kazi</div></div>
+    <div><div class="stat-num">4.9★</div><div class="stat-lbl">Ukadiriaji wa Watumiaji</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="huduma">
+  <div class="section-badge">✦ Huduma Zetu</div>
+  <h2 class="section-title">Kila Kitu Unachohitaji<br>Kwa Biashara Yako</h2>
+  <p class="section-sub">Kutoka kuhesabu mauzo ya leo hadi ripoti ya mwaka mzima — TRAVEX Finance inakufanya uwe na udhibiti kamili.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon"><i class="ti ti-shopping-cart"></i></div>
+      <div class="feature-title">Mauzo ya Haraka</div>
+      <div class="feature-desc">Rekodi mauzo kwa sekunde chache. Andika jina la bidhaa — bei inajaza yenyewe. Muamala wa bidhaa 10 kwa dakika moja.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="ti ti-package"></i></div>
+      <div class="feature-title">Usimamizi wa Stock</div>
+      <div class="feature-desc">Jua bidhaa zilizobaki kila wakati. Tahadhari inakuja moja kwa moja unapokaribia kuisha. Hakuna tena kupoteza mauzo.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="ti ti-credit-card"></i></div>
+      <div class="feature-title">Usimamizi wa Madeni</div>
+      <div class="feature-desc">Fuatilia wanaokudai na unaodai. Tuma ukumbusho kwa WhatsApp moja kwa moja. Jibu la madeni linalokukimbia.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="ti ti-file-invoice"></i></div>
+      <div class="feature-title">Invoice za Kitaalamu</div>
+      <div class="feature-desc">Tengeneza ankara za kitaalamu kwa sekunde. Tuma kwa WhatsApp au Email moja kwa moja kwa mteja wako.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="ti ti-chart-bar"></i></div>
+      <div class="feature-title">Ripoti na Uchambuzi</div>
+      <div class="feature-desc">Ripoti za kila mwezi na mwaka mzima. Jua bidhaa zinazouza zaidi. Tengeneza PDF unayoweza mpa benki.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="ti ti-users"></i></div>
+      <div class="feature-title">Usimamizi wa Wafanyakazi</div>
+      <div class="feature-desc">Rekodi mishahara na attendance ya wafanyakazi wako. Hesabu zinafanyika zenyewe — unasimamia tu.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="bei">
+  <div class="pricing-inner">
+    <div class="section-badge">✦ Bei Zetu</div>
+    <h2 class="section-title">Bei Inayofaa Kwa Kila Biashara</h2>
+    <p class="section-sub" style="margin:0 auto;">Chagua mpango unaofaa biashara yako. Jaribu siku 7 bila malipo.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-plan">Retailer</div>
+        <div class="price-desc">Kwa maduka madogo na biashara za rejareja</div>
+        <div class="price-amount">TZS 10,000<span>/mwezi</span></div>
+        <div class="price-trial"><i class="ti ti-gift"></i> Siku 7 za bure — hakuna kadi ya benki</div>
+        <ul class="price-features">
+          <li><i class="ti ti-check"></i> Mauzo ya haraka (POS)</li>
+          <li><i class="ti ti-check"></i> Mapato na Matumizi</li>
+          <li><i class="ti ti-check"></i> Usimamizi wa Stock</li>
+          <li><i class="ti ti-check"></i> Madeni (Unaodai + Unadaiwa)</li>
+          <li><i class="ti ti-check"></i> Invoice + WhatsApp</li>
+          <li><i class="ti ti-check"></i> Ripoti ya Mwezi na Mwaka</li>
+          <li><i class="ti ti-check"></i> Wafanyakazi na Mishahara</li>
+        </ul>
+        <button class="btn-price btn-price-navy" onclick="location.href='signup.html?plan=retailer'">Anza Sasa</button>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">⭐ Maarufu Zaidi</div>
+        <div class="price-plan">Wholesaler</div>
+        <div class="price-desc">Kwa wasambazaji na biashara kubwa</div>
+        <div class="price-amount">TZS 25,000<span>/mwezi</span></div>
+        <div class="price-trial"><i class="ti ti-gift"></i> Siku 7 za bure — hakuna kadi ya benki</div>
+        <ul class="price-features">
+          <li><i class="ti ti-check"></i> Yote ya Retailer +</li>
+          <li><i class="ti ti-check"></i> Wasambazaji kamili</li>
+          <li><i class="ti ti-check"></i> Bulk orders na Discounts</li>
+          <li><i class="ti ti-check"></i> Watumiaji wengi (Multi-user)</li>
+          <li><i class="ti ti-check"></i> Uchambuzi wa kina</li>
+          <li><i class="ti ti-check"></i> Export Excel na PDF</li>
+          <li><i class="ti ti-check"></i> Ripoti za Credit</li>
+        </ul>
+        <button class="btn-price btn-price-gold" onclick="location.href='signup.html?plan=wholesaler'">Anza Sasa</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">TX TRAVEX Finance</div>
+      <div style="font-size:12px;margin-top:4px;">Smart Finance for Every Business</div>
+    </div>
+    <div class="footer-copy">© 2026 TRAVEX Digital Group. Haki zote zimehifadhiwa.</div>
+  </div>
+</footer>
+
+</body>
+</html>

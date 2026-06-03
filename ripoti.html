@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ripoti — TRAVEX Finance</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+.chart-area{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;}
+.bar-chart{display:flex;align-items:flex-end;gap:8px;height:150px;padding-top:10px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height 0.4s;}
+.bar-label{font-size:10px;color:var(--text-muted);text-align:center;}
+.bar-val{font-size:9px;color:var(--navy);font-weight:700;text-align:center;}
+.report-summary{background:var(--navy);border-radius:var(--radius);padding:20px;color:var(--white);margin-bottom:16px;}
+</style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div><div class="header-title">Ripoti</div><div class="header-sub">Uchambuzi wa biashara yako kwa kina</div></div>
+    <button class="btn btn-gold" onclick="window.print()"><i class="ti ti-printer"></i> Chapisha Ripoti</button>
+  </div>
+  <div class="main-content">
+
+    <div class="tabs tab-group">
+      <button class="tab-btn active" data-tab="tab-mwezi">Ripoti ya Mwezi</button>
+      <button class="tab-btn" data-tab="tab-mwaka">Ripoti ya Mwaka</button>
+    </div>
+
+    <!-- MWEZI -->
+    <div class="tab-content active" id="tab-mwezi">
+      <div class="filter-row" style="margin-bottom:20px">
+        <select class="form-control" id="selMwezi" style="width:auto" onchange="loadMwezi()">
+          <option value="0">Januari</option><option value="1">Februari</option><option value="2">Machi</option>
+          <option value="3">Aprili</option><option value="4">Mei</option><option value="5">Juni</option>
+          <option value="6">Julai</option><option value="7">Agosti</option><option value="8">Septemba</option>
+          <option value="9">Oktoba</option><option value="10">Novemba</option><option value="11">Desemba</option>
+        </select>
+        <select class="form-control" id="selMweziMwaka" style="width:auto" onchange="loadMwezi()">
+          <option value="2026">2026</option><option value="2025">2025</option>
+        </select>
+      </div>
+      <div class="report-summary" id="mweziSummary"></div>
+      <div class="chart-area">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px">Mapato kwa Wiki</div>
+        <div class="bar-chart" id="mweziChart"></div>
+      </div>
+      <div class="stats-grid" id="mweziStats"></div>
+      <div class="table-card">
+        <div class="table-card-header"><div class="table-card-title">Rekodi za Mwezi</div></div>
+        <table><thead><tr><th>Bidhaa</th><th>Aina</th><th>Tarehe</th><th class="text-right">Kiasi</th></tr></thead>
+        <tbody id="mweziBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- MWAKA -->
+    <div class="tab-content" id="tab-mwaka">
+      <div class="filter-row">
+        <select class="form-control" id="selMwaka" style="width:auto" onchange="loadMwaka()">
+          <option value="2026">2026</option><option value="2025">2025</option>
+        </select>
+      </div>
+      <div class="report-summary" id="mwakaSummary"></div>
+      <div class="chart-area">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px">Mapato kwa Mwezi</div>
+        <div class="bar-chart" id="mwakaChart"></div>
+      </div>
+      <div class="stats-grid" id="mwakaStats"></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+requireAuth();
+loadSidebar('ripoti');
+initTabs();
+
+const now = new Date();
+document.getElementById('selMwezi').value = now.getMonth();
+document.getElementById('selMweziMwaka').value = now.getFullYear();
+
+const MIEZI = ['Januari','Februari','Machi','Aprili','Mei','Juni','Julai','Agosti','Septemba','Oktoba','Novemba','Desemba'];
+
+function loadMwezi() {
+  const m = parseInt(document.getElementById('selMwezi').value);
+  const y = parseInt(document.getElementById('selMweziMwaka').value);
+  const all = DB.get('mauzo').filter(d => {
+    const dt = new Date(d.tarehe);
+    return dt.getMonth()===m && dt.getFullYear()===y;
+  });
+  const mapato = all.filter(d=>d.aina==='mapato').reduce((a,d)=>a+d.jumla,0);
+  const matumizi = all.filter(d=>d.aina==='matumizi').reduce((a,d)=>a+d.jumla,0);
+  const faida = mapato - matumizi;
+
+  document.getElementById('mweziSummary').innerHTML = `
+    <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:8px">${MIEZI[m]} ${y}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+      <div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Jumla Mapato</div><div style="font-family:Plus Jakarta Sans;font-size:22px;font-weight:800;color:var(--gold)">${formatTZS(mapato)}</div></div>
+      <div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Jumla Matumizi</div><div style="font-family:Plus Jakarta Sans;font-size:22px;font-weight:800;color:#ff6b6b">${formatTZS(matumizi)}</div></div>
+      <div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Faida</div><div style="font-family:Plus Jakarta Sans;font-size:22px;font-weight:800;color:${faida>=0?'#6ee7b7':'#ff6b6b'}">${formatTZS(faida)}</div></div>
+    </div>`;
+
+  // Wiki chart
+  const weeks = [0,0,0,0];
+  all.filter(d=>d.aina==='mapato').forEach(d => {
+    const day = new Date(d.tarehe).getDate();
+    const wk = Math.min(Math.floor((day-1)/7),3);
+    weeks[wk] += d.jumla;
+  });
+  const maxW = Math.max(...weeks,1);
+  document.getElementById('mweziChart').innerHTML = weeks.map((w,i)=>`
+    <div class="bar-wrap">
+      <div class="bar-val">${w>0?formatTZS(w).replace('TZS ',''):''}</div>
+      <div class="bar-fill" style="height:${Math.max((w/maxW)*130,4)}px;background:${i===3?'var(--gold)':'var(--navy)'}"></div>
+      <div class="bar-label">Wiki ${i+1}</div>
+    </div>`).join('');
+
+  document.getElementById('mweziStats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Miamala Yote</div><div class="stat-value">${all.length}</div><div class="stat-sub">Rekodi zote</div></div>
+    <div class="stat-card"><div class="stat-label">Wastani wa Siku</div><div class="stat-value" style="font-size:16px">${formatTZS(Math.round(mapato/30))}</div><div class="stat-sub">Mapato/siku</div></div>
+    <div class="stat-card"><div class="stat-label">Asilimia ya Faida</div><div class="stat-value">${mapato>0?Math.round((faida/mapato)*100):0}%</div><div class="stat-sub">Ya mapato yote</div></div>
+  `;
+
+  const emptyRow = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">Hakuna rekodi mwezi huu</td></tr>';
+  document.getElementById('mweziBody').innerHTML = all.length ? all.reverse().map(d=>`<tr>
+    <td class="text-navy">${d.bidhaa}</td>
+    <td><span class="badge ${d.aina==='mapato'?'badge-success':'badge-danger'}">${d.aina==='mapato'?'Mapato':'Matumizi'}</span></td>
+    <td class="text-muted">${formatDate(d.tarehe)}</td>
+    <td class="text-right font-bold">${formatTZS(d.jumla)}</td>
+  </tr>`).join('') : emptyRow;
+}
+loadMwezi();
+
+function loadMwaka() {
+  const y = parseInt(document.getElementById('selMwaka').value);
+  const all = DB.get('mauzo').filter(d => new Date(d.tarehe).getFullYear()===y);
+  const mapato_total = all.filter(d=>d.aina==='mapato').reduce((a,d)=>a+d.jumla,0);
+  const matumizi_total = all.filter(d=>d.aina==='matumizi').reduce((a,d)=>a+d.jumla,0);
+
+  document.getElementById('mwakaSummary').innerHTML = `
+    <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:8px">Mwaka ${y}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+      <div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Jumla Mapato</div><div style="font-family:Plus Jakarta Sans;font-size:22px;font-weight:800;color:var(--gold)">${formatTZS(mapato_total)}</div></div>
+      <div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Jumla Matumizi</div><div style="font-family:Plus Jakarta Sans;font-size:22px;font-weight:800;color:#ff6b6b">${formatTZS(matumizi_total)}</div></div>
+      <div><div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Faida ya Mwaka</div><div style="font-family:Plus Jakarta Sans;font-size:22px;font-weight:800;color:#6ee7b7">${formatTZS(mapato_total-matumizi_total)}</div></div>
+    </div>`;
+
+  // Monthly breakdown
+  const monthly = MIEZI.map((_,m) => {
+    const mData = all.filter(d => new Date(d.tarehe).getMonth()===m && d.aina==='mapato');
+    return { label: MIEZI[m].substring(0,3), val: mData.reduce((a,d)=>a+d.jumla,0) };
+  });
+  const maxM = Math.max(...monthly.map(d=>d.val),1);
+  document.getElementById('mwakaChart').innerHTML = monthly.map((d,i)=>`
+    <div class="bar-wrap">
+      <div class="bar-fill" style="height:${Math.max((d.val/maxM)*130,4)}px;background:${i===now.getMonth()?'var(--gold)':'var(--navy)'}"></div>
+      <div class="bar-label">${d.label}</div>
+    </div>`).join('');
+
+  const bestMonth = monthly.reduce((a,d)=>d.val>a.val?d:a,monthly[0]);
+  document.getElementById('mwakaStats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Miamala Yote</div><div class="stat-value">${all.length}</div><div class="stat-sub">Mwaka mzima</div></div>
+    <div class="stat-card"><div class="stat-label">Mwezi Bora</div><div class="stat-value">${bestMonth.label}</div><div class="stat-sub">${formatTZS(bestMonth.val)}</div></div>
+    <div class="stat-card"><div class="stat-label">Wastani/Mwezi</div><div class="stat-value" style="font-size:16px">${formatTZS(Math.round(mapato_total/12))}</div><div class="stat-sub">Mapato ya wastani</div></div>
+    <div class="stat-card"><div class="stat-label">Asilimia Faida</div><div class="stat-value">${mapato_total>0?Math.round(((mapato_total-matumizi_total)/mapato_total)*100):0}%</div><div class="stat-sub">Ya mapato yote</div></div>
+  `;
+}
+loadMwaka();
+</script>
+</body>
+</html>

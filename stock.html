@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock — TRAVEX Finance</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+.progress-bar{height:8px;background:var(--border);border-radius:20px;overflow:hidden;min-width:80px;}
+.progress-fill{height:100%;border-radius:20px;transition:width 0.3s;}
+</style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div><div class="header-title">Stock</div><div class="header-sub">Simamia bidhaa na vifaa vya biashara yako</div></div>
+  </div>
+  <div class="main-content">
+    <div class="stats-grid" id="statsGrid"></div>
+    <div id="alertBox"></div>
+    <div class="table-card">
+      <div class="table-card-header">
+        <div><div class="table-card-title">Orodha ya Bidhaa</div></div>
+        <div class="table-actions">
+          <div class="search-box"><i class="ti ti-search"></i><input id="searchInput" placeholder="Tafuta bidhaa..."></div>
+          <button class="btn btn-gold" onclick="openModal('modalBidhaa')"><i class="ti ti-plus"></i> Ongeza Bidhaa</button>
+        </div>
+      </div>
+      <table><thead><tr>
+        <th>Bidhaa</th><th>Kategoria</th><th>Kiwango cha Stock</th><th>Hali</th><th>Bei ya Kuuza</th><th>Thamani</th><th></th>
+      </tr></thead>
+      <tbody id="stockBody"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalBidhaa">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Ongeza Bidhaa Mpya</div>
+      <button class="modal-close" onclick="closeModal('modalBidhaa');resetForm()"><i class="ti ti-x"></i></button>
+    </div>
+    <input type="hidden" id="editId">
+    <div class="form-group"><label class="form-label">Jina la Bidhaa *</label><input class="form-control" id="fJina" placeholder="Mfano: Unga 2kg"></div>
+    <div class="grid-2">
+      <div class="form-group"><label class="form-label">Kategoria</label>
+        <select class="form-control" id="fKat"><option>Chakula</option><option>Vinywaji</option><option>Usafi</option><option>Mavazi</option><option>Elektroniki</option><option>Nyingine</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Idadi ya Sasa *</label><input type="number" class="form-control" id="fIdadi" placeholder="0"></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label class="form-label">Bei ya Kununua (TZS)</label><input type="number" class="form-control" id="fBeiKununua" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Bei ya Kuuza (TZS) *</label><input type="number" class="form-control" id="fBeiKuuza" placeholder="0"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Kiwango cha Chini cha Tahadhari</label><input type="number" class="form-control" id="fKiwango" placeholder="Mfano: 10"></div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveBidhaa()"><i class="ti ti-check"></i> Hifadhi</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+requireAuth();
+loadSidebar('stock');
+
+function loadStock() {
+  const stock = DB.get('stock');
+  const total = stock.reduce((a,s)=>a+s.idadi,0);
+  const thamani = stock.reduce((a,s)=>a+(s.idadi*s.bei_kuuza),0);
+  const low = stock.filter(s=>s.idadi>0&&s.idadi<=s.kiwango_chini).length;
+  const nje = stock.filter(s=>s.idadi===0).length;
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Bidhaa Zote</div><div class="stat-value">${stock.length}</div><div class="stat-sub">${total} vitu jumla</div></div>
+    <div class="stat-card"><div class="stat-label">Thamani ya Stock</div><div class="stat-value" style="font-size:16px">${formatTZS(thamani)}</div><div class="stat-sub">Bei ya kuuza</div></div>
+    <div class="stat-card"><div class="stat-label">Inakwisha</div><div class="stat-value" style="color:${low>0?'var(--warning)':'var(--gold)'}">${low}</div><div class="stat-sub">Bidhaa chini ya kiwango</div></div>
+    <div class="stat-card"><div class="stat-label">Imeisha Kabisa</div><div class="stat-value" style="color:${nje>0?'var(--danger)':'var(--gold)'}">${nje}</div><div class="stat-sub">Zinahitaji kujazwa</div></div>
+  `;
+
+  if (low>0||nje>0) {
+    document.getElementById('alertBox').innerHTML = `<div class="alert alert-warning" style="margin-bottom:16px"><i class="ti ti-alert-triangle" style="font-size:18px"></i> <strong>${nje} bidhaa zimeisha</strong> na <strong>${low} bidhaa zinakwisha</strong> — tafadhali jaza hivi karibuni</div>`;
+  }
+
+  document.getElementById('stockBody').innerHTML = stock.length ? stock.map(s => {
+    const pct = Math.min((s.idadi/(s.kiwango_chini*3||30))*100,100);
+    const hali = s.idadi===0?['badge-danger','Imeisha']:s.idadi<=s.kiwango_chini?['badge-warning','Inakwisha']:['badge-success','Inatosha'];
+    return `<tr>
+      <td><div class="text-navy" style="font-weight:600">${s.jina}</div></td>
+      <td><span class="badge badge-info">${s.kategoria||'Nyingine'}</span></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${pct}%;background:${s.idadi===0?'var(--danger)':s.idadi<=s.kiwango_chini?'var(--warning)':'var(--navy)'}"></div></div>
+          <span style="font-size:12px;color:var(--text-muted);white-space:nowrap">${s.idadi} / ${s.kiwango_chini*3||30}</span>
+        </div>
+      </td>
+      <td><span class="badge ${hali[0]}">${hali[1]}</span></td>
+      <td class="text-gold">${formatTZS(s.bei_kuuza)}</td>
+      <td class="font-bold">${formatTZS(s.idadi*s.bei_kuuza)}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm" onclick="editBidhaa(${s.id})"><i class="ti ti-edit"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="deleteBidhaa(${s.id})"><i class="ti ti-trash"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted)"><i class="ti ti-package" style="font-size:32px;display:block;margin-bottom:8px"></i>Hakuna bidhaa bado — Ongeza bidhaa yako ya kwanza!</td></tr>';
+}
+loadStock();
+searchTable('searchInput','stockBody');
+
+let editingId = null;
+function resetForm() { editingId=null; ['fJina','fIdadi','fBeiKununua','fBeiKuuza','fKiwango'].forEach(id=>document.getElementById(id).value=''); document.getElementById('modalTitle').textContent='Ongeza Bidhaa Mpya'; }
+
+function editBidhaa(id) {
+  const s = DB.get('stock').find(s=>s.id===id);
+  if (!s) return;
+  editingId = id;
+  document.getElementById('fJina').value=s.jina;
+  document.getElementById('fKat').value=s.kategoria||'Nyingine';
+  document.getElementById('fIdadi').value=s.idadi;
+  document.getElementById('fBeiKununua').value=s.bei_kununua||0;
+  document.getElementById('fBeiKuuza').value=s.bei_kuuza;
+  document.getElementById('fKiwango').value=s.kiwango_chini||10;
+  document.getElementById('modalTitle').textContent='Hariri Bidhaa';
+  openModal('modalBidhaa');
+}
+
+function saveBidhaa() {
+  const jina=document.getElementById('fJina').value.trim();
+  const idadi=parseFloat(document.getElementById('fIdadi').value)||0;
+  const bei_kuuza=parseFloat(document.getElementById('fBeiKuuza').value)||0;
+  if (!jina||!bei_kuuza) { showToast('Jaza jina na bei ya kuuza','error'); return; }
+  const data={jina,kategoria:document.getElementById('fKat').value,idadi,bei_kununua:parseFloat(document.getElementById('fBeiKununua').value)||0,bei_kuuza,kiwango_chini:parseFloat(document.getElementById('fKiwango').value)||10};
+  if (editingId) { DB.update('stock',editingId,data); showToast('Bidhaa imesasishwa!'); }
+  else { DB.add('stock',data); showToast('Bidhaa imeongezwa!'); }
+  closeModal('modalBidhaa'); resetForm(); loadStock();
+}
+
+function deleteBidhaa(id) {
+  if (!confirm('Una uhakika wa kufuta bidhaa hii?')) return;
+  DB.delete('stock',id); showToast('Bidhaa imefutwa!'); loadStock();
+}
+</script>
+</body>
+</html>

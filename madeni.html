@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madeni — TRAVEX Finance</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div><div class="header-title">Madeni</div><div class="header-sub">Fuatilia wanaokudai na unaodai</div></div>
+  </div>
+  <div class="main-content">
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <div class="tabs tab-group">
+      <button class="tab-btn active" data-tab="tab-unaodai">Unaodai <span id="cntUnaodai" class="badge badge-danger" style="margin-left:6px">0</span></button>
+      <button class="tab-btn" data-tab="tab-unadaiwa">Unadaiwa <span id="cntUnadaiwa" class="badge badge-warning" style="margin-left:6px">0</span></button>
+    </div>
+
+    <!-- UNAODAI -->
+    <div class="tab-content active" id="tab-unaodai">
+      <div class="table-card">
+        <div class="table-card-header">
+          <div><div class="table-card-title">Wanaokudai Pesa</div><div class="table-card-sub">Watu waliochukua bidhaa/huduma bila kulipa</div></div>
+          <button class="btn btn-gold" onclick="openAddDeni('unaodai')"><i class="ti ti-plus"></i> Ongeza Deni</button>
+        </div>
+        <table><thead><tr><th>Jina</th><th>Simu</th><th>Maelezo</th><th>Tarehe</th><th class="text-right">Kiasi</th><th></th></tr></thead>
+        <tbody id="unaodaiBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- UNADAIWA -->
+    <div class="tab-content" id="tab-unadaiwa">
+      <div class="table-card">
+        <div class="table-card-header">
+          <div><div class="table-card-title">Unadaiwa Pesa</div><div class="table-card-sub">Pesa unazodaiwa — wasambazaji au wengine</div></div>
+          <button class="btn btn-navy" onclick="openAddDeni('unadaiwa')"><i class="ti ti-plus"></i> Ongeza Deni</button>
+        </div>
+        <table><thead><tr><th>Jina</th><th>Simu</th><th>Maelezo</th><th>Tarehe</th><th class="text-right">Kiasi</th><th></th></tr></thead>
+        <tbody id="unadaiwaBody"></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalDeni">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="deniModalTitle">Ongeza Deni</div>
+      <button class="modal-close" onclick="closeModal('modalDeni')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="form-group"><label class="form-label">Jina la Mtu *</label><input class="form-control" id="dJina" placeholder="Jina kamili"></div>
+    <div class="form-group"><label class="form-label">Namba ya Simu</label><input class="form-control" id="dSimu" placeholder="+255 7XX XXX XXX"></div>
+    <div class="form-group"><label class="form-label">Kiasi (TZS) *</label><input type="number" class="form-control" id="dKiasi" placeholder="0"></div>
+    <div class="form-group"><label class="form-label">Tarehe</label><input type="date" class="form-control" id="dTarehe"></div>
+    <div class="form-group"><label class="form-label">Maelezo</label><input class="form-control" id="dMaelezo" placeholder="Mfano: Bidhaa za duka"></div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveDeni()"><i class="ti ti-check"></i> Hifadhi</button>
+  </div>
+</div>
+
+<!-- MALIPO MODAL -->
+<div class="modal-overlay" id="modalMalipo">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Rekodi Malipo</div>
+      <button class="modal-close" onclick="closeModal('modalMalipo')"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="malipoInfo" style="background:var(--bg);border-radius:8px;padding:14px;margin-bottom:16px;font-size:13px;"></div>
+    <div class="form-group"><label class="form-label">Kiasi Kilicholipwa (TZS) *</label><input type="number" class="form-control" id="mKiasi" placeholder="0"></div>
+    <div class="form-group"><label class="form-label">Tarehe ya Malipo</label><input type="date" class="form-control" id="mTarehe"></div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveMalipo()"><i class="ti ti-check"></i> Hifadhi Malipo</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+requireAuth();
+loadSidebar('madeni');
+initTabs();
+
+let currentAina = 'unaodai';
+let currentDeniId = null;
+
+document.getElementById('dTarehe').value = today();
+document.getElementById('mTarehe').value = today();
+
+function loadMadeni() {
+  const madeni = DB.get('madeni');
+  const unaodai = madeni.filter(m=>m.aina==='unaodai');
+  const unadaiwa = madeni.filter(m=>m.aina==='unadaiwa');
+  const totalUnaodai = unaodai.reduce((a,m)=>a+m.kiasi,0);
+  const totalUnadaiwa = unadaiwa.reduce((a,m)=>a+m.kiasi,0);
+
+  document.getElementById('cntUnaodai').textContent = unaodai.length;
+  document.getElementById('cntUnadaiwa').textContent = unadaiwa.length;
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Jumla Unaodai</div><div class="stat-value">${formatTZS(totalUnaodai)}</div><div class="stat-sub">${unaodai.length} watu</div></div>
+    <div class="stat-card"><div class="stat-label">Jumla Unadaiwa</div><div class="stat-value">${formatTZS(totalUnadaiwa)}</div><div class="stat-sub">${unadaiwa.length} watu</div></div>
+    <div class="stat-card"><div class="stat-label">Tofauti (Net)</div><div class="stat-value" style="color:${totalUnaodai-totalUnadaiwa>=0?'var(--gold)':'var(--danger)'}">${formatTZS(totalUnaodai-totalUnadaiwa)}</div><div class="stat-sub">Unaodai - Unadaiwa</div></div>
+    <div class="stat-card"><div class="stat-label">Watu Wote</div><div class="stat-value">${madeni.length}</div><div class="stat-sub">Rekodi zote</div></div>
+  `;
+
+  const emptyRow = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">Hakuna madeni bado</td></tr>`;
+
+  ['unaodai','unadaiwa'].forEach(aina => {
+    const list = madeni.filter(m=>m.aina===aina);
+    document.getElementById(aina+'Body').innerHTML = list.length ? list.map(m=>`<tr>
+      <td><div style="font-weight:600;color:var(--navy)">${m.jina}</div></td>
+      <td><a href="tel:${m.simu}" style="color:var(--navy);font-size:12px">${m.simu||'—'}</a></td>
+      <td style="color:var(--text-muted);font-size:12px">${m.maelezo||'—'}</td>
+      <td style="color:var(--text-muted)">${formatDate(m.tarehe)}</td>
+      <td class="text-right"><span style="font-weight:700;color:${aina==='unaodai'?'var(--danger)':'var(--warning)'};font-family:Plus Jakarta Sans">${formatTZS(m.kiasi)}</span></td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-gold btn-sm" onclick="openMalipo(${m.id})"><i class="ti ti-cash"></i> Lipa</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteDeni(${m.id})"><i class="ti ti-trash"></i></button>
+        </div>
+      </td>
+    </tr>`).join('') : emptyRow;
+  });
+}
+loadMadeni();
+
+function openAddDeni(aina) {
+  currentAina = aina;
+  document.getElementById('deniModalTitle').textContent = aina==='unaodai'?'Ongeza — Anakudai':'Ongeza — Unadaiwa';
+  ['dJina','dSimu','dKiasi','dMaelezo'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('dTarehe').value = today();
+  openModal('modalDeni');
+}
+
+function saveDeni() {
+  const jina=document.getElementById('dJina').value.trim();
+  const kiasi=parseFloat(document.getElementById('dKiasi').value)||0;
+  if(!jina||!kiasi){showToast('Jaza jina na kiasi','error');return;}
+  DB.add('madeni',{jina,simu:document.getElementById('dSimu').value.trim(),kiasi,tarehe:document.getElementById('dTarehe').value,maelezo:document.getElementById('dMaelezo').value.trim(),aina:currentAina});
+  closeModal('modalDeni');
+  showToast('Deni limeongezwa!');
+  loadMadeni();
+}
+
+function openMalipo(id) {
+  const d = DB.get('madeni').find(m=>m.id===id);
+  if(!d) return;
+  currentDeniId = id;
+  document.getElementById('malipoInfo').innerHTML = `<strong>${d.jina}</strong><br>Deni: <strong style="color:var(--danger)">${formatTZS(d.kiasi)}</strong>`;
+  document.getElementById('mKiasi').value = d.kiasi;
+  document.getElementById('mTarehe').value = today();
+  openModal('modalMalipo');
+}
+
+function saveMalipo() {
+  const kiasi=parseFloat(document.getElementById('mKiasi').value)||0;
+  if(!kiasi){showToast('Ingiza kiasi','error');return;}
+  const d = DB.get('madeni').find(m=>m.id===currentDeniId);
+  if(!d) return;
+  const bakaa = d.kiasi - kiasi;
+  if(bakaa<=0){DB.delete('madeni',currentDeniId);showToast('Deni limelipwa kabisa! ✅');}
+  else{DB.update('madeni',currentDeniId,{kiasi:bakaa});showToast(`Imelipwa. Bakaa: ${formatTZS(bakaa)}`);}
+  closeModal('modalMalipo');
+  loadMadeni();
+}
+
+function deleteDeni(id){
+  if(!confirm('Una uhakika wa kufuta deni hili?'))return;
+  DB.delete('madeni',id);showToast('Deni limefutwa!');loadMadeni();
+}
+</script>
+</body>
+</html>

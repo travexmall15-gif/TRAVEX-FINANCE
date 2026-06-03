@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhtasari — TRAVEX Finance</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+.welcome-bar{background:var(--navy);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;}
+.welcome-bar h2{font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.welcome-bar p{font-size:13px;color:rgba(255,255,255,0.5);}
+.trial-badge{background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);border-radius:8px;padding:10px 18px;text-align:center;}
+.trial-days{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--gold);}
+.trial-label{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;}
+.activity-row{display:grid;grid-template-columns:2fr 1fr;gap:16px;}
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.qa-btn{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;}
+.qa-btn:hover{border-color:var(--gold);background:#fffdf0;}
+.qa-btn i{font-size:24px;color:var(--navy);display:block;margin-bottom:8px;}
+.qa-btn span{font-size:12px;font-weight:600;color:var(--navy);}
+.chart-area{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:16px;}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:100px;margin-top:12px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;}
+.bar-label{font-size:10px;color:var(--text-muted);}
+.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;z-index:999;font-size:14px;color:var(--navy);gap:10px;}
+</style>
+</head>
+<body>
+<div class="loading-overlay" id="loadingOverlay"><i class="ti ti-loader-2" style="font-size:24px;animation:spin 1s linear infinite"></i> Inapakia...</div>
+<style>@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div><div class="header-title">Muhtasari</div><div class="header-sub" id="headerSub">Habari — hivi ndivyo biashara yako inavyoenda leo</div></div>
+    <div style="font-size:12px;color:var(--text-muted)" id="headerDate"></div>
+  </div>
+  <div class="main-content">
+    <div class="welcome-bar">
+      <div><h2 id="welcomeMsg">Habari!</h2><p id="welcomeSub">Biashara yako inakusubiri — hebu tuangalie hali yake leo.</p></div>
+      <div class="trial-badge"><div class="trial-days" id="trialDays">7</div><div class="trial-label">Siku za Bure Zimebaki</div></div>
+    </div>
+    <div class="stats-grid" id="statsGrid"><div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div><div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div><div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div><div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div></div>
+    <div class="activity-row">
+      <div>
+        <div class="table-card">
+          <div class="table-card-header">
+            <div><div class="table-card-title">Mauzo ya Hivi Karibuni</div><div class="table-card-sub">Miamala ya leo</div></div>
+            <a href="mauzo.html" class="btn btn-outline btn-sm">Ona Yote</a>
+          </div>
+          <div id="recentSales"><div style="text-align:center;padding:30px;color:var(--text-muted)"><i class="ti ti-loader-2" style="font-size:24px;display:block;margin-bottom:8px"></i>Inapakia...</div></div>
+        </div>
+        <div class="chart-area">
+          <div style="font-size:15px;font-weight:700;color:var(--navy)">Mauzo — Wiki Hii</div>
+          <div class="bar-chart" id="weekChart"></div>
+        </div>
+      </div>
+      <div>
+        <div class="table-card" style="margin-bottom:16px">
+          <div class="table-card-header"><div class="table-card-title">Vitendo vya Haraka</div></div>
+          <div style="padding:16px">
+            <div class="quick-actions">
+              <a href="mauzo.html" class="qa-btn"><i class="ti ti-plus"></i><span>Muamala Mpya</span></a>
+              <a href="invoice.html" class="qa-btn"><i class="ti ti-file-plus"></i><span>Invoice Mpya</span></a>
+              <a href="stock.html" class="qa-btn"><i class="ti ti-package"></i><span>Angalia Stock</span></a>
+              <a href="madeni.html" class="qa-btn"><i class="ti ti-credit-card"></i><span>Ona Madeni</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-card-header"><div class="table-card-title">Tahadhari za Stock</div></div>
+          <div id="stockAlerts"><div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px"><i class="ti ti-package" style="display:block;font-size:24px;margin-bottom:6px"></i>Inapakia...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+(async () => {
+  const session = await Auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+
+  await loadSidebar('dashboard');
+  const profile = Auth.getCachedUser() || await DB.profile.get();
+  if (profile) Auth.cacheUser(profile);
+
+  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('sw-TZ', {weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  const hr = new Date().getHours();
+  const greeting = hr < 12 ? 'Habari za Asubuhi' : hr < 17 ? 'Habari za Mchana' : 'Habari za Jioni';
+  document.getElementById('welcomeMsg').textContent = greeting + ', ' + (profile?.jina?.split(' ')[0] || 'Karibu') + '!';
+
+  const elapsed = Math.floor((new Date() - new Date(profile?.trial_start || new Date())) / (1000*60*60*24));
+  document.getElementById('trialDays').textContent = Math.max(0, (profile?.trial_days || 7) - elapsed);
+
+  // Load data parallel
+  const [mauzo, stockData, madeni] = await Promise.all([
+    DB.mauzo.getByDate(today()),
+    DB.stock.getAll(),
+    DB.madeni.getAll()
+  ]);
+
+  const mapato = mauzo.filter(m => m.aina === 'mapato').reduce((a,m) => a + Number(m.jumla), 0);
+  const matumizi = mauzo.filter(m => m.aina === 'matumizi').reduce((a,m) => a + Number(m.jumla), 0);
+  const madeniUnaodai = madeni.filter(m => m.aina === 'unaodai').reduce((a,m) => a + Number(m.kiasi), 0);
+  const stockLow = stockData.filter(s => Number(s.idadi) <= Number(s.kiwango_chini)).length;
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Mapato Leo</div><div class="stat-value">${formatTZS(mapato)}</div><div class="stat-sub">Mauzo ya leo</div></div>
+    <div class="stat-card"><div class="stat-label">Faida Leo</div><div class="stat-value">${formatTZS(mapato-matumizi)}</div><div class="stat-sub">Mapato - Matumizi</div></div>
+    <div class="stat-card"><div class="stat-label">Madeni Unaodai</div><div class="stat-value">${formatTZS(madeniUnaodai)}</div><div class="stat-sub">${madeni.filter(m=>m.aina==='unaodai').length} watu</div></div>
+    <div class="stat-card"><div class="stat-label">Stock Inayokwisha</div><div class="stat-value" style="color:${stockLow>0?'#ef4444':'var(--gold)'}">${stockLow}</div><div class="stat-sub">${stockLow>0?'Zinahitaji kujazwa':'Zote ziko sawa'}</div></div>
+  `;
+
+  document.getElementById('recentSales').innerHTML = mauzo.length
+    ? `<table><thead><tr><th>Bidhaa</th><th>Aina</th><th class="text-right">Jumla</th></tr></thead><tbody>
+        ${mauzo.slice(0,6).map(m=>`<tr>
+          <td class="text-navy" style="font-weight:600">${m.bidhaa}</td>
+          <td><span class="badge ${m.aina==='mapato'?'badge-success':'badge-danger'}">${m.aina==='mapato'?'Mapato':'Matumizi'}</span></td>
+          <td class="text-right font-bold">${formatTZS(m.jumla)}</td>
+        </tr>`).join('')}
+      </tbody></table>`
+    : `<div style="text-align:center;padding:30px;color:var(--text-muted)"><i class="ti ti-shopping-cart" style="font-size:32px;display:block;margin-bottom:8px"></i>Hakuna mauzo leo — <a href="mauzo.html" style="color:var(--navy);font-weight:600">Anza kurekodi</a></div>`;
+
+  // Week chart
+  const days = ['Ju','Al','Ju','Al','Ij','Sa','Ap'];
+  const allMauzo = await DB.mauzo.getAll();
+  const weekData = days.map((_,i) => ({
+    label: days[i],
+    val: allMauzo.filter(m => new Date(m.tarehe).getDay()===i && m.aina==='mapato').reduce((a,m)=>a+Number(m.jumla),0)
+  }));
+  const maxVal = Math.max(...weekData.map(d=>d.val), 1);
+  const todayDay = new Date().getDay();
+  document.getElementById('weekChart').innerHTML = weekData.map((d,i)=>`
+    <div class="bar-wrap">
+      <div class="bar-fill" style="height:${Math.max((d.val/maxVal)*90,4)}px;background:${i===todayDay?'var(--gold)':'var(--navy)'}"></div>
+      <div class="bar-label">${d.label}</div>
+    </div>`).join('');
+
+  const lowStock = stockData.filter(s => Number(s.idadi) <= Number(s.kiwango_chini));
+  document.getElementById('stockAlerts').innerHTML = lowStock.length
+    ? `<div style="padding:0 16px 16px">${lowStock.map(s=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div><div style="font-size:13px;font-weight:600;color:var(--navy)">${s.jina}</div><div style="font-size:11px;color:var(--text-muted)">Imebaki: ${s.idadi}</div></div>
+          <span class="badge ${s.idadi==0?'badge-danger':'badge-warning'}">${s.idadi==0?'Imeisha':'Inakwisha'}</span>
+        </div>`).join('')}
+        <a href="stock.html" style="display:block;text-align:center;font-size:12px;font-weight:600;color:var(--navy);padding-top:12px">Simamia Stock →</a>
+      </div>`
+    : `<div style="text-align:center;padding:20px;color:var(--success);font-size:13px"><i class="ti ti-circle-check" style="display:block;font-size:24px;margin-bottom:6px"></i>Stock zote ziko sawa!</div>`;
+
+  document.getElementById('loadingOverlay').style.display = 'none';
+})();
+</script>
+</body>
+</html>
