@@ -2,7 +2,7 @@
 // ══════════════════════════════════════════════════════
 
 const SUPABASE_URL = 'https://ilcpcikmfbictwiafvqu.supabase.co';
-const SUPABASE_ANON_KEY = 'REPLACE_WITH_ANON_KEY'; // ← itabadilishwa
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsY3BjaWttZmJpY3R3aWFmdnF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NjkxNTksImV4cCI6MjA5NjA0NTE1OX0.M9FDI2x97rfRMMAqgTwHuTF__H-1bur3_E9HXhb_CQs';
 
 // Load Supabase SDK
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
