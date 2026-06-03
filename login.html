@@ -29,14 +29,28 @@ body{display:flex;min-height:100vh;}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
 .signup-link{text-align:center;font-size:13px;color:var(--text-secondary);}
 .signup-link a{color:var(--navy);font-weight:700;}
-.alert-box{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px;}
-.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger);}
-.alert-error.show,.alert-success.show{display:flex;}
-.loading-btn{opacity:0.7;pointer-events:none;}
+.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px;}
+.alert-error.show{display:flex;}
+.alert-info{background:var(--info-bg);border:1px solid #93c5fd;color:var(--info-text);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px;}
+.alert-info.show{display:flex;}
+/* Loading screen */
+.checking-screen{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;}
+.checking-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--gold);margin-bottom:24px;}
+.checking-spinner{width:40px;height:40px;border:3px solid rgba(255,215,0,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+.checking-text{font-size:13px;color:rgba(255,255,255,0.5);margin-top:16px;}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-<div class="left-panel">
+
+<!-- Checking session screen -->
+<div class="checking-screen" id="checkingScreen">
+  <div class="checking-logo">TX TRAVEX Finance</div>
+  <div class="checking-spinner"></div>
+  <div class="checking-text">Inaangalia akaunti yako...</div>
+</div>
+
+<div class="left-panel" style="display:none" id="mainContent">
   <div class="left-logo" onclick="location.href='index.html'">TX TRAVEX Finance<span>Smart Finance for Every Business</span></div>
   <h2 class="left-title">Karibu Tena<br>kwenye<br><em>TRAVEX Finance</em></h2>
   <p class="left-sub">Simamia fedha za biashara yako, fuatilia mauzo na jua faida yako kila siku — yote mahali pamoja.</p>
@@ -46,11 +60,15 @@ body{display:flex;min-height:100vh;}
   </div>
   <div class="left-footer">© 2026 TRAVEX Digital Group</div>
 </div>
-<div class="right-panel">
+
+<div class="right-panel" style="display:none" id="rightPanel">
   <div class="login-card">
     <div class="login-title">Ingia Akaunti Yako</div>
     <div class="login-sub">Ingiza taarifa zako ili uendelee</div>
-    <div class="alert-box alert-error" id="alertError"><i class="ti ti-alert-circle"></i><span id="alertMsg">Hitilafu imetokea</span></div>
+
+    <div class="alert-error" id="alertError"><i class="ti ti-alert-circle"></i><span id="alertMsg"></span></div>
+    <div class="alert-info" id="alertInfo"><i class="ti ti-info-circle"></i><span id="alertInfoMsg"></span></div>
+
     <div class="form-group">
       <label class="form-label">Barua Pepe (Email)</label>
       <input type="email" class="form-control" id="fEmail" placeholder="mfano@email.com">
@@ -62,19 +80,43 @@ body{display:flex;min-height:100vh;}
         <button class="eye-btn" onclick="togglePass()" type="button"><i class="ti ti-eye" id="eyeIcon"></i></button>
       </div>
     </div>
-    <a href="#" class="forgot">Umesahau neno la siri?</a>
+
+    <a href="reset.html" class="forgot">Umesahau neno la siri?</a>
+
     <button class="btn btn-navy" style="width:100%;justify-content:center;padding:13px;font-size:15px;margin-bottom:16px" id="loginBtn" onclick="doLogin()">
       <i class="ti ti-login"></i> Ingia
     </button>
+
     <div class="divider"><span>au</span></div>
     <div class="signup-link">Huna akaunti? <a href="signup.html">Jiandikishe hapa — Bure siku 7</a></div>
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="shared.css" type="text/css"></script>
 <script src="supabase.js"></script>
 <script>
-(async () => { if (await Auth.isLoggedIn()) window.location.href = 'dashboard.html'; })();
+// ── Angalia session mara moja ukifungua page ──────────
+(async () => {
+  const session = await Auth.getSession();
+  if (session) {
+    // Tayari ameingia — peleka dashboard moja kwa moja
+    window.location.replace('dashboard.html');
+    return;
+  }
+  // Hajaingai — onyesha login form
+  document.getElementById('checkingScreen').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'flex';
+  document.getElementById('rightPanel').style.display = 'flex';
+
+  // Angalia kama amekuja kutoka email confirmation
+  const hash = window.location.hash;
+  if (hash.includes('access_token')) {
+    showInfo('Akaunti yako imethibitishwa! Ingia sasa.');
+  }
+  if (new URLSearchParams(window.location.search).get('confirmed')) {
+    showInfo('Akaunti yako imethibitishwa! Ingia sasa.');
+  }
+})();
 
 function togglePass() {
   const inp = document.getElementById('fPassword');
@@ -86,26 +128,43 @@ function togglePass() {
 async function doLogin() {
   const email = document.getElementById('fEmail').value.trim();
   const pass = document.getElementById('fPassword').value;
+
   if (!email || !pass) { showError('Jaza email na neno la siri'); return; }
 
   const btn = document.getElementById('loginBtn');
-  btn.innerHTML = '<i class="ti ti-loader-2"></i> Ingia...';
-  btn.classList.add('loading-btn');
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Ingia...';
+  btn.style.pointerEvents = 'none';
 
-  const { error } = await Auth.login(email, pass);
+  const { data, error } = await Auth.login(email, pass);
+
   if (error) {
     btn.innerHTML = '<i class="ti ti-login"></i> Ingia';
-    btn.classList.remove('loading-btn');
-    showError(error.message.includes('Invalid') ? 'Email au neno la siri si sahihi' : error.message);
+    btn.style.pointerEvents = '';
+
+    if (error.message.includes('Email not confirmed')) {
+      showError('Thibisha email yako kwanza — angalia inbox yako');
+    } else if (error.message.includes('Invalid login')) {
+      showError('Email au neno la siri si sahihi');
+    } else {
+      showError(error.message);
+    }
     return;
   }
-  window.location.href = 'dashboard.html';
+
+  // Imefanikiwa — peleka dashboard
+  window.location.replace('dashboard.html');
 }
 
 function showError(msg) {
-  const el = document.getElementById('alertError');
+  document.getElementById('alertInfo').classList.remove('show');
   document.getElementById('alertMsg').textContent = msg;
-  el.classList.add('show');
+  document.getElementById('alertError').classList.add('show');
+}
+
+function showInfo(msg) {
+  document.getElementById('alertError').classList.remove('show');
+  document.getElementById('alertInfoMsg').textContent = msg;
+  document.getElementById('alertInfo').classList.add('show');
 }
 </script>
 </body>

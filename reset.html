@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weka Upya Neno la Siri — TRAVEX Finance</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);}
+.card{background:var(--white);border-radius:16px;padding:40px;max-width:420px;width:100%;box-shadow:0 2px 20px rgba(0,0,0,0.06);}
+.logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:28px;text-align:center;cursor:pointer;}
+.logo span{color:var(--gold);}
+.card-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:6px;}
+.card-sub{font-size:13px;color:var(--text-muted);margin-bottom:24px;line-height:1.6;}
+.alert{border-radius:8px;padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px;}
+.alert.show{display:flex;}
+.alert-success{background:var(--success-bg);border:1px solid #6ee7b7;color:var(--success-text);}
+.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger);}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo" onclick="location.href='index.html'">TX <span>TRAVEX</span> Finance</div>
+
+  <!-- Step 1: Omba reset -->
+  <div id="step1">
+    <div class="card-title">Umesahau Neno la Siri?</div>
+    <div class="card-sub">Ingiza email yako — tutakutumia kiungo cha kuweka upya neno la siri.</div>
+    <div class="alert alert-success" id="s1Success"><i class="ti ti-check"></i><span id="s1SuccessMsg"></span></div>
+    <div class="alert alert-error" id="s1Error"><i class="ti ti-alert-circle"></i><span id="s1ErrorMsg"></span></div>
+    <div class="form-group">
+      <label class="form-label">Barua Pepe (Email)</label>
+      <input type="email" class="form-control" id="fEmail" placeholder="mfano@email.com">
+    </div>
+    <button class="btn btn-navy" style="width:100%;justify-content:center;padding:13px;font-size:15px;margin-bottom:16px" id="resetBtn" onclick="sendReset()">
+      <i class="ti ti-send"></i> Tuma Kiungo
+    </button>
+    <div style="text-align:center"><a href="login.html" style="font-size:13px;color:var(--navy);font-weight:600"><i class="ti ti-arrow-left"></i> Rudi Kuingia</a></div>
+  </div>
+
+  <!-- Step 2: Weka neno jipya (ukifika kutoka email) -->
+  <div id="step2" style="display:none">
+    <div class="card-title">Weka Neno Jipya la Siri</div>
+    <div class="card-sub">Weka neno jipya la siri kwa akaunti yako.</div>
+    <div class="alert alert-error" id="s2Error"><i class="ti ti-alert-circle"></i><span id="s2ErrorMsg"></span></div>
+    <div class="form-group">
+      <label class="form-label">Neno Jipya la Siri *</label>
+      <input type="password" class="form-control" id="fNewPass" placeholder="Angalau herufi 6">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Thibitisha Neno Jipya *</label>
+      <input type="password" class="form-control" id="fConfPass" placeholder="Rudia neno jipya">
+    </div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:13px;font-size:15px" id="saveBtn" onclick="saveNewPass()">
+      <i class="ti ti-check"></i> Hifadhi Neno Jipya
+    </button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+// Angalia kama amekuja kutoka email ya reset
+(async () => {
+  const hash = window.location.hash;
+  if (hash.includes('access_token') && hash.includes('type=recovery')) {
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+  }
+})();
+
+async function sendReset() {
+  const email = document.getElementById('fEmail').value.trim();
+  if (!email) { showS1Error('Ingiza email yako'); return; }
+
+  const btn = document.getElementById('resetBtn');
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Inatuma...';
+  btn.style.pointerEvents = 'none';
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://travex-finance.vercel.app/reset.html'
+  });
+
+  btn.innerHTML = '<i class="ti ti-send"></i> Tuma Kiungo';
+  btn.style.pointerEvents = '';
+
+  if (error) { showS1Error(error.message); return; }
+
+  document.getElementById('s1Error').classList.remove('show');
+  document.getElementById('s1SuccessMsg').textContent = 'Kiungo kimetumwa! Angalia inbox yako — pia spam folder.';
+  document.getElementById('s1Success').classList.add('show');
+  document.getElementById('fEmail').value = '';
+}
+
+async function saveNewPass() {
+  const pass = document.getElementById('fNewPass').value;
+  const conf = document.getElementById('fConfPass').value;
+  if (pass.length < 6) { showS2Error('Neno la siri lazima liwe na herufi 6+'); return; }
+  if (pass !== conf) { showS2Error('Maneno ya siri hayafanani'); return; }
+
+  const btn = document.getElementById('saveBtn');
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Inahifadhi...';
+  btn.style.pointerEvents = 'none';
+
+  const { error } = await supabaseClient.auth.updateUser({ password: pass });
+
+  if (error) {
+    btn.innerHTML = '<i class="ti ti-check"></i> Hifadhi Neno Jipya';
+    btn.style.pointerEvents = '';
+    showS2Error(error.message);
+    return;
+  }
+
+  // Imefanikiwa — peleka login
+  alert('Neno la siri limebadilishwa! Ingia sasa.');
+  window.location.replace('login.html');
+}
+
+function showS1Error(msg) { document.getElementById('s1ErrorMsg').textContent = msg; document.getElementById('s1Error').classList.add('show'); }
+function showS2Error(msg) { document.getElementById('s2ErrorMsg').textContent = msg; document.getElementById('s2Error').classList.add('show'); }
+</script>
+</body>
+</html>
