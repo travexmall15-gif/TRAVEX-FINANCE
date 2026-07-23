@@ -23,14 +23,23 @@ const Auth = {
   },
   async logout() {
     Auth.clearCache();
-    await supabaseClient.auth.signOut();
+    localStorage.removeItem('q360_dev_active');
+    await supabaseClient.auth.signOut().catch(()=>{});
     window.location.href = 'login.html';
   },
   async getUser() {
+    // DEV MODE: return mock user
+    if (localStorage.getItem('q360_dev_active') === 'true') {
+      return { id: 'dev-00000001', email: 'dev@q360ai.local' };
+    }
     const { data: { user } } = await supabaseClient.auth.getUser();
     return user;
   },
   async getSession() {
+    // DEV MODE: check localStorage flag
+    if (localStorage.getItem('q360_dev_active') === 'true') {
+      return { user: { id: 'dev-00000001', email: 'dev@q360ai.local' } };
+    }
     const { data: { session } } = await supabaseClient.auth.getSession();
     return session;
   },
@@ -56,6 +65,10 @@ const DB = {
   // PROFILE
   profile: {
     async get() {
+      // DEV MODE: return cached profile
+      if (localStorage.getItem('q360_dev_active') === 'true') {
+        return Auth.getCachedUser();
+      }
       const user = await Auth.getUser();
       if (!user) return null;
       const { data } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
