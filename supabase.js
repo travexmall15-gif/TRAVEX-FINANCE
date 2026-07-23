@@ -405,25 +405,29 @@ async function loadSidebar(activePage) {
   const planColors = { free: 'var(--text-muted)', starter: 'var(--gold)', professional: 'var(--cyan)', enterprise: '#a78bfa' };
   const planNames = { free: 'Free', starter: 'Starter', professional: 'Pro', enterprise: 'Enterprise' };
 
+  const planColors = { free: '#9ca3af', starter: '#FFD700', professional: '#00d4ff', enterprise: '#a78bfa' };
+  const planLabels = { free: 'Free', starter: 'Starter', professional: 'Professional', enterprise: 'Enterprise' };
+  const userPlan   = profile?.plan || 'free';
+
   const nav = [
-    { id: 'ai',       icon: 'ti-brand-openai',   label: 'Q360 AI',     href: 'ai.html',           badge: 'AI' },
-    { id: 'dashboard',icon: 'ti-layout-dashboard', label: 'Dashboard',  href: 'dashboard.html' },
+    { id: 'ai',          icon: 'ti-brand-openai',     label: 'Q360 AI',       href: 'ai.html',           badge: 'AI' },
+    { id: 'dashboard',   icon: 'ti-layout-dashboard', label: 'Dashboard',     href: 'dashboard.html' },
     null,
-    { label: 'PERSONAL' },
-    { id: 'personal', icon: 'ti-wallet',           label: 'Fedha Zangu', href: 'personal.html' },
-    { id: 'projects', icon: 'ti-layout-kanban',    label: 'Miradi',      href: 'projects.html' },
+    { label: 'KIBINAFSI' },
+    { id: 'personal',    icon: 'ti-wallet',            label: 'Fedha Zangu',  href: 'personal.html' },
+    { id: 'projects',    icon: 'ti-layout-kanban',     label: 'Miradi',       href: 'projects.html' },
     null,
     { label: 'BIASHARA' },
-    { id: 'mauzo',    icon: 'ti-shopping-cart',    label: 'Mauzo',       href: 'mauzo.html' },
-    { id: 'stock',    icon: 'ti-package',           label: 'Stock',       href: 'stock.html' },
-    { id: 'madeni',   icon: 'ti-credit-card',       label: 'Madeni',      href: 'madeni.html' },
-    { id: 'invoice',  icon: 'ti-file-invoice',      label: 'Invoice',     href: 'invoice.html' },
-    { id: 'wafanyakazi', icon: 'ti-users',          label: 'Wafanyakazi', href: 'wafanyakazi.html' },
+    { id: 'mauzo',       icon: 'ti-shopping-cart',     label: 'Mauzo',        href: 'mauzo.html' },
+    { id: 'stock',       icon: 'ti-package',            label: 'Stock',        href: 'stock.html' },
+    { id: 'madeni',      icon: 'ti-credit-card',        label: 'Madeni',       href: 'madeni.html' },
+    { id: 'invoice',     icon: 'ti-file-invoice',       label: 'Invoice',      href: 'invoice.html' },
+    { id: 'wafanyakazi', icon: 'ti-users',              label: 'Wafanyakazi',  href: 'wafanyakazi.html' },
     null,
     { label: 'ZAIDI' },
-    { id: 'reports',  icon: 'ti-chart-bar',         label: 'Ripoti',      href: 'reports.html' },
-    { id: 'subscription', icon: 'ti-crown',         label: 'Subscription', href: 'subscription.html' },
-    { id: 'mipangilio', icon: 'ti-settings',        label: 'Mipangilio',  href: 'mipangilio.html' },
+    { id: 'reports',     icon: 'ti-chart-bar',          label: 'Ripoti',       href: 'reports.html' },
+    { id: 'subscription',icon: 'ti-crown',              label: 'Mpango Wangu', href: 'subscription.html' },
+    { id: 'mipangilio',  icon: 'ti-settings',           label: 'Mipangilio',   href: 'mipangilio.html' },
   ];
 
   const navHTML = nav.map(item => {
@@ -451,6 +455,15 @@ async function loadSidebar(activePage) {
       </div>
     </div>
     <nav class="sidebar-nav">${navHTML}</nav>
+    <div style="margin:8px 10px 0;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:10px;border:1px solid rgba(255,255,255,0.07)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.8px">Mpango</span>
+        <span style="font-size:10px;font-weight:700;color:${planColors[userPlan]}">${planLabels[userPlan]}</span>
+      </div>
+      <a href="subscription.html" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:7px;padding:7px;font-size:11px;font-weight:700;color:var(--cyan);text-decoration:none;transition:all 0.2s" onmouseover="this.style.background='rgba(0,212,255,0.15)'" onmouseout="this.style.background='rgba(0,212,255,0.08)'">
+        <i class="ti ti-crown" style="font-size:12px"></i> Boresha Mpango
+      </a>
+    </div>
     <div class="sidebar-footer">
       <button class="logout-btn" onclick="Auth.logout()"><i class="ti ti-logout"></i> Ondoka</button>
     </div>
