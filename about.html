@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuhusu Q360 AI — Smart Life, Smarter Business</title>
+<meta name="description" content="Q360 AI ni mfumo wa kwanza wa AI ulioundwa kwa ajili ya wafanyabiashara wa Tanzania na Afrika. Jifunze zaidi kuhusu dhamira yetu na timu yetu.">
+<meta property="og:title" content="Kuhusu Q360 AI">
+<meta property="og:description" content="Mfumo wa AI ulioundwa Afrika, kwa ajili ya Afrika.">
+<link rel="canonical" href="https://travex-finance.vercel.app/about.html">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0a0f1e;--cyan:#00d4ff;--gold:#FFD700;--white:#fff;--bg:#f0f2f8;--border:#e5e7eb;--text:#1a2332;--muted:#6b7280}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:62px;background:var(--navy);position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:8px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:#fff}
+.logo-sq{width:28px;height:28px;background:linear-gradient(135deg,var(--cyan),var(--gold));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--navy);flex-shrink:0}
+.logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-size:13px;color:rgba(255,255,255,0.55);font-weight:500;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-cta{display:flex;gap:8px}
+.btn-ghost{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;color:#fff;border:1px solid rgba(255,255,255,0.18);background:none;cursor:pointer}
+.btn-cta{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;background:var(--cyan);color:var(--navy);border:none;cursor:pointer}
+
+/* HERO */
+.hero{background:var(--navy);padding:72px 48px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(circle,rgba(0,212,255,0.06),transparent);pointer-events:none}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(0,212,255,0.09);border:1px solid rgba(0,212,255,0.22);color:var(--cyan);font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:20px;letter-spacing:0.5px}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:48px;font-weight:800;color:#fff;margin-bottom:16px;letter-spacing:-1px;line-height:1.1}
+.hero h1 span{color:var(--cyan)}
+.hero p{font-size:16px;color:rgba(255,255,255,0.48);max-width:520px;margin:0 auto;line-height:1.7}
+
+/* MISSION */
+.mission{padding:72px 48px;max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.mission h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:34px;font-weight:800;color:var(--text);margin-bottom:16px;letter-spacing:-0.5px}
+.mission p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:14px}
+.mission-visual{background:var(--navy);border-radius:20px;padding:32px;text-align:center}
+.mission-icon{font-size:56px;color:var(--cyan);display:block;margin-bottom:16px}
+.mission-stat{font-family:'Plus Jakarta Sans',sans-serif;font-size:40px;font-weight:800;color:var(--gold);margin-bottom:6px}
+.mission-lbl{font-size:13px;color:rgba(255,255,255,0.4)}
+
+/* VALUES */
+.values-sec{background:var(--bg);padding:72px 48px}
+.values-inner{max-width:960px;margin:0 auto;text-align:center}
+.sec-chip{display:inline-block;background:rgba(0,212,255,0.08);color:var(--cyan);border:1px solid rgba(0,212,255,0.2);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.sec-h{font-family:'Plus Jakarta Sans',sans-serif;font-size:34px;font-weight:800;color:var(--text);margin-bottom:10px}
+.sec-s{font-size:15px;color:var(--muted);margin-bottom:40px}
+.val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.val-card{background:#fff;border-radius:16px;padding:24px;border:1px solid var(--border);text-align:left}
+.val-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.val-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:7px}
+.val-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* TEAM */
+.team-sec{padding:72px 48px;max-width:960px;margin:0 auto;text-align:center}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px}
+.team-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center}
+.team-av{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;background:var(--navy);color:var(--gold)}
+.team-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.team-role{font-size:12px;color:var(--muted)}
+
+/* CTA */
+.cta{background:var(--navy);padding:72px 48px;text-align:center}
+.cta h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:800;color:#fff;margin-bottom:12px}
+.cta p{font-size:15px;color:rgba(255,255,255,0.4);margin-bottom:28px}
+.btn-cta-lg{padding:15px 36px;background:linear-gradient(135deg,var(--cyan),#0099bb);color:var(--navy);border-radius:12px;font-size:15px;font-weight:700;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+
+footer{background:#070c18;padding:28px 48px;display:flex;align-items:center;justify-content:space-between}
+.foot-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:rgba(255,255,255,0.5)}
+.foot-logo span{color:var(--cyan)}
+.foot-copy{font-size:11px;color:rgba(255,255,255,0.18)}
+
+@media(max-width:768px){nav{padding:0 16px}.nav-links{display:none}.hero{padding:48px 16px}.hero h1{font-size:30px}.mission{padding:48px 16px;grid-template-columns:1fr}.values-sec{padding:48px 16px}.val-grid{grid-template-columns:1fr}.team-sec{padding:48px 16px}.team-grid{grid-template-columns:1fr 1fr}.cta{padding:48px 16px}footer{padding:20px 16px;flex-direction:column;gap:8px;text-align:center}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo" onclick="location.href='index.html'"><div class="logo-sq">Q3</div>Q360<span> AI</span></div>
+  <div class="nav-links">
+    <a href="index.html">Nyumbani</a>
+    <a href="features.html">Huduma</a>
+    <a href="index.html#pricing">Bei</a>
+    <a href="about.html" class="active">Kuhusu</a>
+  </div>
+  <div class="nav-cta">
+    <button class="btn-ghost" onclick="location.href='login.html'">Ingia</button>
+    <button class="btn-cta" onclick="location.href='signup.html'">Anza Bure</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="chip">✦ Kuhusu Q360 AI</div>
+  <h1>Tuliunda Q360 AI<br>kwa Ajili ya <span>Wewe</span></h1>
+  <p>Mfumo wa kwanza wa AI ulioundwa Afrika Mashariki, ukifikiri wafanyabiashara na watu binafsi wa Tanzania na Afrika.</p>
+</div>
+
+<div class="mission">
+  <div>
+    <h2>Dhamira Yetu</h2>
+    <p>Tanzania ina wafanyabiashara zaidi ya milioni 3 wadogo na wa kati. Wengi wao wanasimamia biashara zao kwa karatasi au akili tu — bila zana za kisasa.</p>
+    <p>Q360 AI imezaliwa kutatua tatizo hili. Tunaamini kila mfanyabiashara wa Tanzania anastahili mfumo wa kisasa wa AI — bila gharama kubwa, bila ugumu wa teknolojia.</p>
+    <p style="font-weight:700;color:var(--text)">Smart Life. Smarter Business.</p>
+  </div>
+  <div class="mission-visual">
+    <i class="ti ti-brand-openai mission-icon"></i>
+    <div class="mission-stat">10K+</div>
+    <div class="mission-lbl" style="color:rgba(255,255,255,0.4);margin-bottom:24px">Wafanyabiashara Wanaotumia Q360 AI</div>
+    <div class="mission-stat" style="font-size:28px">TZS 5B+</div>
+    <div class="mission-lbl" style="color:rgba(255,255,255,0.4)">Mauzo Yaliyosimamiwa</div>
+  </div>
+</div>
+
+<div class="values-sec">
+  <div class="values-inner">
+    <div class="sec-chip">✦ MAADILI YETU</div>
+    <h2 class="sec-h">Tunaamini Katika</h2>
+    <p class="sec-s">Maadili yanayotuongoza kila siku</p>
+    <div class="val-grid">
+      <div class="val-card">
+        <div class="val-icon" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.15)"><i class="ti ti-users" style="font-size:20px;color:#00d4ff"></i></div>
+        <div class="val-title">Mtumiaji Kwanza</div>
+        <div class="val-desc">Kila uamuzi tunaoufanya unaanza na swali moja: Je, hii inamsaidia mtumiaji wetu? Teknolojia yetu imejengwa kwa ajili ya watu, si kwa ajili ya teknolojia yenyewe.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon" style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.15)"><i class="ti ti-shield-check" style="font-size:20px;color:#FFD700"></i></div>
+        <div class="val-title">Uaminifu na Usalama</div>
+        <div class="val-desc">Data yako ni yako. Hatuuzi data ya watumiaji wetu. Tunaweka usalama mkubwa — Supabase Row Level Security, encryption, na ukaguzi wa mara kwa mara.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon" style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15)"><i class="ti ti-rocket" style="font-size:20px;color:#10b981"></i></div>
+        <div class="val-title">Uvumbuzi wa Kudumu</div>
+        <div class="val-desc">AI inabadilika kila siku. Tunajua hilo. Q360 AI itakuwa na nguvu zaidi kila wiki — tunaendelea kuboresha bila kuacha.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="team-sec">
+  <div class="sec-chip">✦ TIMU YETU</div>
+  <h2 class="sec-h" style="text-align:center">Watu Wanaojenga Q360 AI</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-av">JM</div>
+      <div class="team-name">Jumanne Maregeri</div>
+      <div class="team-role">Founder & CEO</div>
+    </div>
+    <div class="team-card">
+      <div class="team-av">MM</div>
+      <div class="team-name">Mganga Makene</div>
+      <div class="team-role">Lead Engineer</div>
+    </div>
+    <div class="team-card">
+      <div class="team-av">JG</div>
+      <div class="team-name">Japhet George</div>
+      <div class="team-role">Policy & Governance</div>
+    </div>
+    <div class="team-card">
+      <div class="team-av">HA</div>
+      <div class="team-name">Hamza Athumani</div>
+      <div class="team-role">Head of Marketing</div>
+    </div>
+  </div>
+</div>
+
+<div class="cta">
+  <h2>Jiunge na Q360 AI Leo</h2>
+  <p>Anza bure — siku 7 za majaribio bila malipo</p>
+  <button class="btn-cta-lg" onclick="location.href='signup.html'"><i class="ti ti-rocket"></i> Anza Sasa — Bure</button>
+</div>
+
+<footer>
+  <div class="foot-logo">Q360<span> AI</span></div>
+  <div class="foot-copy">© 2026 TRAVEX Digital Group · Dar es Salaam, Tanzania</div>
+</footer>
+</body>
+</html>
