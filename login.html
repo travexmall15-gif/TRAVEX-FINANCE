@@ -8,7 +8,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#0a0f1e;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-font-smoothing:antialiased}
-
 .card{background:#fff;border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
 .logo{display:flex;align-items:center;gap:8px;margin-bottom:28px;cursor:pointer}
 .logo-sq{width:30px;height:30px;background:linear-gradient(135deg,#00d4ff,#FFD700);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#0a0f1e;font-family:'Plus Jakarta Sans',sans-serif}
@@ -22,55 +21,33 @@ label{display:block;font-size:13px;font-weight:600;color:#0a0f1e;margin-bottom:5
 input{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;color:#0a0f1e;outline:none;font-family:'DM Sans',sans-serif;transition:border-color 0.2s;background:#fff}
 input:focus{border-color:#00d4ff}
 .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:16px}
-.forgot{display:block;text-align:right;font-size:12px;color:#9ca3af;font-weight:500;margin:6px 0 18px;cursor:pointer}
-
-.btn-google{width:100%;padding:13px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:12px;transition:all 0.2s}
-.btn-google:hover{background:#f9fafb}
-.btn-google img{width:18px;height:18px}
-
-.divider{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
-.divider span{font-size:12px;color:#9ca3af}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
-
-.btn-login{width:100%;padding:13px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s}
-.btn-login:hover{opacity:0.9}
-
+.forgot{display:block;text-align:right;font-size:12px;color:#9ca3af;margin:6px 0 18px;cursor:pointer}
+.btn-g{width:100%;padding:13px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:12px;transition:all 0.2s}
+.btn-g:hover{background:#f9fafb}
+.btn-g img{width:18px;height:18px}
+.div{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
+.div span{font-size:12px;color:#9ca3af}
+.div::before,.div::after{content:'';flex:1;height:1px;background:#e5e7eb}
+.btn-in{width:100%;padding:13px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s}
+.btn-in:hover{opacity:0.9}
 .row{text-align:center;font-size:13px;color:#9ca3af;margin-top:16px}
 .row a{color:#0a0f1e;font-weight:700;cursor:pointer}
-
-/* Loading overlay */
-.veil{position:fixed;inset:0;background:#0a0f1e;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99;transition:opacity 0.25s}
-.veil.off{opacity:0;pointer-events:none}
-.veil-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#00d4ff;margin-bottom:16px}
-.veil-spin{width:28px;height:28px;border:2.5px solid rgba(0,212,255,0.15);border-top-color:#00d4ff;border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Entering animation */
-.btn-login.loading{opacity:0.7;pointer-events:none}
-.btn-login.loading i{animation:spin 0.7s linear infinite}
 </style>
 </head>
 <body>
-
-<div class="veil" id="veil">
-  <div class="veil-logo">Q360 AI</div>
-  <div class="veil-spin"></div>
-</div>
-
-<div class="card" id="card" style="display:none">
+<div class="card">
   <div class="logo" onclick="go()">
     <div class="logo-sq">Q3</div>
     <div class="logo-name">Q360<span> AI</span></div>
   </div>
-
   <h2>Karibu Tena</h2>
   <p class="sub">Ingia kwenye akaunti yako</p>
 
-  <button class="btn-google" onclick="go()">
+  <button class="btn-g" onclick="go()">
     <img src="https://www.google.com/favicon.ico" alt="G"> Endelea na Google
   </button>
-
-  <div class="divider"><span>au</span></div>
+  <div class="div"><span>au</span></div>
 
   <div class="fgrp">
     <label>Email</label>
@@ -79,56 +56,25 @@ input:focus{border-color:#00d4ff}
   <div class="fgrp">
     <label>Neno la Siri</label>
     <div class="iw">
-      <input type="password" id="passInp" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')go()">
-      <button class="eye" onclick="toggleEye()" type="button"><i class="ti ti-eye" id="eyeIco"></i></button>
+      <input type="password" id="pf" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')go()">
+      <button class="eye" onclick="var i=document.getElementById('pf');i.type=i.type==='password'?'text':'password'" type="button"><i class="ti ti-eye"></i></button>
     </div>
   </div>
   <a class="forgot" onclick="location.href='reset.html'">Umesahau neno la siri?</a>
 
-  <button class="btn-login" id="loginBtn" onclick="go()">
-    <i class="ti ti-login" id="loginIco"></i> Ingia
+  <button class="btn-in" onclick="go()">
+    <i class="ti ti-login"></i> Ingia
   </button>
-
   <div class="row">Huna akaunti? <a onclick="location.href='signup.html'">Jiandikishe Bure</a></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
 <script src="dev-config.js"></script>
 <script>
-// ── DEV MODE: no auth checks, direct entry ────────────────
-(async () => {
-  // If already has session → go straight in
-  const session = await Auth.getSession().catch(()=>null);
-  if (session) { window.location.replace('ai.html'); return; }
-
-  // Show card
-  document.getElementById('veil').classList.add('off');
-  document.getElementById('card').style.display = 'block';
-})();
-
-// Called by every button/interaction
-async function go() {
-  const btn = document.getElementById('loginBtn');
-  const ico = document.getElementById('loginIco');
-  btn.classList.add('loading');
-  ico.className = 'ti ti-loader-2';
-
-  // Try dev quick login (creates/reuses dev account)
-  if (typeof devQuickLogin === 'function') {
-    await devQuickLogin();
-    return;
-  }
-  // Fallback: direct redirect
+// If already in dev session → straight in
+if (localStorage.getItem('q360_dev_active') === 'true') {
   window.location.replace('ai.html');
 }
-
-function toggleEye() {
-  const i = document.getElementById('passInp');
-  const ic = document.getElementById('eyeIco');
-  i.type = i.type === 'password' ? 'text' : 'password';
-  ic.className = i.type === 'password' ? 'ti ti-eye' : 'ti ti-eye-off';
-}
+function go() { devQuickLogin(); }
 </script>
 </body>
 </html>
