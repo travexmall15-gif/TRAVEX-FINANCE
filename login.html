@@ -10,22 +10,19 @@
 body{font-family:'DM Sans',sans-serif;background:#0a0f1e;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-font-smoothing:antialiased}
 
 .card{background:#fff;border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-.card-logo{display:flex;align-items:center;gap:8px;margin-bottom:28px;cursor:pointer}
+.logo{display:flex;align-items:center;gap:8px;margin-bottom:28px;cursor:pointer}
 .logo-sq{width:30px;height:30px;background:linear-gradient(135deg,#00d4ff,#FFD700);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#0a0f1e;font-family:'Plus Jakarta Sans',sans-serif}
 .logo-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:#0a0f1e}
 .logo-name span{color:#00d4ff}
+
 h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#0a0f1e;margin-bottom:4px}
 .sub{font-size:13px;color:#9ca3af;margin-bottom:24px}
 
-.form-group{margin-bottom:14px}
 label{display:block;font-size:13px;font-weight:600;color:#0a0f1e;margin-bottom:5px}
-.inp-wrap{position:relative}
+.inp-wrap{position:relative;margin-bottom:14px}
 input{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;color:#0a0f1e;background:#fff;outline:none;transition:border-color 0.2s;font-family:'DM Sans',sans-serif}
 input:focus{border-color:#00d4ff}
 .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:16px;padding:2px}
-
-.forgot{display:block;text-align:right;font-size:12px;color:#6b7280;font-weight:600;margin-top:4px;margin-bottom:16px;cursor:pointer}
-.forgot:hover{color:#0a0f1e}
 
 .btn-main{width:100%;padding:13px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;margin-bottom:12px}
 .btn-main:hover{opacity:0.9}
@@ -35,12 +32,23 @@ input:focus{border-color:#00d4ff}
 .divider span{font-size:12px;color:#9ca3af;white-space:nowrap}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
 
-.btn-google{width:100%;padding:12px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;transition:all 0.2s}
-.btn-google:hover{background:#f9fafb}
+/* Google button — style differs in DEV vs PROD */
+.btn-google{width:100%;padding:12px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;transition:all 0.2s;position:relative}
+.btn-google:hover{background:#f9fafb;border-color:#d1d5db}
 .btn-google img{width:18px;height:18px}
+/* DEV badge shown only in dev mode */
+.dev-badge{position:absolute;top:-8px;right:10px;background:#f59e0b;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:0.3px;display:none}
+
+.forgot{display:block;text-align:right;font-size:12px;color:#6b7280;font-weight:600;margin-bottom:16px;cursor:pointer}
+.forgot:hover{color:#0a0f1e}
+.fmb{margin-bottom:14px}
 
 .err{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;border-radius:8px;padding:10px 14px;font-size:13px;display:none;align-items:center;gap:8px;margin-bottom:14px}
 .err.show{display:flex}
+
+/* DEV mode banner */
+.dev-banner{background:#0a0f1e;color:#00d4ff;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;margin-bottom:14px;align-items:center;gap:8px;display:none}
+.dev-err{background:#fef3c7;border:1px solid #fcd34d;color:#92400e;border-radius:8px;padding:10px 14px;font-size:12px;margin-top:10px;display:none;line-height:1.5}
 
 .signup-row{text-align:center;font-size:13px;color:#9ca3af;margin-top:16px}
 .signup-row a{color:#0a0f1e;font-weight:700;cursor:pointer}
@@ -48,21 +56,21 @@ input:focus{border-color:#00d4ff}
 
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Loader overlay */
 .overlay{position:fixed;inset:0;background:#0a0f1e;display:flex;align-items:center;justify-content:center;z-index:999;transition:opacity 0.3s}
 .overlay.off{opacity:0;pointer-events:none}
-.ov-txt{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#00d4ff;text-align:center}
+.ov-inner{text-align:center}
+.ov-txt{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#00d4ff}
 .ov-spin{width:28px;height:28px;border:2.5px solid rgba(0,212,255,0.2);border-top-color:#00d4ff;border-radius:50%;animation:spin 0.7s linear infinite;margin:14px auto 0}
 </style>
 </head>
 <body>
 
 <div class="overlay" id="overlay">
-  <div><div class="ov-txt">Q360 AI</div><div class="ov-spin"></div></div>
+  <div class="ov-inner"><div class="ov-txt">Q360 AI</div><div class="ov-spin"></div></div>
 </div>
 
 <div class="card" id="mainCard" style="display:none">
-  <div class="card-logo" onclick="location.href='index.html'">
+  <div class="logo" onclick="location.href='index.html'">
     <div class="logo-sq">Q3</div>
     <div class="logo-name">Q360<span> AI</span></div>
   </div>
@@ -70,19 +78,34 @@ input:focus{border-color:#00d4ff}
   <h2>Karibu Tena</h2>
   <p class="sub">Ingia kwenye akaunti yako</p>
 
+  <!-- Dev mode loading banner -->
+  <div class="dev-banner" id="devBanner">
+    <i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite;font-size:14px"></i>
+    <span>Inaingia kwa Dev Mode...</span>
+  </div>
+  <div class="dev-err" id="devError"></div>
+
+  <!-- Error -->
   <div class="err" id="errBox"><i class="ti ti-alert-circle"></i><span id="errMsg"></span></div>
 
-  <button class="btn-google" onclick="doGoogle()" id="googleBtn">
-    <img src="https://www.google.com/favicon.ico" alt="G"> Endelea na Google
-  </button>
+  <!-- Google / Dev button -->
+  <div style="position:relative">
+    <div class="dev-badge" id="devBadge">DEV MODE</div>
+    <button class="btn-google" id="googleBtn" onclick="handleGoogle()">
+      <img src="https://www.google.com/favicon.ico" alt="G">
+      <span id="googleBtnTxt">Endelea na Google</span>
+    </button>
+  </div>
 
   <div class="divider"><span>au</span></div>
 
-  <div class="form-group">
+  <div style="margin-bottom:0">
     <label>Email</label>
-    <input type="email" id="fEmail" placeholder="mfano@email.com" autocomplete="email">
+    <div class="inp-wrap">
+      <input type="email" id="fEmail" placeholder="mfano@email.com" autocomplete="email">
+    </div>
   </div>
-  <div class="form-group">
+  <div class="fmb">
     <label>Neno la Siri</label>
     <div class="inp-wrap">
       <input type="password" id="fPass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
@@ -100,28 +123,57 @@ input:focus{border-color:#00d4ff}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+
+<!-- ══════════════════════════════════════════════════════
+     DEV CONFIG — remove this line in production
+     ══════════════════════════════════════════════════════ -->
+<script src="dev-config.js"></script>
+
 <script>
 (async () => {
   const session = await Auth.getSession();
   if (session) { window.location.replace('ai.html'); return; }
+
+  // Show card
   document.getElementById('overlay').classList.add('off');
   document.getElementById('mainCard').style.display = 'block';
-  // Check for OAuth return
+
+  // If DEV_MODE is active — style the Google button as dev shortcut
+  if (typeof DEV_MODE !== 'undefined' && DEV_MODE) {
+    document.getElementById('devBadge').style.display = 'block';
+    document.getElementById('googleBtnTxt').textContent = 'Dev Quick Login';
+    document.getElementById('googleBtn').style.borderColor = '#f59e0b';
+    document.getElementById('googleBtn').style.background = '#fffbeb';
+    document.getElementById('googleBtn').title = '[DEV MODE] Click to auto-login with dev account';
+  }
+
+  // Handle OAuth return
   if (window.location.hash.includes('access_token')) window.location.replace('ai.html');
 })();
 
+// ── GOOGLE / DEV HANDLER ──────────────────────────────────
+async function handleGoogle() {
+  // DEV MODE: bypass OAuth, use dev account
+  if (typeof DEV_MODE !== 'undefined' && DEV_MODE) {
+    const btn = document.getElementById('googleBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite;font-size:16px"></i> <span>Inaingia...</span>';
+    await devQuickLogin();
+    return;
+  }
+  // PRODUCTION: real Google OAuth (future)
+  const btn = document.getElementById('googleBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite;font-size:16px"></i> <span>Inaelekeza...</span>';
+  await Auth.loginWithGoogle();
+}
+
+// ── EMAIL LOGIN ───────────────────────────────────────────
 function toggleEye() {
   const i = document.getElementById('fPass');
   const ic = document.getElementById('eyeIco');
   i.type = i.type === 'password' ? 'text' : 'password';
   ic.className = i.type === 'password' ? 'ti ti-eye' : 'ti ti-eye-off';
-}
-
-async function doGoogle() {
-  const btn = document.getElementById('googleBtn');
-  btn.innerHTML = '<div style="width:16px;height:16px;border:2px solid #e5e7eb;border-top-color:#0a0f1e;border-radius:50%;animation:spin 0.7s linear infinite"></div> Inaelekeza...';
-  btn.disabled = true;
-  await Auth.loginWithGoogle();
 }
 
 async function doLogin() {
@@ -139,12 +191,11 @@ async function doLogin() {
     btn.disabled = false;
     btn.innerHTML = '<i class="ti ti-login"></i> Ingia';
     if (error.message.includes('not confirmed')) showErr('Thibisha email yako kwanza — angalia inbox');
-    else if (error.message.includes('Invalid')) showErr('Email au neno la siri si sahihi');
+    else if (error.message.includes('Invalid'))  showErr('Email au neno la siri si sahihi');
     else showErr(error.message);
     return;
   }
 
-  // ✅ Redirect moja kwa moja
   window.location.replace('ai.html');
 }
 
