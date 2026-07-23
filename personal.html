@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fedha Zangu — Q360 AI</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+.budget-overview{background:var(--navy);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;position:relative;overflow:hidden;border:1px solid var(--border-dark)}
+.budget-overview::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(0,212,255,0.06),transparent)}
+.bov-item{}
+.bov-label{font-size:10px;color:var(--text-white-dim);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px}
+.bov-value{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800}
+.bov-sub{font-size:11px;color:var(--text-white-dim);margin-top:3px}
+.income-color{color:var(--cyan)}
+.expense-color{color:#ff6b6b}
+.profit-color{color:var(--gold)}
+
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.cat-btn{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center;cursor:pointer;transition:all 0.2s}
+.cat-btn:hover,.cat-btn.active{border-color:var(--cyan);background:rgba(0,212,255,0.04)}
+.cat-btn i{font-size:20px;color:var(--text-muted);display:block;margin-bottom:6px}
+.cat-btn.active i{color:var(--cyan)}
+.cat-btn span{font-size:11px;font-weight:600;color:var(--text-muted)}
+.cat-btn.active span{color:var(--navy)}
+
+.goals-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.goal-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:16px}
+.goal-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.goal-target{font-size:12px;color:var(--text-muted);margin-bottom:10px}
+.goal-saved{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.goal-pct{font-size:11px;color:var(--text-muted);margin-bottom:6px}
+
+.pie-simple{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pie-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)}
+.pie-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div>
+      <div class="header-title">Fedha Zangu</div>
+      <div class="header-sub">Simamia mapato, matumizi, na malengo yako ya kifedha</div>
+    </div>
+    <div class="header-right">
+      <a href="ai.html" class="btn btn-ai btn-sm"><i class="ti ti-brand-openai"></i> Uliza AI</a>
+      <button class="btn btn-gold" onclick="openModal('modalAdd')"><i class="ti ti-plus"></i> Ongeza</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Budget Overview -->
+    <div class="budget-overview">
+      <div class="bov-item">
+        <div class="bov-label">Mapato Mwezi Huu</div>
+        <div class="bov-value income-color" id="totalMapato">TZS —</div>
+        <div class="bov-sub" id="mapatoSub">Inapakia...</div>
+      </div>
+      <div class="bov-item">
+        <div class="bov-label">Matumizi Mwezi Huu</div>
+        <div class="bov-value expense-color" id="totalMatumizi">TZS —</div>
+        <div class="bov-sub" id="matumiziSub">Inapakia...</div>
+      </div>
+      <div class="bov-item">
+        <div class="bov-label">Akiba / Ziada</div>
+        <div class="bov-value profit-color" id="totalAkiba">TZS —</div>
+        <div class="bov-sub" id="akibaSub">Inapakia...</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid" style="margin-bottom:20px"></div>
+
+    <!-- Filter -->
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('mwezi',this)">Mwezi Huu</button>
+      <button class="filter-btn" onclick="setFilter('wiki',this)">Wiki Hii</button>
+      <button class="filter-btn" onclick="setFilter('mwaka',this)">Mwaka Huu</button>
+      <button class="filter-btn" onclick="setFilter('yote',this)">Yote</button>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="tabs tab-group" style="margin-bottom:20px">
+      <button class="tab-btn active" data-tab="tab-all">Yote</button>
+      <button class="tab-btn" data-tab="tab-mapato">Mapato</button>
+      <button class="tab-btn" data-tab="tab-matumizi">Matumizi</button>
+      <button class="tab-btn" data-tab="tab-goals">Malengo</button>
+    </div>
+
+    <!-- Tab: All -->
+    <div class="tab-content active" id="tab-all">
+      <div class="table-card">
+        <div class="table-card-header">
+          <div class="table-card-title">Rekodi Zote</div>
+          <div class="table-actions">
+            <div class="search-box"><i class="ti ti-search"></i><input id="searchAll" placeholder="Tafuta..."></div>
+          </div>
+        </div>
+        <table><thead><tr><th>Kichwa</th><th>Kategoria</th><th>Tarehe</th><th class="text-right">Kiasi</th><th></th></tr></thead>
+        <tbody id="allBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- Tab: Mapato -->
+    <div class="tab-content" id="tab-mapato">
+      <div class="table-card">
+        <div class="table-card-header">
+          <div class="table-card-title" style="color:var(--success)">📈 Mapato</div>
+          <button class="btn btn-cyan btn-sm" onclick="openModal('modalAdd',{aina:'mapato'})"><i class="ti ti-plus"></i> Ongeza Mapato</button>
+        </div>
+        <table><thead><tr><th>Kichwa</th><th>Chanzo</th><th>Tarehe</th><th class="text-right">Kiasi</th></tr></thead>
+        <tbody id="mapatoBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- Tab: Matumizi -->
+    <div class="tab-content" id="tab-matumizi">
+      <div class="table-card">
+        <div class="table-card-header">
+          <div class="table-card-title" style="color:var(--danger)">📉 Matumizi</div>
+          <button class="btn btn-navy btn-sm" onclick="openModal('modalAdd',{aina:'matumizi'})"><i class="ti ti-plus"></i> Ongeza Matumizi</button>
+        </div>
+        <table><thead><tr><th>Kichwa</th><th>Kategoria</th><th>Tarehe</th><th class="text-right">Kiasi</th></tr></thead>
+        <tbody id="matumiziBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- Tab: Goals -->
+    <div class="tab-content" id="tab-goals">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="font-size:15px;font-weight:700;color:var(--navy)">Malengo ya Kifedha</div>
+        <button class="btn btn-gold btn-sm" onclick="openModal('modalGoal')"><i class="ti ti-plus"></i> Lengo Jipya</button>
+      </div>
+      <div class="goals-grid" id="goalsGrid">
+        <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">
+          <i class="ti ti-target" style="font-size:32px;display:block;margin-bottom:8px"></i>
+          Bado huna malengo. Ongeza lengo lako la kwanza la kifedha!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Add Transaction -->
+<div class="modal-overlay" id="modalAdd">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalAddTitle">Ongeza Rekodi</div>
+      <button class="modal-close" onclick="closeModal('modalAdd')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="tabs tab-group" style="margin-bottom:20px">
+      <button class="tab-btn active" data-tab="mtab-mapato" onclick="setModalType('mapato')">Mapato</button>
+      <button class="tab-btn" data-tab="mtab-matumizi" onclick="setModalType('matumizi')">Matumizi</button>
+    </div>
+    <div class="form-group"><label class="form-label">Kichwa / Maelezo *</label><input class="form-control" id="fKichwa" placeholder="Mfano: Mshahara, Kodi, Chakula"></div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label class="form-label">Kategoria</label>
+        <select class="form-control" id="fKat">
+          <option>Mshahara</option><option>Biashara</option><option>Chakula</option>
+          <option>Usafiri</option><option>Nyumba</option><option>Elimu</option>
+          <option>Afya</option><option>Burudani</option><option>Nyingine</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Kiasi (TZS) *</label><input type="number" class="form-control" id="fKiasi" placeholder="0"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Tarehe</label><input type="date" class="form-control" id="fTarehe"></div>
+    <div class="form-group"><label class="form-label">Maelezo ya Ziada</label><input class="form-control" id="fMaelezo" placeholder="Maelezo zaidi (si lazima)"></div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveTransaction()"><i class="ti ti-check"></i> Hifadhi</button>
+  </div>
+</div>
+
+<!-- MODAL: Goal -->
+<div class="modal-overlay" id="modalGoal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Lengo Jipya la Kifedha</div>
+      <button class="modal-close" onclick="closeModal('modalGoal')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="form-group"><label class="form-label">Jina la Lengo *</label><input class="form-control" id="gJina" placeholder="Mfano: Gari, Nyumba, Likizo"></div>
+    <div class="grid-2">
+      <div class="form-group"><label class="form-label">Kiasi Kinachohitajika *</label><input type="number" class="form-control" id="gTarget" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Kiasi Kilichohifadhiwa</label><input type="number" class="form-control" id="gSaved" placeholder="0"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Tarehe ya Lengo</label><input type="date" class="form-control" id="gDate"></div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveGoal()"><i class="ti ti-target"></i> Unda Lengo</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+let allData = [];
+let modalType = 'mapato';
+let currentFilter = 'mwezi';
+const COLORS = ['#00d4ff','#FFD700','#22c55e','#f59e0b','#ef4444','#8b5cf6'];
+
+const CATEGORIES = {
+  mapato: ['Mshahara','Biashara','Kukopa','Zawadi','Nyingine'],
+  matumizi: ['Chakula','Usafiri','Nyumba','Elimu','Afya','Burudani','Nguo','Kukopa Kulipa','Nyingine']
+};
+
+(async () => {
+  const session = await Auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  await loadSidebar('personal');
+  initTabs();
+  document.getElementById('fTarehe').value = today();
+  await loadAll();
+})();
+
+function setModalType(type) {
+  modalType = type;
+  const cats = CATEGORIES[type];
+  document.getElementById('fKat').innerHTML = cats.map(c=>`<option>${c}</option>`).join('');
+}
+
+async function loadAll() {
+  allData = await DB.personal.getAll();
+  const now = new Date();
+  let filtered = allData;
+  if (currentFilter === 'mwezi') filtered = allData.filter(d => { const dt = new Date(d.tarehe); return dt.getMonth()===now.getMonth()&&dt.getFullYear()===now.getFullYear(); });
+  else if (currentFilter === 'wiki') { const s = new Date(now); s.setDate(s.getDate()-7); filtered = allData.filter(d => new Date(d.tarehe)>=s); }
+  else if (currentFilter === 'mwaka') filtered = allData.filter(d => new Date(d.tarehe).getFullYear()===now.getFullYear());
+
+  const mapato = filtered.filter(d=>d.aina==='mapato').reduce((a,d)=>a+Number(d.kiasi),0);
+  const matumizi = filtered.filter(d=>d.aina==='matumizi').reduce((a,d)=>a+Number(d.kiasi),0);
+  const akiba = mapato - matumizi;
+
+  document.getElementById('totalMapato').textContent = formatTZS(mapato);
+  document.getElementById('totalMatumizi').textContent = formatTZS(matumizi);
+  document.getElementById('totalAkiba').textContent = formatTZS(akiba);
+  document.getElementById('mapatoSub').textContent = `${filtered.filter(d=>d.aina==='mapato').length} rekodi`;
+  document.getElementById('matumiziSub').textContent = `${filtered.filter(d=>d.aina==='matumizi').length} rekodi`;
+  document.getElementById('akibaSub').textContent = akiba >= 0 ? 'Unabaki nazo' : 'Matumizi makubwa';
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Rekodi Zote</div><div class="stat-value">${filtered.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Wastani/Wiki</div><div class="stat-value" style="font-size:16px">${formatTZS(Math.round(mapato/4))}</div></div>
+    <div class="stat-card"><div class="stat-label">Asilimia Akiba</div><div class="stat-value">${mapato>0?Math.round((akiba/mapato)*100):0}%</div></div>
+    <div class="stat-card"><div class="stat-label">Matumizi Makubwa</div><div class="stat-value" style="font-size:14px">${getTopCategory(filtered)}</div></div>
+  `;
+
+  const emptyRow = '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">Hakuna rekodi bado</td></tr>';
+  document.getElementById('allBody').innerHTML = filtered.length ? filtered.map(d=>`<tr>
+    <td class="text-navy">${d.kichwa}</td>
+    <td><span class="badge ${d.aina==='mapato'?'badge-success':'badge-danger'}">${d.kategoria}</span></td>
+    <td class="text-muted">${formatDate(d.tarehe)}</td>
+    <td class="text-right font-bold" style="color:${d.aina==='mapato'?'var(--success)':'var(--danger)'}">
+      ${d.aina==='mapato'?'+':'−'}${formatTZS(d.kiasi)}
+    </td>
+    <td><button class="btn btn-danger btn-sm" onclick="deleteRekodi(${d.id})"><i class="ti ti-trash"></i></button></td>
+  </tr>`).join('') : emptyRow;
+
+  const mapRekodi = filtered.filter(d=>d.aina==='mapato');
+  const matRekodi = filtered.filter(d=>d.aina==='matumizi');
+  document.getElementById('mapatoBody').innerHTML = mapRekodi.length ? mapRekodi.map(d=>`<tr>
+    <td class="text-navy">${d.kichwa}</td><td><span class="badge badge-success">${d.kategoria}</span></td>
+    <td class="text-muted">${formatDate(d.tarehe)}</td><td class="text-right text-success font-bold">+${formatTZS(d.kiasi)}</td>
+  </tr>`).join('') : emptyRow;
+  document.getElementById('matumiziBody').innerHTML = matRekodi.length ? matRekodi.map(d=>`<tr>
+    <td class="text-navy">${d.kichwa}</td><td><span class="badge badge-danger">${d.kategoria}</span></td>
+    <td class="text-muted">${formatDate(d.tarehe)}</td><td class="text-right text-danger font-bold">−${formatTZS(d.kiasi)}</td>
+  </tr>`).join('') : emptyRow;
+
+  searchTable('searchAll','allBody');
+}
+
+function getTopCategory(data) {
+  const mats = data.filter(d=>d.aina==='matumizi');
+  if (!mats.length) return '—';
+  const cats = {};
+  mats.forEach(d => { cats[d.kategoria] = (cats[d.kategoria]||0) + Number(d.kiasi); });
+  return Object.entries(cats).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
+}
+
+async function saveTransaction() {
+  const kichwa = document.getElementById('fKichwa').value.trim();
+  const kiasi = parseFloat(document.getElementById('fKiasi').value)||0;
+  if (!kichwa || !kiasi) { showToast('Jaza kichwa na kiasi','error'); return; }
+  await DB.personal.add({
+    kichwa, kiasi, aina: modalType,
+    kategoria: document.getElementById('fKat').value,
+    tarehe: document.getElementById('fTarehe').value,
+    maelezo: document.getElementById('fMaelezo').value.trim()
+  });
+  closeModal('modalAdd');
+  showToast('Imehifadhiwa!');
+  document.getElementById('fKichwa').value='';
+  document.getElementById('fKiasi').value='';
+  document.getElementById('fMaelezo').value='';
+  await loadAll();
+}
+
+async function saveGoal() {
+  showToast('Lengo limehifadhiwa! ✅');
+  closeModal('modalGoal');
+  document.getElementById('goalsGrid').innerHTML = `
+    <div class="goal-card">
+      <div class="goal-name">${document.getElementById('gJina').value}</div>
+      <div class="goal-target">Lengo: ${formatTZS(document.getElementById('gTarget').value)}</div>
+      <div class="goal-saved">${formatTZS(document.getElementById('gSaved').value)} imehifadhiwa</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.min((document.getElementById('gSaved').value/document.getElementById('gTarget').value)*100,100)}%;background:var(--cyan)"></div></div>
+    </div>`;
+}
+
+async function deleteRekodi(id) {
+  if (!confirm('Futa rekodi hii?')) return;
+  await DB.personal.delete(id);
+  showToast('Imefutwa!');
+  await loadAll();
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  loadAll();
+}
+</script>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html"><i class="ti ti-home"></i><span>Nyumbani</span></a>
+  <a href="ai.html"><i class="ti ti-brand-openai"></i><span>AI</span></a>
+  <a href="personal.html" class="active"><i class="ti ti-wallet"></i><span>Fedha</span></a>
+  <a href="projects.html"><i class="ti ti-layout-kanban"></i><span>Miradi</span></a>
+  <a href="mipangilio.html"><i class="ti ti-settings"></i><span>Zaidi</span></a>
+</nav>
+</body>
+</html>
