@@ -6,271 +6,250 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="shared.css">
 <style>
-.welcome-bar{background:var(--navy);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;border:1px solid var(--border-dark)}
-.welcome-bar::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(0,212,255,0.08),transparent);pointer-events:none}
-.welcome-msg{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:4px}
-.welcome-sub{font-size:13px;color:var(--text-white-dim)}
-.trial-box{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:12px 20px;text-align:center;flex-shrink:0}
-.trial-days{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--gold)}
-.trial-lbl{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
-
-/* AI Quick Ask */
-.ai-quick{background:var(--white);border-radius:var(--radius-lg);border:1.5px solid var(--border);padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;cursor:text;transition:all 0.2s}
-.ai-quick:hover,.ai-quick:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,0.08)}
-.ai-quick-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--cyan-glow),rgba(0,168,204,0.1));border:1px solid var(--cyan-border);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ai-quick-icon i{font-size:18px;color:var(--cyan)}
-.ai-quick-input{flex:1;border:none;outline:none;font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;background:transparent}
-.ai-quick-input::placeholder{color:var(--text-muted)}
-.ai-quick-btn{padding:8px 16px;background:var(--navy);color:var(--white);border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;flex-shrink:0}
-
-/* Activities */
-.activity-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
-.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.qa-btn{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block}
-.qa-btn:hover{border-color:var(--cyan);background:rgba(0,212,255,0.02)}
-.qa-btn i{font-size:22px;color:var(--navy);display:block;margin-bottom:8px}
-.qa-btn span{font-size:12px;font-weight:600;color:var(--navy)}
-
-/* Bar chart */
-.bar-chart{display:flex;align-items:flex-end;gap:6px;height:90px;margin-top:12px}
-.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height 0.4s}
-.bar-label{font-size:10px;color:var(--text-muted)}
-
-/* AI Insight Card */
-.insight-card{background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:var(--radius-lg);border:1px solid var(--cyan-border);padding:20px;margin-bottom:20px;position:relative;overflow:hidden}
-.insight-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(0,212,255,0.1),transparent)}
-.insight-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.insight-icon{width:28px;height:28px;background:var(--cyan-glow);border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px solid var(--cyan-border)}
-.insight-icon i{font-size:14px;color:var(--cyan)}
-.insight-title{font-size:12px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:0.5px}
-.insight-text{font-size:13px;color:var(--text-white);line-height:1.6}
-
-/* Loading skeleton */
-.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:loading 1.5s infinite;border-radius:6px;height:20px}
-@keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.welcome{background:var(--navy);border-radius:var(--radius-lg);padding:22px 26px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;border:1px solid var(--border-dark);position:relative;overflow:hidden}
+.welcome::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(0,212,255,0.07),transparent);pointer-events:none}
+.w-msg{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#fff}
+.w-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px}
+.plan-pill{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.08);color:#00d4ff}
+.btn-up{padding:8px 18px;background:linear-gradient(135deg,#FFD700,#e6c200);color:#0a0f1e;border-radius:8px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-up:hover{opacity:0.9}
+.ai-ask{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:20px;cursor:text;transition:all 0.2s}
+.ai-ask:focus-within,.ai-ask:hover{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-glow)}
+.ai-icon{width:36px;height:36px;background:var(--cyan-glow);border:1px solid var(--cyan-border);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-icon i{font-size:18px;color:var(--cyan)}
+.ai-ask input{flex:1;border:none;outline:none;font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;background:transparent}
+.ai-ask input::placeholder{color:var(--text-muted)}
+.ai-ask-btn{padding:8px 18px;background:var(--navy);color:#fff;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px}
+.ws-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.ws{border-radius:var(--radius-lg);padding:22px;position:relative;overflow:hidden;cursor:pointer;transition:all 0.25s;text-decoration:none;display:block;border:1.5px solid transparent}
+.ws:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.ws.p{background:linear-gradient(135deg,#0d1f3c,#112240);border-color:rgba(0,212,255,0.2)}
+.ws.b{background:linear-gradient(135deg,#1a1200,#2a1e00);border-color:rgba(255,215,0,0.2)}
+.ws::after{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;opacity:0.08}
+.ws.p::after{background:#00d4ff}
+.ws.b::after{background:#FFD700}
+.ws-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.ws.p .ws-ico{background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.2)}
+.ws.b .ws-ico{background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.2)}
+.ws-ico i{font-size:22px}
+.ws.p .ws-ico i{color:#00d4ff}
+.ws.b .ws-ico i{color:#FFD700}
+.ws-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:5px}
+.ws-sub{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.55;margin-bottom:14px}
+.ws-tags{display:flex;gap:6px;flex-wrap:wrap}
+.ws-tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.08)}
+.ws-arr{position:absolute;bottom:18px;right:18px;font-size:18px;color:rgba(255,255,255,0.2);transition:all 0.2s}
+.ws:hover .ws-arr{color:rgba(255,255,255,0.6);transform:translateX(3px)}
+.btm{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.ai-card{background:linear-gradient(135deg,var(--navy),var(--navy-light));border:1px solid var(--cyan-border);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px}
+.ai-card-hdr{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.ai-card-dot{width:6px;height:6px;border-radius:50%;background:#00d4ff;animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.ai-card-title{font-size:11px;font-weight:700;color:#00d4ff;text-transform:uppercase;letter-spacing:0.5px}
+.ai-card-text{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.65}
+.qa-g{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.qa{background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block}
+.qa:hover{border-color:var(--cyan);background:var(--cyan-glow)}
+.qa i{font-size:18px;color:var(--navy);display:block;margin-bottom:5px}
+.qa span{font-size:11px;font-weight:600;color:var(--navy)}
+.act-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.act-item:last-child{border-bottom:none}
+.act-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.act-lbl{font-size:12px;font-weight:600;color:var(--navy)}
+.act-time{font-size:10px;color:var(--text-muted);margin-top:1px}
+.bars{display:flex;align-items:flex-end;gap:5px;height:70px;margin-top:12px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bf{width:100%;border-radius:3px 3px 0 0;min-height:3px}
+.bl{font-size:9px;color:var(--text-muted)}
+.ntf{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--border)}
+.ntf:last-child{border-bottom:none}
+.ntf-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.ntf-txt{font-size:12px;color:var(--text);line-height:1.5}
+.ntf-time{font-size:10px;color:var(--text-muted);margin-top:2px}
+@media(max-width:768px){.ws-grid,.btm{grid-template-columns:1fr}.welcome{flex-direction:column;align-items:flex-start;gap:12px}.stats-grid{grid-template-columns:1fr 1fr!important}}
 </style>
 </head>
 <body>
 <div class="sidebar" id="sidebar"></div>
 <div class="main-wrapper">
   <div class="main-header">
-    <div class="header-left">
-      <div>
-        <div class="header-title">Dashboard</div>
-        <div class="header-sub" id="headerDate">Inapakia...</div>
-      </div>
+    <div>
+      <div class="header-title">Dashboard</div>
+      <div class="header-sub" id="hDate"></div>
     </div>
     <div class="header-right">
       <div class="header-ai-badge"><span class="ai-dot"></span> Q360 AI Online</div>
       <a href="ai.html" class="btn btn-ai btn-sm"><i class="ti ti-brand-openai"></i> Zungumza na AI</a>
     </div>
   </div>
-
   <div class="main-content">
-    <!-- Welcome Bar -->
-    <div class="welcome-bar">
+
+    <div class="welcome">
       <div>
-        <div class="welcome-msg" id="welcomeMsg">Habari!</div>
-        <div class="welcome-sub" id="welcomeSub">Biashara yako inakusubiri — hebu tuangalie leo</div>
+        <div class="w-msg" id="wMsg">Habari!</div>
+        <div class="w-sub" id="wSub">Karibu kwenye Q360 AI</div>
       </div>
-      <div class="trial-box">
-        <div class="trial-days" id="trialDays">7</div>
-        <div class="trial-lbl">Siku za Bure</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <div class="plan-pill" id="planPill">Pro</div>
+        <button class="btn-up" onclick="location.href='subscription.html'"><i class="ti ti-crown"></i> Boresha</button>
       </div>
     </div>
 
-    <!-- AI Quick Ask -->
-    <div class="ai-quick" onclick="document.getElementById('aiInput').focus()">
-      <div class="ai-quick-icon"><i class="ti ti-brand-openai"></i></div>
-      <input id="aiInput" class="ai-quick-input" placeholder="Uliza Q360 AI — 'Biashara yangu imekwenda vipi leo?'" onkeydown="if(event.key==='Enter')goAI()">
-      <button class="ai-quick-btn" onclick="goAI()"><i class="ti ti-send"></i> Tuma</button>
+    <div class="ai-ask" onclick="document.getElementById('aiQ').focus()">
+      <div class="ai-icon"><i class="ti ti-brand-openai"></i></div>
+      <input id="aiQ" placeholder="Uliza Q360 AI chochote..." onkeydown="if(event.key==='Enter')askAI()">
+      <button class="ai-ask-btn" onclick="askAI()"><i class="ti ti-send"></i> Tuma</button>
     </div>
 
-    <!-- Stats -->
-    <div class="stats-grid" id="statsGrid">
-      <div class="stat-card"><div class="skeleton" style="height:12px;width:60%;margin-bottom:10px"></div><div class="skeleton" style="height:28px;width:80%"></div></div>
-      <div class="stat-card"><div class="skeleton" style="height:12px;width:60%;margin-bottom:10px"></div><div class="skeleton" style="height:28px;width:80%"></div></div>
-      <div class="stat-card"><div class="skeleton" style="height:12px;width:60%;margin-bottom:10px"></div><div class="skeleton" style="height:28px;width:80%"></div></div>
-      <div class="stat-card"><div class="skeleton" style="height:12px;width:60%;margin-bottom:10px"></div><div class="skeleton" style="height:28px;width:80%"></div></div>
+    <div class="stats-grid" id="statsGrid" style="margin-bottom:20px"></div>
+
+    <div class="ws-grid">
+      <a href="personal.html" class="ws p">
+        <div class="ws-ico"><i class="ti ti-wallet"></i></div>
+        <div class="ws-title">Kibinafsi</div>
+        <div class="ws-sub">Fedha zako za kibinafsi, bajeti, akiba, na malengo ya kifedha</div>
+        <div class="ws-tags"><span class="ws-tag">Mapato</span><span class="ws-tag">Matumizi</span><span class="ws-tag">Akiba</span><span class="ws-tag">Malengo</span><span class="ws-tag">Miradi</span></div>
+        <i class="ti ti-arrow-right ws-arr"></i>
+      </a>
+      <a href="mauzo.html" class="ws b">
+        <div class="ws-ico"><i class="ti ti-building-store"></i></div>
+        <div class="ws-title">Biashara</div>
+        <div class="ws-sub">Mauzo, stock, madeni, invoice, wafanyakazi na uchambuzi kamili</div>
+        <div class="ws-tags"><span class="ws-tag">Mauzo</span><span class="ws-tag">Stock</span><span class="ws-tag">Invoice</span><span class="ws-tag">Madeni</span><span class="ws-tag">Wafanyakazi</span></div>
+        <i class="ti ti-arrow-right ws-arr"></i>
+      </a>
     </div>
 
-    <!-- AI Insight -->
-    <div class="insight-card" id="insightCard" style="display:none">
-      <div class="insight-header">
-        <div class="insight-icon"><i class="ti ti-bulb"></i></div>
-        <div class="insight-title">Q360 AI Insight</div>
-      </div>
-      <div class="insight-text" id="insightText">Inapakia...</div>
-    </div>
-
-    <!-- Activities -->
-    <div class="activity-grid">
+    <div class="btm">
       <div>
-        <!-- Recent Sales -->
-        <div class="table-card">
-          <div class="table-card-header">
-            <div>
-              <div class="table-card-title">Mauzo ya Hivi Karibuni</div>
-              <div class="table-card-sub">Miamala ya leo</div>
-            </div>
-            <a href="mauzo.html" class="btn btn-outline btn-sm">Ona Yote</a>
-          </div>
-          <div id="recentSales"><div style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px"><i class="ti ti-loader-2 spin" style="display:block;font-size:24px;margin-bottom:8px"></i>Inapakia...</div></div>
+        <div class="ai-card">
+          <div class="ai-card-hdr"><span class="ai-card-dot"></span><span class="ai-card-title">Q360 AI — Ushauri wa Leo</span></div>
+          <div class="ai-card-text" id="aiRec">Inapakia uchambuzi...</div>
+          <a href="ai.html" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#00d4ff;font-weight:600;margin-top:10px;text-decoration:none">Zungumza na AI <i class="ti ti-arrow-right"></i></a>
         </div>
-        <!-- Week Chart -->
-        <div class="table-card" style="padding:20px">
-          <div style="font-size:14px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px"><i class="ti ti-chart-bar" style="color:var(--cyan)"></i> Mapato — Wiki Hii</div>
-          <div class="bar-chart" id="weekChart"></div>
-        </div>
-      </div>
-
-      <div>
-        <!-- Quick Actions -->
-        <div class="table-card" style="margin-bottom:16px">
-          <div class="table-card-header"><div class="table-card-title">Vitendo vya Haraka</div></div>
-          <div style="padding:16px">
-            <div class="quick-actions">
-              <a href="mauzo.html" class="qa-btn"><i class="ti ti-plus"></i><span>Muamala Mpya</span></a>
-              <a href="invoice.html" class="qa-btn"><i class="ti ti-file-plus"></i><span>Invoice Mpya</span></a>
-              <a href="stock.html" class="qa-btn"><i class="ti ti-package"></i><span>Angalia Stock</span></a>
-              <a href="madeni.html" class="qa-btn"><i class="ti ti-credit-card"></i><span>Ona Madeni</span></a>
-              <a href="personal.html" class="qa-btn"><i class="ti ti-wallet"></i><span>Fedha Zangu</span></a>
-              <a href="projects.html" class="qa-btn"><i class="ti ti-layout-kanban"></i><span>Miradi</span></a>
-            </div>
+        <div class="card">
+          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px">Vitendo vya Haraka</div>
+          <div class="qa-g">
+            <a href="mauzo.html" class="qa"><i class="ti ti-plus"></i><span>Muamala</span></a>
+            <a href="invoice.html" class="qa"><i class="ti ti-file-invoice"></i><span>Invoice</span></a>
+            <a href="stock.html" class="qa"><i class="ti ti-package"></i><span>Stock</span></a>
+            <a href="projects.html" class="qa"><i class="ti ti-layout-kanban"></i><span>Mradi</span></a>
+            <a href="personal.html" class="qa"><i class="ti ti-wallet"></i><span>Fedha</span></a>
+            <a href="reports.html" class="qa"><i class="ti ti-chart-bar"></i><span>Ripoti</span></a>
           </div>
         </div>
-        <!-- Stock Alerts -->
-        <div class="table-card">
-          <div class="table-card-header"><div class="table-card-title">Tahadhari za Stock</div></div>
-          <div id="stockAlerts"><div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px"><i class="ti ti-loader-2 spin" style="display:block;font-size:24px;margin-bottom:6px"></i>Inapakia...</div></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">Shughuli za Hivi Karibuni</div>
+          <div id="recentAct"></div>
+        </div>
+        <div class="card">
+          <div style="font-size:13px;font-weight:700;color:var(--navy)">Mauzo — Wiki Hii</div>
+          <div class="bars" id="miniChart"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-size:13px;font-weight:700;color:var(--navy)">Arifa</div>
+            <span class="badge badge-cyan" id="notifCnt">0</span>
+          </div>
+          <div id="notifList"></div>
+        </div>
+        <div class="card">
+          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">Miradi Inayoendelea</div>
+          <div id="projList"></div>
+          <a href="projects.html" style="display:block;text-align:center;font-size:12px;font-weight:600;color:var(--navy);padding-top:10px;text-decoration:none">Miradi yote →</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+<script src="dev-config.js"></script>
 <script>
-(async () => {
-  const session = await Auth.getSession();
-  if (!session) { window.location.href = 'login.html'; return; }
+(async()=>{
+  const session=await Auth.getSession();
+  if(!session){window.location.href='login.html';return;}
   await loadSidebar('dashboard');
+  const profile=Auth.getCachedUser()||await DB.profile.get().catch(()=>null);
+  if(profile)Auth.cacheUser(profile);
 
-  const profile = Auth.getCachedUser() || await DB.profile.get();
-  if (profile) Auth.cacheUser(profile);
+  document.getElementById('hDate').textContent=new Date().toLocaleDateString('sw-TZ',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  const hr=new Date().getHours();
+  const greet=hr<12?'Habari za Asubuhi':hr<17?'Habari za Mchana':'Habari za Jioni';
+  document.getElementById('wMsg').textContent=`${greet}, ${profile?.jina?.split(' ')[0]||'Karibu'}!`;
+  document.getElementById('wSub').textContent=`Leo ni ${new Date().toLocaleDateString('sw-TZ',{weekday:'long'})} — Q360 AI ipo tayari`;
 
-  // Set header date
-  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('sw-TZ', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+  const plans={free:'Free',starter:'Starter',professional:'Professional',enterprise:'Enterprise'};
+  const planColors={free:'#9ca3af',starter:'#FFD700',professional:'#00d4ff',enterprise:'#a78bfa'};
+  const planEl=document.getElementById('planPill');
+  planEl.textContent=plans[profile?.plan||'free'];
+  planEl.style.color=planColors[profile?.plan||'free'];
 
-  // Welcome
-  const hr = new Date().getHours();
-  const greet = hr < 12 ? 'Habari za Asubuhi' : hr < 17 ? 'Habari za Mchana' : 'Habari za Jioni';
-  document.getElementById('welcomeMsg').textContent = `${greet}, ${profile?.jina?.split(' ')[0] || 'Karibu'}!`;
-
-  // Trial
-  const elapsed = Math.floor((new Date() - new Date(profile?.trial_start || new Date())) / (1000*60*60*24));
-  const remaining = Math.max(0, (profile?.trial_days || 7) - elapsed);
-  document.getElementById('trialDays').textContent = remaining;
-
-  // Load data
-  const todayDate = today();
-  const [mauzoLeo, stockData, madeniData] = await Promise.all([
-    DB.mauzo.getByDate(todayDate),
-    DB.stock.getAll(),
-    DB.madeni.getAll()
+  const todayStr=today();
+  const [mauzoLeo,allMauzo,allMadeni,allProjects,allStock]=await Promise.all([
+    DB.mauzo.getByDate(todayStr).catch(()=>[]),
+    DB.mauzo.getAll().catch(()=>[]),
+    DB.madeni.getAll().catch(()=>[]),
+    DB.projects.getAll().catch(()=>[]),
+    DB.stock.getAll().catch(()=>[])
   ]);
 
-  const mapato = mauzoLeo.filter(m => m.aina === 'mapato').reduce((a, m) => a + Number(m.jumla), 0);
-  const matumizi = mauzoLeo.filter(m => m.aina === 'matumizi').reduce((a, m) => a + Number(m.jumla), 0);
-  const unaodai = madeniData.filter(m => m.aina === 'unaodai').reduce((a, m) => a + Number(m.kiasi), 0);
-  const stockLow = stockData.filter(s => Number(s.idadi) <= Number(s.kiwango_chini)).length;
+  const mapato=mauzoLeo.filter(m=>m.aina==='mapato').reduce((a,m)=>a+Number(m.jumla),0);
+  const matumizi=mauzoLeo.filter(m=>m.aina==='matumizi').reduce((a,m)=>a+Number(m.jumla),0);
+  const unaodai=allMadeni.filter(m=>m.aina==='unaodai').reduce((a,m)=>a+Number(m.kiasi),0);
+  const miradiON=allProjects.filter(p=>p.hali==='active');
+  const lowStock=allStock.filter(s=>Number(s.idadi)<=Number(s.kiwango_chini));
 
-  // Stats
-  document.getElementById('statsGrid').innerHTML = `
-    <div class="stat-card">
-      <div class="stat-label">Mapato Leo</div>
-      <div class="stat-value">${formatTZS(mapato)}</div>
-      <div class="stat-sub">Mauzo ya leo</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Faida Leo</div>
-      <div class="stat-value" style="color:${mapato-matumizi>=0?'var(--gold)':'#ff6b6b'}">${formatTZS(mapato-matumizi)}</div>
-      <div class="stat-sub">Mapato - Matumizi</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Madeni Unaodai</div>
-      <div class="stat-value">${formatTZS(unaodai)}</div>
-      <div class="stat-sub">${madeniData.filter(m=>m.aina==='unaodai').length} watu</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Stock Inayokwisha</div>
-      <div class="stat-value" style="color:${stockLow>0?'#ef4444':'var(--gold)'}">${stockLow}</div>
-      <div class="stat-sub">${stockLow>0?'Zinahitaji kujazwa':'Zote ziko sawa'}</div>
-    </div>
-  `;
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Mapato Leo</div><div class="stat-value" style="color:var(--gold)">${formatTZS(mapato)}</div><div class="stat-sub">Mauzo ya leo</div></div>
+    <div class="stat-card"><div class="stat-label">Faida Leo</div><div class="stat-value" style="color:${mapato-matumizi>=0?'var(--gold)':'#ef4444'}">${formatTZS(mapato-matumizi)}</div><div class="stat-sub">Mapato − Matumizi</div></div>
+    <div class="stat-card"><div class="stat-label">Madeni Unaodai</div><div class="stat-value">${formatTZS(unaodai)}</div><div class="stat-sub">${allMadeni.filter(m=>m.aina==='unaodai').length} watu</div></div>
+    <div class="stat-card"><div class="stat-label">Miradi Inayoendelea</div><div class="stat-value" style="color:var(--cyan)">${miradiON.length}</div><div class="stat-sub">${miradiON.length>0?Math.round(miradiON.reduce((a,p)=>a+(p.progress||0),0)/miradiON.length)+'% wastani':'Hakuna'}</div></div>`;
 
-  // AI Insight
-  const insight = document.getElementById('insightCard');
-  const insightText = document.getElementById('insightText');
-  insight.style.display = 'block';
-  if (stockLow > 0) {
-    insightText.textContent = `⚠️ Bidhaa ${stockLow} zinakwisha hivi karibuni. ${mapato > 0 ? `Mapato yako leo ni ${formatTZS(mapato)} — ` : ''}Jaza stock ili usipoteze mauzo.`;
-  } else if (mapato > 0) {
-    insightText.textContent = `✅ Vizuri! Mapato ya leo ni ${formatTZS(mapato)} na faida ni ${formatTZS(mapato-matumizi)}. ${mapato-matumizi > 0 ? 'Biashara yako inakwenda vizuri!' : 'Angalia matumizi yako.'}`;
-  } else {
-    insightText.textContent = `🚀 Habari ${profile?.jina?.split(' ')[0] || ''}! Anza kurekodi mauzo yako ya leo. Q360 AI itakusaidia kufuatilia biashara yako kwa wakati halisi.`;
-  }
+  // AI Rec
+  let rec='';
+  if(!mapato&&!mauzoLeo.length) rec=`🚀 Karibu ${profile?.jina?.split(' ')[0]||''}! Anza kurekodia mauzo ya leo. Uliza AI: <em>"Nionyeshe jinsi ya kuanza"</em>`;
+  else if(mapato-matumizi<0) rec=`⚠️ Matumizi (${formatTZS(matumizi)}) yanazidi mapato (${formatTZS(mapato)}) leo. Angalia gharama zako mapema.`;
+  else if(lowStock.length) rec=`📦 Bidhaa <strong>${lowStock.length}</strong> zinakwisha stokuni — <strong>${lowStock.slice(0,2).map(s=>s.jina).join(', ')}</strong>. Jaza kabla ya kuisha.`;
+  else if(miradiON.length) rec=`📊 Mapato leo: <strong>${formatTZS(mapato)}</strong>. Miradi <strong>${miradiON.length}</strong> inaendelea. Vizuri sana!`;
+  else rec=`✅ Vizuri! Mapato leo: <strong>${formatTZS(mapato)}</strong>, faida: <strong>${formatTZS(mapato-matumizi)}</strong>. Biashara inakwenda vizuri!`;
+  document.getElementById('aiRec').innerHTML=rec;
 
-  // Recent sales
-  document.getElementById('recentSales').innerHTML = mauzoLeo.length
-    ? `<table><thead><tr><th>Bidhaa</th><th>Aina</th><th class="text-right">Jumla</th></tr></thead><tbody>
-        ${mauzoLeo.slice(0,6).map(m=>`<tr>
-          <td class="text-navy">${m.bidhaa}</td>
-          <td><span class="badge ${m.aina==='mapato'?'badge-success':'badge-danger'}">${m.aina==='mapato'?'Mapato':'Matumizi'}</span></td>
-          <td class="text-right font-bold">${formatTZS(m.jumla)}</td>
-        </tr>`).join('')}
-      </tbody></table>`
-    : `<div style="text-align:center;padding:28px;color:var(--text-muted)"><i class="ti ti-shopping-cart" style="font-size:28px;display:block;margin-bottom:8px"></i>Hakuna mauzo leo — <a href="mauzo.html" style="color:var(--navy);font-weight:600">Anza kurekodi</a></div>`;
+  // Recent
+  const recent=mauzoLeo.slice(0,5);
+  document.getElementById('recentAct').innerHTML=recent.length
+    ?recent.map(m=>`<div class="act-item"><div class="act-ico" style="background:${m.aina==='mapato'?'rgba(16,185,129,0.1)':'rgba(239,68,68,0.1)'}"><i class="ti ti-${m.aina==='mapato'?'trending-up':'trending-down'}" style="font-size:14px;color:${m.aina==='mapato'?'#10b981':'#ef4444'}"></i></div><div><div class="act-lbl">${m.bidhaa||m.maelezo||'—'}</div><div class="act-time">${formatDate(m.tarehe)}</div></div><div style="font-size:12px;font-weight:700;margin-left:auto;color:${m.aina==='mapato'?'#10b981':'#ef4444'}">${m.aina==='mapato'?'+':'−'}${formatTZS(m.jumla)}</div></div>`).join('')
+    :`<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:12px"><i class="ti ti-history" style="display:block;font-size:22px;margin-bottom:6px"></i>Hakuna shughuli leo</div>`;
 
-  // Week chart
-  const days = ['Ju','Al','Ju','Al','Ij','Sa','Ap'];
-  const allMauzo = await DB.mauzo.getAll();
-  const weekData = days.map((_, i) => ({
-    label: days[i],
-    val: allMauzo.filter(m => new Date(m.tarehe).getDay()===i && m.aina==='mapato').reduce((a,m)=>a+Number(m.jumla),0)
-  }));
-  const maxVal = Math.max(...weekData.map(d=>d.val), 1);
-  const todayDay = new Date().getDay();
-  document.getElementById('weekChart').innerHTML = weekData.map((d,i)=>`
-    <div class="bar-wrap">
-      <div class="bar-fill" style="height:${Math.max((d.val/maxVal)*80,4)}px;background:${i===todayDay?'var(--cyan)':'var(--navy)'}"></div>
-      <div class="bar-label">${d.label}</div>
-    </div>`).join('');
+  // Mini chart
+  const days=['Ju','Al','Ju','Al','Ij','Sa','Ap'];
+  const wk=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split('T')[0];wk.push({l:days[d.getDay()],v:allMauzo.filter(m=>m.tarehe===ds&&m.aina==='mapato').reduce((a,m)=>a+Number(m.jumla),0),t:i===0});}
+  const mx=Math.max(...wk.map(d=>d.v),1);
+  document.getElementById('miniChart').innerHTML=wk.map(d=>`<div class="bc"><div class="bf" style="height:${Math.max((d.v/mx)*60,3)}px;background:${d.t?'#00d4ff':'rgba(0,212,255,0.25)'}"></div><div class="bl">${d.l}</div></div>`).join('');
 
-  // Stock alerts
-  const lowStock = stockData.filter(s => Number(s.idadi) <= Number(s.kiwango_chini));
-  document.getElementById('stockAlerts').innerHTML = lowStock.length
-    ? `<div style="padding:0 16px 16px">${lowStock.map(s=>`
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
-          <div><div style="font-size:13px;font-weight:600;color:var(--navy)">${s.jina}</div><div style="font-size:11px;color:var(--text-muted)">Imebaki: ${s.idadi}</div></div>
-          <span class="badge ${s.idadi==0?'badge-danger':'badge-warning'}">${s.idadi==0?'Imeisha':'Inakwisha'}</span>
-        </div>`).join('')}
-        <a href="stock.html" style="display:block;text-align:center;font-size:12px;font-weight:600;color:var(--navy);padding-top:12px">Simamia Stock →</a>
-      </div>`
-    : `<div style="text-align:center;padding:20px;color:var(--success);font-size:13px"><i class="ti ti-circle-check" style="display:block;font-size:24px;margin-bottom:6px"></i>Stock zote ziko sawa!</div>`;
+  // Notifs
+  const notifs=[];
+  if(lowStock.length)notifs.push({color:'var(--warning)',text:`Bidhaa ${lowStock.length} zinakwisha stokuni`,time:'Sasa hivi'});
+  if(unaodai>0)notifs.push({color:'var(--danger)',text:`Madeni yanayokudai: ${formatTZS(unaodai)}`,time:'Leo'});
+  if(miradiON.length)notifs.push({color:'var(--cyan)',text:`Miradi ${miradiON.length} inaendelea — angalia maendeleo`,time:'Sasa hivi'});
+  document.getElementById('notifCnt').textContent=notifs.length;
+  document.getElementById('notifList').innerHTML=notifs.length
+    ?notifs.map(n=>`<div class="ntf"><div class="ntf-dot" style="background:${n.color}"></div><div><div class="ntf-txt">${n.text}</div><div class="ntf-time">${n.time}</div></div></div>`).join('')
+    :`<div style="text-align:center;padding:14px;color:var(--text-muted);font-size:12px">Hakuna arifa mpya ✓</div>`;
+
+  // Projects
+  document.getElementById('projList').innerHTML=miradiON.length
+    ?miradiON.slice(0,3).map(p=>`<div style="padding:8px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600;color:var(--navy)">${p.jina}</span><span style="font-size:11px;color:var(--text-muted)">${p.progress||0}%</span></div><div class="progress-bar"><div class="progress-fill" style="width:${p.progress||0}%;background:var(--cyan)"></div></div></div>`).join('')
+    :`<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:12px"><a href="projects.html" style="color:var(--navy);font-weight:600">+ Unda mradi wako wa kwanza</a></div>`;
 })();
 
-function goAI() {
-  const q = document.getElementById('aiInput').value.trim();
-  if (!q) { window.location.href = 'ai.html'; return; }
-  sessionStorage.setItem('ai_prefill', q);
-  window.location.href = 'ai.html';
-}
+function askAI(){const q=document.getElementById('aiQ').value.trim();if(q)sessionStorage.setItem('ai_prefill',q);location.href='ai.html';}
 </script>
-
 <nav class="bottom-nav">
   <a href="dashboard.html" class="active"><i class="ti ti-home"></i><span>Nyumbani</span></a>
   <a href="ai.html"><i class="ti ti-brand-openai"></i><span>AI</span></a>
