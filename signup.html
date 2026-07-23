@@ -10,19 +10,18 @@
 body{font-family:'DM Sans',sans-serif;background:#0a0f1e;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-font-smoothing:antialiased}
 
 .card{background:#fff;border-radius:20px;padding:36px 32px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-.card-logo{display:flex;align-items:center;gap:8px;margin-bottom:24px;cursor:pointer}
+.logo{display:flex;align-items:center;gap:8px;margin-bottom:24px;cursor:pointer}
 .logo-sq{width:30px;height:30px;background:linear-gradient(135deg,#00d4ff,#FFD700);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#0a0f1e;font-family:'Plus Jakarta Sans',sans-serif}
 .logo-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:#0a0f1e}
 .logo-name span{color:#00d4ff}
 
-/* Steps indicator */
-.steps{display:flex;align-items:center;gap:0;margin-bottom:24px}
-.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:all 0.3s}
-.step-dot.done{background:#00d4ff;color:#0a0f1e}
-.step-dot.active{background:#0a0f1e;color:#fff}
-.step-dot.idle{background:#f3f4f6;color:#9ca3af}
-.step-line{flex:1;height:2px;background:#e5e7eb;transition:background 0.3s}
-.step-line.done{background:#00d4ff}
+.steps{display:flex;align-items:center;margin-bottom:24px}
+.sd{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:all 0.3s}
+.sd.done{background:#00d4ff;color:#0a0f1e}
+.sd.active{background:#0a0f1e;color:#fff}
+.sd.idle{background:#f3f4f6;color:#9ca3af}
+.sl{flex:1;height:2px;background:#e5e7eb;transition:background 0.3s}
+.sl.done{background:#00d4ff}
 
 h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#0a0f1e;margin-bottom:4px}
 .sub{font-size:13px;color:#9ca3af;margin-bottom:20px}
@@ -31,48 +30,51 @@ label{display:block;font-size:13px;font-weight:600;color:#0a0f1e;margin-bottom:5
 input,select{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:13px;color:#0a0f1e;background:#fff;outline:none;transition:border-color 0.2s;font-family:'DM Sans',sans-serif;margin-bottom:14px}
 input:focus,select:focus{border-color:#00d4ff}
 select{cursor:pointer}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 .btn-main{width:100%;padding:13px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;margin-top:4px}
 .btn-main:hover{opacity:0.9}
-.btn-main.cyan{background:linear-gradient(135deg,#00d4ff,#0099bb);color:#0a0f1e}
+.btn-main.cy{background:linear-gradient(135deg,#00d4ff,#0099bb);color:#0a0f1e}
 .btn-main:disabled{opacity:0.6;cursor:not-allowed}
-.btn-google{width:100%;padding:12px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;transition:all 0.2s;margin-bottom:12px}
-.btn-google:hover{background:#f9fafb}
-.btn-google img{width:18px;height:18px}
 
 .divider{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .divider span{font-size:12px;color:#9ca3af;white-space:nowrap}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
 
+/* Google button */
+.btn-google{width:100%;padding:12px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;transition:all 0.2s;margin-bottom:12px;position:relative}
+.btn-google:hover{background:#f9fafb}
+.btn-google img{width:18px;height:18px}
+.dev-badge{position:absolute;top:-8px;right:10px;background:#f59e0b;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;display:none}
+
 .err{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;border-radius:8px;padding:10px 14px;font-size:13px;display:none;align-items:center;gap:8px;margin-bottom:14px}
 .err.show{display:flex}
 
-/* Purpose cards */
-.pur-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.pur-card{border:2px solid #e5e7eb;border-radius:12px;padding:16px 10px;text-align:center;cursor:pointer;transition:all 0.2s}
-.pur-card:hover{border-color:#0a0f1e}
-.pur-card.sel{border-color:#00d4ff;background:rgba(0,212,255,0.04)}
-.pur-card i{font-size:24px;color:#9ca3af;display:block;margin-bottom:7px}
-.pur-card.sel i{color:#00d4ff}
-.pur-card b{font-size:12px;font-weight:700;color:#6b7280;display:block}
-.pur-card.sel b{color:#0a0f1e}
+/* Dev banners */
+.dev-banner{background:#0a0f1e;color:#00d4ff;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;margin-bottom:14px;align-items:center;gap:8px;display:none}
+.dev-err{background:#fef3c7;border:1px solid #fcd34d;color:#92400e;border-radius:8px;padding:10px 14px;font-size:12px;margin-top:10px;display:none;line-height:1.5}
 
+.pur-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.pur{border:2px solid #e5e7eb;border-radius:12px;padding:16px 10px;text-align:center;cursor:pointer;transition:all 0.2s}
+.pur:hover{border-color:#0a0f1e}
+.pur.sel{border-color:#00d4ff;background:rgba(0,212,255,0.04)}
+.pur i{font-size:24px;color:#9ca3af;display:block;margin-bottom:7px}
+.pur.sel i{color:#00d4ff}
+.pur b{font-size:12px;font-weight:700;color:#6b7280;display:block}
+.pur.sel b{color:#0a0f1e}
+
+.pg{display:none}
+.pg.show{display:block}
 .login-row{text-align:center;font-size:13px;color:#9ca3af;margin-top:14px}
 .login-row a{color:#0a0f1e;font-weight:700;cursor:pointer}
 
-/* Page sections */
-.pg{display:none}
-.pg.active{display:block}
-
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .overlay{position:fixed;inset:0;background:#0a0f1e;display:flex;align-items:center;justify-content:center;z-index:999;transition:opacity 0.3s}
 .overlay.off{opacity:0;pointer-events:none}
 .ov-txt{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#00d4ff;text-align:center}
 .ov-spin{width:28px;height:28px;border:2.5px solid rgba(0,212,255,0.2);border-top-color:#00d4ff;border-radius:50%;animation:spin 0.7s linear infinite;margin:14px auto 0}
 
-@media(max-width:480px){.card{padding:24px 18px}.grid2{grid-template-columns:1fr}.pur-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.card{padding:24px 18px}.g2{grid-template-columns:1fr}.pur-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -82,89 +84,85 @@ select{cursor:pointer}
 </div>
 
 <div class="card" id="mainCard" style="display:none">
-  <div class="card-logo" onclick="location.href='index.html'">
+  <div class="logo" onclick="location.href='index.html'">
     <div class="logo-sq">Q3</div>
     <div class="logo-name">Q360<span> AI</span></div>
   </div>
 
-  <!-- Steps -->
+  <!-- Steps bar -->
   <div class="steps" id="stepsBar">
-    <div class="step-dot active" id="sd1">1</div>
-    <div class="step-line" id="sl1"></div>
-    <div class="step-dot idle" id="sd2">2</div>
-    <div class="step-line" id="sl2"></div>
-    <div class="step-dot idle" id="sd3">3</div>
+    <div class="sd active" id="sd1">1</div>
+    <div class="sl" id="sl1"></div>
+    <div class="sd idle" id="sd2">2</div>
+    <div class="sl" id="sl2"></div>
+    <div class="sd idle" id="sd3">3</div>
   </div>
 
-  <!-- ── PAGE 1: Akaunti ── -->
-  <div class="pg active" id="pg1">
+  <!-- ══ PAGE 1 ══ -->
+  <div class="pg show" id="pg1">
     <h2>Unda Akaunti</h2>
-    <p class="sub">Bure kabisa · Dakika 1 tu</p>
+    <p class="sub">Bure · Dakika 1 tu</p>
+
+    <!-- Dev mode loading banner -->
+    <div class="dev-banner" id="devBanner">
+      <i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite;font-size:14px"></i>
+      <span>Dev Quick Login inaendelea...</span>
+    </div>
+    <div class="dev-err" id="devError"></div>
 
     <div class="err" id="e1"><i class="ti ti-alert-circle"></i><span id="e1m"></span></div>
 
-    <button class="btn-google" onclick="doGoogle()">
-      <img src="https://www.google.com/favicon.ico" alt="G"> Endelea na Google
-    </button>
+    <div style="position:relative">
+      <div class="dev-badge" id="devBadge">DEV</div>
+      <button class="btn-google" id="googleBtn" onclick="handleGoogle()">
+        <img src="https://www.google.com/favicon.ico" alt="G">
+        <span id="googleTxt">Endelea na Google</span>
+      </button>
+    </div>
     <div class="divider"><span>au jaza hapa</span></div>
 
-    <div class="grid2">
-      <div>
-        <label>Jina *</label>
-        <input id="p1Jina" placeholder="Jina lako">
-      </div>
-      <div>
-        <label>Email *</label>
-        <input type="email" id="p1Email" placeholder="mfano@email.com">
-      </div>
+    <div class="g2">
+      <div><label>Jina *</label><input id="p1J" placeholder="Jina lako"></div>
+      <div><label>Email *</label><input type="email" id="p1E" placeholder="mfano@email.com"></div>
     </div>
-    <div class="grid2">
-      <div>
-        <label>Neno la Siri *</label>
-        <input type="password" id="p1Pass" placeholder="Min. herufi 6">
-      </div>
-      <div>
-        <label>Thibitisha *</label>
-        <input type="password" id="p1Conf" placeholder="Rudia neno" onkeydown="if(event.key==='Enter')nextTo2()">
-      </div>
+    <div class="g2">
+      <div><label>Neno la Siri *</label><input type="password" id="p1P" placeholder="Min. 6"></div>
+      <div><label>Thibitisha *</label><input type="password" id="p1C" placeholder="Rudia" onkeydown="if(event.key==='Enter')to2()"></div>
     </div>
-    <button class="btn-main" onclick="nextTo2()">Endelea <i class="ti ti-arrow-right"></i></button>
+    <button class="btn-main" onclick="to2()">Endelea <i class="ti ti-arrow-right"></i></button>
     <div class="login-row">Una akaunti? <a onclick="location.href='login.html'">Ingia</a></div>
   </div>
 
-  <!-- ── PAGE 2: Lengo ── -->
+  <!-- ══ PAGE 2 ══ -->
   <div class="pg" id="pg2">
-    <h2>Utatumia Q360 AI kwa nini?</h2>
+    <h2>Utatumia kwa nini?</h2>
     <p class="sub">Chagua moja — unaweza kubadilisha baadaye</p>
     <div class="pur-grid">
-      <div class="pur-card" id="pu-personal" onclick="selPur('personal')"><i class="ti ti-wallet"></i><b>Kibinafsi</b></div>
-      <div class="pur-card" id="pu-business" onclick="selPur('business')"><i class="ti ti-building-store"></i><b>Biashara</b></div>
-      <div class="pur-card sel" id="pu-both" onclick="selPur('both')"><i class="ti ti-layout-grid"></i><b>Vyote</b></div>
+      <div class="pur" id="pu-personal" onclick="selP('personal')"><i class="ti ti-wallet"></i><b>Kibinafsi</b></div>
+      <div class="pur" id="pu-business" onclick="selP('business')"><i class="ti ti-building-store"></i><b>Biashara</b></div>
+      <div class="pur sel" id="pu-both" onclick="selP('both')"><i class="ti ti-layout-grid"></i><b>Vyote</b></div>
     </div>
-    <button class="btn-main" onclick="nextTo3()">Endelea <i class="ti ti-arrow-right"></i></button>
+    <button class="btn-main" onclick="to3()">Endelea <i class="ti ti-arrow-right"></i></button>
   </div>
 
-  <!-- ── PAGE 3: Taarifa ── -->
+  <!-- ══ PAGE 3 ══ -->
   <div class="pg" id="pg3">
-    <h2>Karibu, <span id="pg3Name">rafiki</span>!</h2>
+    <h2>Karibu, <span id="p3Name">rafiki</span>!</h2>
     <p class="sub">Maelezo mafupi ya mwisho</p>
     <div class="err" id="e3"><i class="ti ti-alert-circle"></i><span id="e3m"></span></div>
-
     <div id="bizField">
-      <label>Jina la Biashara</label>
-      <input id="p3Biz" placeholder="Mfano: Duka la Amani (hiari)">
+      <label>Jina la Biashara (hiari)</label>
+      <input id="p3B" placeholder="Mfano: Duka la Amani">
     </div>
-    <div class="grid2">
-      <div>
-        <label>Nchi</label>
-        <select id="p3Nchi"><option value="TZ">Tanzania</option><option value="KE">Kenya</option><option value="UG">Uganda</option><option value="RW">Rwanda</option></select>
+    <div class="g2">
+      <div><label>Nchi</label>
+        <select id="p3N"><option value="TZ">Tanzania</option><option value="KE">Kenya</option><option value="UG">Uganda</option><option value="RW">Rwanda</option></select>
       </div>
-      <div>
-        <label>Lugha ya AI</label>
-        <select id="p3Lugha"><option value="sw">Kiswahili</option><option value="en">English</option></select>
+      <div><label>Lugha ya AI</label>
+        <select id="p3L"><option value="sw">Kiswahili</option><option value="en">English</option></select>
       </div>
     </div>
-    <button class="btn-main cyan" id="finishBtn" onclick="finish()">
+    <button class="btn-main cy" id="finBtn" onclick="finish()">
       <i class="ti ti-rocket"></i> Ingia Q360 AI
     </button>
   </div>
@@ -173,112 +171,130 @@ select{cursor:pointer}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+
+<!-- ══════════════════════════════════════════════════════
+     DEV CONFIG — remove this line in production
+     ══════════════════════════════════════════════════════ -->
+<script src="dev-config.js"></script>
+
 <script>
+let purpose = 'both';
+let p1J='', p1E='', p1P='';
+
 (async () => {
   const session = await Auth.getSession();
   if (session) { window.location.replace('ai.html'); return; }
   document.getElementById('overlay').classList.add('off');
   document.getElementById('mainCard').style.display = 'block';
-  // Pre-select plan from URL
-  const plan = new URLSearchParams(window.location.search).get('plan');
-  if (plan === 'personal') selPur('personal');
-  else if (plan === 'business') selPur('business');
+
+  // DEV MODE: style the Google button differently
+  if (typeof DEV_MODE !== 'undefined' && DEV_MODE) {
+    document.getElementById('devBadge').style.display = 'block';
+    document.getElementById('googleTxt').textContent  = 'Dev Quick Login';
+    document.getElementById('googleBtn').style.borderColor = '#f59e0b';
+    document.getElementById('googleBtn').style.background  = '#fffbeb';
+    document.getElementById('googleBtn').title = '[DEV MODE] Skip onboarding — login instantly';
+  }
 })();
 
-let purpose = 'both';
-let p1Email = '', p1Pass = '', p1Jina = '';
+// ── GOOGLE / DEV HANDLER ──────────────────────────────────
+async function handleGoogle() {
+  if (typeof DEV_MODE !== 'undefined' && DEV_MODE) {
+    // DEV: skip everything, go straight to app
+    const btn = document.getElementById('googleBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite;font-size:16px"></i> <span>Inaingia...</span>';
+    await devQuickLogin();
+    return;
+  }
+  // PRODUCTION: real Google OAuth
+  const btn = document.getElementById('googleBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite;font-size:16px"></i> <span>Inaelekeza...</span>';
+  await Auth.loginWithGoogle();
+}
 
-// Steps update
+// ── STEPS ─────────────────────────────────────────────────
 function setStep(n) {
   [1,2,3].forEach(i => {
-    const dot = document.getElementById('sd'+i);
-    if (i < n) { dot.className='step-dot done'; dot.innerHTML='<i class="ti ti-check" style="font-size:10px"></i>'; document.getElementById('sl'+i)?.classList.add('done'); }
-    else if (i===n) { dot.className='step-dot active'; dot.textContent=i; }
-    else { dot.className='step-dot idle'; dot.textContent=i; }
+    const d = document.getElementById('sd'+i);
+    if (i < n) { d.className='sd done'; d.innerHTML='<i class="ti ti-check" style="font-size:10px"></i>'; document.getElementById('sl'+i)?.classList.add('done'); }
+    else if (i===n) { d.className='sd active'; d.textContent=i; }
+    else { d.className='sd idle'; d.textContent=i; }
   });
 }
 
-async function doGoogle() { await Auth.loginWithGoogle(); }
-
-function selPur(p) {
-  purpose = p;
-  ['personal','business','both'].forEach(x => document.getElementById('pu-'+x)?.classList.toggle('sel', x===p));
-  document.getElementById('bizField').style.display = p === 'personal' ? 'none' : 'block';
+function selP(p) {
+  purpose=p;
+  ['personal','business','both'].forEach(x=>document.getElementById('pu-'+x)?.classList.toggle('sel',x===p));
+  document.getElementById('bizField').style.display = p==='personal'?'none':'block';
 }
 
-function nextTo2() {
-  const jina  = document.getElementById('p1Jina').value.trim();
-  const email = document.getElementById('p1Email').value.trim();
-  const pass  = document.getElementById('p1Pass').value;
-  const conf  = document.getElementById('p1Conf').value;
-  if (!jina||!email||!pass) { showE1('Jaza taarifa zote'); return; }
-  if (pass.length < 6)  { showE1('Neno la siri lazima liwe na herufi 6+'); return; }
-  if (pass !== conf)    { showE1('Maneno ya siri hayafanani'); return; }
-  p1Jina=jina; p1Email=email; p1Pass=pass;
-  document.getElementById('pg1').classList.remove('active');
-  document.getElementById('pg2').classList.add('active');
-  setStep(2);
+function go(from,to,step) {
+  document.getElementById('pg'+from).classList.remove('show');
+  document.getElementById('pg'+to).classList.add('show');
+  setStep(step);
 }
 
-function nextTo3() {
-  document.getElementById('pg2').classList.remove('active');
-  document.getElementById('pg3').classList.add('active');
-  document.getElementById('pg3Name').textContent = p1Jina.split(' ')[0];
-  if (purpose === 'personal') document.getElementById('bizField').style.display = 'none';
-  setStep(3);
+function to2() {
+  const j=document.getElementById('p1J').value.trim();
+  const e=document.getElementById('p1E').value.trim();
+  const p=document.getElementById('p1P').value;
+  const c=document.getElementById('p1C').value;
+  if(!j||!e||!p){showE1('Jaza taarifa zote');return;}
+  if(p.length<6){showE1('Neno la siri: herufi 6+');return;}
+  if(p!==c){showE1('Maneno hayafanani');return;}
+  p1J=j; p1E=e; p1P=p;
+  go(1,2,2);
+}
+
+function to3() {
+  document.getElementById('p3Name').textContent = p1J.split(' ')[0];
+  if(purpose==='personal') document.getElementById('bizField').style.display='none';
+  go(2,3,3);
 }
 
 async function finish() {
-  const btn = document.getElementById('finishBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite"></i> Inaunda...';
+  const btn=document.getElementById('finBtn');
+  btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite"></i> Inaunda...';
 
-  const meta = {
-    jina:        p1Jina,
-    biashara:    document.getElementById('p3Biz').value.trim(),
-    nchi:        document.getElementById('p3Nchi').value,
-    lugha:       document.getElementById('p3Lugha').value,
-    personality: 'friendly',
-    purpose,
-    plan:        new URLSearchParams(window.location.search).get('plan') || 'free',
-    trial_start: new Date().toISOString(),
-    trial_days:  7
+  const meta={
+    jina:p1J, biashara:document.getElementById('p3B').value.trim(),
+    nchi:document.getElementById('p3N').value, lugha:document.getElementById('p3L').value,
+    personality:'friendly', purpose, plan:'free',
+    trial_start:new Date().toISOString(), trial_days:7
   };
 
-  const { data, error } = await Auth.signup(p1Email, p1Pass, meta);
+  const {data,error}=await Auth.signup(p1E,p1P,meta);
 
-  if (error) {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="ti ti-rocket"></i> Ingia Q360 AI';
-    if (error.message.includes('already')) showE3('Email hii inatumika tayari — <a onclick="location.href=\'login.html\'">Ingia</a>');
+  if(error){
+    btn.disabled=false; btn.innerHTML='<i class="ti ti-rocket"></i> Ingia Q360 AI';
+    if(error.message.includes('already')) showE3('Email inatumika — <a onclick="location.href=\'login.html\'" style="font-weight:700">Ingia</a>');
     else showE3(error.message);
     return;
   }
 
-  // ✅ Kama session ipo moja kwa moja (email confirmation imezimwa) — redirect moja kwa moja
-  const session = await Auth.getSession();
-  if (session) {
-    window.location.replace('ai.html');
-    return;
-  }
+  // Direct redirect if session available
+  const session=await Auth.getSession();
+  if(session){window.location.replace('ai.html');return;}
 
-  // Email confirmation inahitajika — onyesha ujumbe mfupi
-  document.getElementById('pg3').innerHTML = `
-    <div style="text-align:center;padding:20px 0">
-      <div style="width:60px;height:60px;background:rgba(0,212,255,0.1);border:2px solid rgba(0,212,255,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
-        <i class="ti ti-mail" style="font-size:28px;color:#00d4ff"></i>
+  // Email confirmation required
+  document.getElementById('pg3').innerHTML=`
+    <div style="text-align:center;padding:16px 0">
+      <div style="width:56px;height:56px;background:rgba(0,212,255,0.1);border:2px solid rgba(0,212,255,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+        <i class="ti ti-mail" style="font-size:26px;color:#00d4ff"></i>
       </div>
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#0a0f1e;margin-bottom:8px">Angalia Email Yako</div>
-      <div style="font-size:13px;color:#9ca3af;margin-bottom:20px;line-height:1.6">Tumekutumia kiungo cha uthibitisho kwenye<br><strong style="color:#0a0f1e">${p1Email}</strong></div>
-      <div style="font-size:12px;color:#9ca3af">Bonyeza kiungo hicho kisha urudi kuingia</div>
-      <button onclick="location.href='login.html'" style="margin-top:20px;padding:12px 28px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;width:100%">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:#0a0f1e;margin-bottom:8px">Angalia Email Yako</div>
+      <div style="font-size:13px;color:#9ca3af;line-height:1.6;margin-bottom:20px">Kiungo kimetumwa kwenye<br><strong style="color:#0a0f1e">${p1E}</strong></div>
+      <button onclick="location.href='login.html'" style="width:100%;padding:12px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'DM Sans',sans-serif">
         <i class="ti ti-login"></i> Nenda Kuingia
       </button>
     </div>`;
 }
 
-function showE1(m) { document.getElementById('e1m').textContent=m; document.getElementById('e1').classList.add('show'); }
-function showE3(m) { document.getElementById('e3m').innerHTML=m; document.getElementById('e3').classList.add('show'); }
+function showE1(m){document.getElementById('e1m').textContent=m;document.getElementById('e1').classList.add('show');}
+function showE3(m){document.getElementById('e3m').innerHTML=m;document.getElementById('e3').classList.add('show');}
 </script>
 </body>
 </html>
