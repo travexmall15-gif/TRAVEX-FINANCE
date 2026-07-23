@@ -2,7 +2,7 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wafanyakazi — TRAVEX Finance</title>
+<title>Wafanyakazi — Q360 AI</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="shared.css">
 </head>
@@ -10,134 +10,138 @@
 <div class="sidebar" id="sidebar"></div>
 <div class="main-wrapper">
   <div class="main-header">
-    <div><div class="header-title">Wafanyakazi</div><div class="header-sub">Simamia wafanyakazi, mishahara na attendance</div></div>
+    <div><div class="header-title">Wafanyakazi</div><div class="header-sub">Simamia wafanyakazi, mishahara, na mahudhurio</div></div>
+    <div class="header-right">
+      <a href="ai.html" class="btn btn-ai btn-sm"><i class="ti ti-brand-openai"></i> Uliza AI</a>
+      <button class="btn btn-gold" onclick="openModal('modalWaf')"><i class="ti ti-plus"></i> Mfanyakazi Mpya</button>
+    </div>
   </div>
-  <div class="main-content">
-    <div class="stats-grid" id="statsGrid"></div>
 
-    <div class="tabs tab-group">
-      <button class="tab-btn active" data-tab="tab-orodha">Orodha ya Wafanyakazi</button>
-      <button class="tab-btn" data-tab="tab-mishahara">Mishahara</button>
-      <button class="tab-btn" data-tab="tab-attendance">Attendance</button>
+  <div class="main-content">
+    <!-- AI Insight -->
+    <div id="aiInsight" style="display:none;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:var(--radius-lg);border:1px solid var(--cyan-border);padding:16px 20px;margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><i class="ti ti-brand-openai" style="color:var(--cyan);font-size:16px"></i><span style="font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:0.5px">Q360 AI — Muhtasari wa Wafanyakazi</span></div>
+      <div id="aiInsightText" style="font-size:13px;color:var(--text-white);line-height:1.65"></div>
     </div>
 
-    <!-- ORODHA -->
-    <div class="tab-content active" id="tab-orodha">
-      <div class="table-card">
+    <div class="stats-grid" id="statsGrid" style="margin-bottom:20px"></div>
+
+    <div class="tabs tab-group" style="margin-bottom:0">
+      <button class="tab-btn active" data-tab="tab-waf">Wafanyakazi</button>
+      <button class="tab-btn" data-tab="tab-mishahara">Mishahara</button>
+      <button class="tab-btn" data-tab="tab-attendance">Mahudhurio</button>
+    </div>
+
+    <!-- Wafanyakazi Tab -->
+    <div class="tab-content active" id="tab-waf">
+      <div class="table-card" style="border-radius:0 0 var(--radius) var(--radius)">
         <div class="table-card-header">
-          <div><div class="table-card-title">Wafanyakazi Wote</div></div>
-          <div class="table-actions">
-            <div class="search-box"><i class="ti ti-search"></i><input id="searchWaf" placeholder="Tafuta mfanyakazi..."></div>
-            <button class="btn btn-gold" onclick="openModal('modalWaf')"><i class="ti ti-plus"></i> Ongeza Mfanyakazi</button>
-          </div>
+          <div class="table-card-title">Orodha ya Wafanyakazi</div>
+          <div class="search-box"><i class="ti ti-search"></i><input id="searchWaf" placeholder="Tafuta mfanyakazi..."></div>
         </div>
-        <table><thead><tr><th>Mfanyakazi</th><th>Nafasi</th><th>Simu</th><th>Alianza</th><th class="text-right">Mshahara</th><th></th></tr></thead>
+        <table><thead><tr><th>Mfanyakazi</th><th>Nafasi</th><th>Simu</th><th>Tarehe ya Kuanza</th><th class="text-right">Mshahara</th><th></th></tr></thead>
         <tbody id="wafBody"></tbody></table>
       </div>
     </div>
 
-    <!-- MISHAHARA -->
+    <!-- Mishahara Tab -->
     <div class="tab-content" id="tab-mishahara">
-      <div class="filter-row">
-        <select class="form-control" id="selMishaharaMwezi" style="width:auto" onchange="loadMishahara()">
-          <option value="0">Januari</option><option value="1">Februari</option><option value="2">Machi</option>
-          <option value="3">Aprili</option><option value="4">Mei</option><option value="5">Juni</option>
-          <option value="6">Julai</option><option value="7">Agosti</option><option value="8">Septemba</option>
-          <option value="9">Oktoba</option><option value="10">Novemba</option><option value="11">Desemba</option>
-        </select>
-      </div>
-      <div class="table-card">
+      <div class="table-card" style="border-radius:0 0 var(--radius) var(--radius)">
         <div class="table-card-header">
-          <div><div class="table-card-title">Mishahara ya Mwezi</div></div>
-          <button class="btn btn-gold" onclick="lipa()"><i class="ti ti-cash"></i> Lipa Mishahara Yote</button>
+          <div class="table-card-title">Mishahara</div>
+          <div class="table-actions">
+            <select class="form-control" id="selMishaharaMwezi" onchange="loadMishahara()" style="width:160px">
+              <option value="0">Januari</option><option value="1">Februari</option><option value="2">Machi</option>
+              <option value="3">Aprili</option><option value="4">Mei</option><option value="5">Juni</option>
+              <option value="6">Julai</option><option value="7">Agosti</option><option value="8">Septemba</option>
+              <option value="9">Oktoba</option><option value="10">Novemba</option><option value="11">Desemba</option>
+            </select>
+            <button class="btn btn-gold btn-sm" onclick="lipa()"><i class="ti ti-cash"></i> Lipa Wote</button>
+          </div>
         </div>
         <table><thead><tr><th>Mfanyakazi</th><th>Nafasi</th><th class="text-right">Mshahara</th><th>Hali</th><th></th></tr></thead>
         <tbody id="mishaharaBody"></tbody></table>
       </div>
     </div>
 
-    <!-- ATTENDANCE -->
+    <!-- Attendance Tab -->
     <div class="tab-content" id="tab-attendance">
-      <div class="filter-row">
-        <button class="filter-btn active" onclick="setAttDate(today(),this)" id="attTodayBtn">Leo</button>
-      </div>
-      <div class="table-card">
+      <div class="table-card" style="border-radius:0 0 var(--radius) var(--radius)">
         <div class="table-card-header">
-          <div><div class="table-card-title">Attendance — <span id="attDateLabel"></span></div></div>
-          <input type="date" class="form-control" id="attDate" style="width:auto" onchange="loadAttendance()">
+          <div class="table-card-title">Mahudhurio</div>
+          <div class="table-actions">
+            <input type="date" class="form-control" id="selTarehe" onchange="loadAttendance()" style="width:160px">
+          </div>
         </div>
-        <table><thead><tr><th>Mfanyakazi</th><th>Nafasi</th><th>Hali</th><th>Muda wa Kuja</th><th></th></tr></thead>
-        <tbody id="attBody"></tbody></table>
+        <table><thead><tr><th>Mfanyakazi</th><th>Hali</th><th>Muda</th><th></th></tr></thead>
+        <tbody id="attendanceBody"></tbody></table>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL WAFANYAKAZI -->
+<!-- MODAL: Add Employee -->
 <div class="modal-overlay" id="modalWaf">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Ongeza Mfanyakazi</div>
-      <button class="modal-close" onclick="closeModal('modalWaf')"><i class="ti ti-x"></i></button>
-    </div>
+    <div class="modal-header"><div class="modal-title">Ongeza Mfanyakazi</div><button class="modal-close" onclick="closeModal('modalWaf')"><i class="ti ti-x"></i></button></div>
     <div class="form-group"><label class="form-label">Jina Kamili *</label><input class="form-control" id="wJina" placeholder="Jina la mfanyakazi"></div>
-    <div class="form-group"><label class="form-label">Nafasi / Kazi *</label><input class="form-control" id="wNafasi" placeholder="Mfano: Msaidizi wa Duka"></div>
-    <div class="form-group"><label class="form-label">Namba ya Simu</label><input class="form-control" id="wSimu" placeholder="+255 7XX XXX XXX"></div>
-    <div class="form-group"><label class="form-label">Mshahara (TZS) *</label><input type="number" class="form-control" id="wMshahara" placeholder="0"></div>
-    <div class="form-group"><label class="form-label">Tarehe ya Kuanza</label><input type="date" class="form-control" id="wTarehe"></div>
-    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveWaf()"><i class="ti ti-check"></i> Hifadhi</button>
+    <div class="grid-2">
+      <div class="form-group"><label class="form-label">Nafasi *</label><input class="form-control" id="wNafasi" placeholder="Mfano: Cashier, Manager"></div>
+      <div class="form-group"><label class="form-label">Simu</label><input class="form-control" id="wSimu" placeholder="+255..."></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label class="form-label">Mshahara (TZS) *</label><input type="number" class="form-control" id="wMshahara" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Tarehe ya Kuanza</label><input type="date" class="form-control" id="wTarehe"></div>
+    </div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveWaf()"><i class="ti ti-check"></i> Hifadhi Mfanyakazi</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script>
-(async()=>{const s=await Auth.getSession();if(!s){window.location.replace('login.html');return;}
-await loadSidebar('wafanyakazi');
-})();
-initTabs();
-
-const MIEZI=['Januari','Februari','Machi','Aprili','Mei','Juni','Julai','Agosti','Septemba','Oktoba','Novemba','Desemba'];
 const now = new Date();
 
+(async () => {
+  const session = await Auth.getSession();
+  if (!session) { window.location.replace('login.html'); return; }
+  await loadSidebar('wafanyakazi');
+  initTabs();
+  document.getElementById('selMishaharaMwezi').value = now.getMonth();
+  document.getElementById('selTarehe').value = today();
+  await loadWaf();
+  await loadMishahara();
+  await loadAttendance();
+})();
 
 async function loadWaf() {
   const waf = await DB.wafanyakazi.getAll();
-  const totalMshahara = waf.reduce((a,w)=>a+w.mshahara,0);
+  const totalMshahara = waf.reduce((a,w)=>a+Number(w.mshahara),0);
   document.getElementById('statsGrid').innerHTML = `
     <div class="stat-card"><div class="stat-label">Wafanyakazi Wote</div><div class="stat-value">${waf.length}</div><div class="stat-sub">Wanaofanya kazi</div></div>
     <div class="stat-card"><div class="stat-label">Mishahara/Mwezi</div><div class="stat-value" style="font-size:16px">${formatTZS(totalMshahara)}</div><div class="stat-sub">Jumla ya mwezi</div></div>
     <div class="stat-card"><div class="stat-label">Mishahara/Mwaka</div><div class="stat-value" style="font-size:14px">${formatTZS(totalMshahara*12)}</div><div class="stat-sub">Jumla ya mwaka</div></div>
-  `;
+    <div class="stat-card"><div class="stat-label">Wastani/Mtu</div><div class="stat-value" style="font-size:16px">${waf.length?formatTZS(Math.round(totalMshahara/waf.length)):formatTZS(0)}</div></div>`;
+
+  // AI Insight
+  if (waf.length > 0) {
+    const topPaid = waf.sort((a,b)=>Number(b.mshahara)-Number(a.mshahara))[0];
+    document.getElementById('aiInsightText').innerHTML = `👥 Una wafanyakazi <strong>${waf.length}</strong>. Mishahara ya jumla: <strong>${formatTZS(totalMshahara)}/mwezi</strong> (${formatTZS(totalMshahara*12)}/mwaka). Mshahara mkubwa: <strong>${topPaid?.jina}</strong> (${formatTZS(topPaid?.mshahara)}).`;
+    document.getElementById('aiInsight').style.display = 'block';
+  }
+
   document.getElementById('wafBody').innerHTML = waf.length ? waf.map(w=>`<tr>
-    <td><div style="display:flex;align-items:center;gap:10px">
-      <div class="avatar">${w.jina.substring(0,2).toUpperCase()}</div>
-      <div><div style="font-weight:600;color:var(--navy)">${w.jina}</div></div>
-    </div></td>
+    <td><div style="display:flex;align-items:center;gap:10px"><div class="avatar">${w.jina.substring(0,2).toUpperCase()}</div><div style="font-weight:600;color:var(--navy)">${w.jina}</div></div></td>
     <td><span class="badge badge-info">${w.nafasi}</span></td>
     <td><a href="tel:${w.simu}" style="color:var(--navy);font-size:12px">${w.simu||'—'}</a></td>
     <td class="text-muted">${w.tarehe_kuanza?formatDate(w.tarehe_kuanza):'—'}</td>
     <td class="text-right text-gold font-bold">${formatTZS(w.mshahara)}</td>
     <td><button class="btn btn-danger btn-sm" onclick="deleteWaf(${w.id})"><i class="ti ti-trash"></i></button></td>
   </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">Hakuna wafanyakazi bado</td></tr>';
+  searchTable('searchWaf','wafBody');
 }
-loadWaf();
-searchTable('searchWaf','wafBody');
-
-async function saveWaf() {
-  const jina=document.getElementById('wJina').value.trim();
-  const nafasi=document.getElementById('wNafasi').value.trim();
-  const mshahara=parseFloat(document.getElementById('wMshahara').value)||0;
-  if(!jina||!nafasi||!mshahara){showToast('Jaza taarifa zote muhimu','error');return;}
-  await DB.wafanyakazi.add({jina,nafasi,simu:document.getElementById('wSimu').value.trim(),mshahara,tarehe_kuanza:document.getElementById('wTarehe').value});
-  closeModal('modalWaf');
-  showToast('Mfanyakazi ameongezwa!');
-  await loadWaf();
-  await loadMishahara();
-}
-
-async function deleteWaf(id){if(!confirm('Futa mfanyakazi?'))return;await DB.wafanyakazi.delete(id);showToast('Imefutwa!');await loadWaf();}
 
 async function loadMishahara() {
   const waf = await DB.wafanyakazi.getAll();
@@ -147,79 +151,63 @@ async function loadMishahara() {
   document.getElementById('mishaharaBody').innerHTML = waf.length ? waf.map(w=>{
     const imelipwa = paid.includes(w.id);
     return `<tr>
-      <td><div style="font-weight:600;color:var(--navy)">${w.jina}</div></td>
+      <td class="text-navy font-bold">${w.jina}</td>
       <td class="text-muted">${w.nafasi}</td>
       <td class="text-right text-gold font-bold">${formatTZS(w.mshahara)}</td>
       <td><span class="badge ${imelipwa?'badge-success':'badge-warning'}">${imelipwa?'Imelipwa':'Haijapwa'}</span></td>
-      <td><button class="btn btn-gold btn-sm" onclick="lipaKimoja(${w.id})" ${imelipwa?'disabled':''}>Lipa</button></td>
+      <td><button class="btn btn-gold btn-sm" onclick="lipaKimoja(${w.id})" ${imelipwa?'disabled style="opacity:0.5"':''}><i class="ti ti-cash"></i> Lipa</button></td>
     </tr>`;
-  }).join('') : '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)">Hakuna wafanyakazi</td></tr>';
-}
-loadMishahara();
-
-async function lipaKimoja(id) {
-  const m = parseInt(document.getElementById('selMishaharaMwezi').value);
-  await DB.mishahara.lipa(id,m,now.getFullYear());
-  showToast('Mshahara umelipwa!');
-  await loadMishahara();
-}
-
-async function lipa() {
-  const waf = await DB.wafanyakazi.getAll();
-  const m = parseInt(document.getElementById('selMishaharaMwezi').value);
-  for(const w of waf) await DB.mishahara.lipa(w.id,m,now.getFullYear());
-  showToast('Mishahara yote imelipwa! ✅');
-  await loadMishahara();
-}
-
-function setAttDate(d,btn) {
-  document.getElementById('attDate').value=d;
-  
+  }).join('') : '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">Hakuna wafanyakazi</td></tr>';
 }
 
 async function loadAttendance() {
-  const date = document.getElementById('attDate').value;
-  document.getElementById('attDateLabel').textContent = formatDate(date);
+  const tarehe = document.getElementById('selTarehe').value;
   const waf = await DB.wafanyakazi.getAll();
-  const att = await DB.attendance.getByDate(date);
-  document.getElementById('attBody').innerHTML = waf.length ? waf.map(w=>{
+  const att = await DB.attendance.getByDate(tarehe);
+  document.getElementById('attendanceBody').innerHTML = waf.length ? waf.map(w=>{
     const rec = att.find(a=>a.mfanyakazi_id===w.id);
-    const hali = rec?.hali || 'haijawekwa';
+    const hali = rec?.hali||'haijulikani';
+    const badges = {sawa:'badge-success',late:'badge-warning',absent:'badge-danger',haijulikani:'badge-gray'};
+    const labels = {sawa:'Alikuwepo',late:'Alichelewa',absent:'Hakuwepo',haijulikani:'Haijawekwa'};
     return `<tr>
-      <td><div style="font-weight:600;color:var(--navy)">${w.jina}</div></td>
-      <td class="text-muted">${w.nafasi}</td>
-      <td><span class="badge ${hali==='alikuja'?'badge-success':hali==='hakuja'?'badge-danger':hali==='likizo'?'badge-info':'badge-gray'}">${hali==='alikuja'?'Alikuja':hali==='hakuja'?'Hakuja':hali==='likizo'?'Likizo':'—'}</span></td>
+      <td class="text-navy font-bold">${w.jina}</td>
+      <td><span class="badge ${badges[hali]}">${labels[hali]}</span></td>
       <td class="text-muted">${rec?.muda||'—'}</td>
-      <td>
-        <div style="display:flex;gap:4px">
-          <button class="btn btn-gold btn-sm" onclick="setAtt(${w.id},'alikuja','${date}')">✓ Alikuja</button>
-          <button class="btn btn-danger btn-sm" onclick="setAtt(${w.id},'hakuja','${date}')">✗ Hakuja</button>
-          <button class="btn btn-outline btn-sm" onclick="setAtt(${w.id},'likizo','${date}')">Likizo</button>
-        </div>
-      </td>
+      <td><div style="display:flex;gap:4px">
+        <button class="btn btn-sm ${hali==='sawa'?'btn-navy':'btn-outline'}" onclick="setAtt(${w.id},'sawa','${tarehe}')">✓ Sawa</button>
+        <button class="btn btn-sm ${hali==='late'?'btn-navy':'btn-outline'}" onclick="setAtt(${w.id},'late','${tarehe}')">⏰ Late</button>
+        <button class="btn btn-sm ${hali==='absent'?'btn-danger':'btn-outline'}" onclick="setAtt(${w.id},'absent','${tarehe}')">✗ Absent</button>
+      </div></td>
     </tr>`;
-  }).join('') : '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)">Hakuna wafanyakazi</td></tr>';
+  }).join('') : '<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--text-muted)">Hakuna wafanyakazi</td></tr>';
 }
 
-
-function setAtt(wafId, hali, date) {
-  const attKey = `att_${date}`;
-  const att = DB.get(attKey).filter(a=>a.wafId!==wafId);
-  att.push({wafId,hali,muda:hali==='alikuja'?new Date().toLocaleTimeString('sw-TZ',{hour:'2-digit',minute:'2-digit'}):''});
-  DB.set(attKey,att);
-  showToast('Attendance imewekwa!');
-  
+async function setAtt(wafId, hali, tarehe) {
+  await DB.attendance.set(wafId, tarehe, hali, new Date().toLocaleTimeString('sw-TZ',{hour:'2-digit',minute:'2-digit'}));
+  showToast('Mahudhurio yamehifadhiwa!');
+  await loadAttendance();
 }
+
+async function lipaKimoja(id){const m=parseInt(document.getElementById('selMishaharaMwezi').value);await DB.mishahara.lipa(id,m,now.getFullYear());showToast('Mshahara umelipwa!');await loadMishahara();}
+async function lipa(){const waf=await DB.wafanyakazi.getAll();const m=parseInt(document.getElementById('selMishaharaMwezi').value);for(const w of waf)await DB.mishahara.lipa(w.id,m,now.getFullYear());showToast('Mishahara yote imelipwa! ✅');await loadMishahara();}
+
+async function saveWaf(){
+  const jina=document.getElementById('wJina').value.trim();
+  const nafasi=document.getElementById('wNafasi').value.trim();
+  const mshahara=parseFloat(document.getElementById('wMshahara').value)||0;
+  if(!jina||!nafasi||!mshahara){showToast('Jaza taarifa zote muhimu','error');return;}
+  await DB.wafanyakazi.add({jina,nafasi,simu:document.getElementById('wSimu').value.trim(),mshahara,tarehe_kuanza:document.getElementById('wTarehe').value});
+  closeModal('modalWaf');showToast('Mfanyakazi ameongezwa!');
+  await loadWaf();await loadMishahara();
+}
+async function deleteWaf(id){if(!confirm('Futa mfanyakazi?'))return;await DB.wafanyakazi.delete(id);showToast('Imefutwa!');await loadWaf();}
 </script>
-
 <nav class="bottom-nav">
-<a href="dashboard.html" class=""><i class="ti ti-home"></i><span>Nyumbani</span></a>
-<a href="mauzo.html" class=""><i class="ti ti-shopping-cart"></i><span>Mauzo</span></a>
-<a href="stock.html" class=""><i class="ti ti-package"></i><span>Stock</span></a>
-<a href="madeni.html" class=""><i class="ti ti-credit-card"></i><span>Madeni</span></a>
-<a href="invoice.html" class=""><i class="ti ti-file-invoice"></i><span>Invoice</span></a>
-<a href="ripoti.html" class=""><i class="ti ti-chart-bar"></i><span>Ripoti</span></a>
-<a href="mipangilio.html" class=""><i class="ti ti-settings"></i><span>Zaidi</span></a>
+  <a href="dashboard.html"><i class="ti ti-home"></i><span>Nyumbani</span></a>
+  <a href="ai.html"><i class="ti ti-brand-openai"></i><span>AI</span></a>
+  <a href="mauzo.html"><i class="ti ti-shopping-cart"></i><span>Mauzo</span></a>
+  <a href="wafanyakazi.html" class="active"><i class="ti ti-users"></i><span>Wafanyakazi</span></a>
+  <a href="mipangilio.html"><i class="ti ti-settings"></i><span>Zaidi</span></a>
 </nav>
 </body>
 </html>
