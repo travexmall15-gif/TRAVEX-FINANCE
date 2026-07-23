@@ -2,60 +2,131 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Muhtasari — TRAVEX Finance</title>
+<title>Dashboard — Q360 AI</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="shared.css">
 <style>
-.welcome-bar{background:var(--navy);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;}
-.welcome-bar h2{font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px;}
-.welcome-bar p{font-size:13px;color:rgba(255,255,255,0.5);}
-.trial-badge{background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);border-radius:8px;padding:10px 18px;text-align:center;}
-.trial-days{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--gold);}
-.trial-label{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;}
-.activity-row{display:grid;grid-template-columns:2fr 1fr;gap:16px;}
-.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.qa-btn{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;}
-.qa-btn:hover{border-color:var(--gold);background:#fffdf0;}
-.qa-btn i{font-size:24px;color:var(--navy);display:block;margin-bottom:8px;}
-.qa-btn span{font-size:12px;font-weight:600;color:var(--navy);}
-.chart-area{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:16px;}
-.bar-chart{display:flex;align-items:flex-end;gap:6px;height:100px;margin-top:12px;}
-.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
-.bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;}
-.bar-label{font-size:10px;color:var(--text-muted);}
-.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;z-index:999;font-size:14px;color:var(--navy);gap:10px;}
+.welcome-bar{background:var(--navy);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;border:1px solid var(--border-dark)}
+.welcome-bar::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(0,212,255,0.08),transparent);pointer-events:none}
+.welcome-msg{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:4px}
+.welcome-sub{font-size:13px;color:var(--text-white-dim)}
+.trial-box{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:12px 20px;text-align:center;flex-shrink:0}
+.trial-days{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--gold)}
+.trial-lbl{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
+
+/* AI Quick Ask */
+.ai-quick{background:var(--white);border-radius:var(--radius-lg);border:1.5px solid var(--border);padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;cursor:text;transition:all 0.2s}
+.ai-quick:hover,.ai-quick:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,0.08)}
+.ai-quick-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--cyan-glow),rgba(0,168,204,0.1));border:1px solid var(--cyan-border);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-quick-icon i{font-size:18px;color:var(--cyan)}
+.ai-quick-input{flex:1;border:none;outline:none;font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;background:transparent}
+.ai-quick-input::placeholder{color:var(--text-muted)}
+.ai-quick-btn{padding:8px 16px;background:var(--navy);color:var(--white);border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;flex-shrink:0}
+
+/* Activities */
+.activity-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qa-btn{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block}
+.qa-btn:hover{border-color:var(--cyan);background:rgba(0,212,255,0.02)}
+.qa-btn i{font-size:22px;color:var(--navy);display:block;margin-bottom:8px}
+.qa-btn span{font-size:12px;font-weight:600;color:var(--navy)}
+
+/* Bar chart */
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:90px;margin-top:12px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height 0.4s}
+.bar-label{font-size:10px;color:var(--text-muted)}
+
+/* AI Insight Card */
+.insight-card{background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:var(--radius-lg);border:1px solid var(--cyan-border);padding:20px;margin-bottom:20px;position:relative;overflow:hidden}
+.insight-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(0,212,255,0.1),transparent)}
+.insight-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.insight-icon{width:28px;height:28px;background:var(--cyan-glow);border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px solid var(--cyan-border)}
+.insight-icon i{font-size:14px;color:var(--cyan)}
+.insight-title{font-size:12px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:0.5px}
+.insight-text{font-size:13px;color:var(--text-white);line-height:1.6}
+
+/* Loading skeleton */
+.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:loading 1.5s infinite;border-radius:6px;height:20px}
+@keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
 </style>
 </head>
 <body>
-<div class="loading-overlay" id="loadingOverlay"><i class="ti ti-loader-2" style="font-size:24px;animation:spin 1s linear infinite"></i> Inapakia...</div>
-<style>@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
 <div class="sidebar" id="sidebar"></div>
 <div class="main-wrapper">
   <div class="main-header">
-    <div><div class="header-title">Muhtasari</div><div class="header-sub" id="headerSub">Habari — hivi ndivyo biashara yako inavyoenda leo</div></div>
-    <div style="font-size:12px;color:var(--text-muted)" id="headerDate"></div>
-  </div>
-  <div class="main-content">
-    <div class="welcome-bar">
-      <div><h2 id="welcomeMsg">Habari!</h2><p id="welcomeSub">Biashara yako inakusubiri — hebu tuangalie hali yake leo.</p></div>
-      <div class="trial-badge"><div class="trial-days" id="trialDays">7</div><div class="trial-label">Siku za Bure Zimebaki</div></div>
-    </div>
-    <div class="stats-grid" id="statsGrid"><div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div><div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div><div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div><div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div></div>
-    <div class="activity-row">
+    <div class="header-left">
       <div>
+        <div class="header-title">Dashboard</div>
+        <div class="header-sub" id="headerDate">Inapakia...</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-ai-badge"><span class="ai-dot"></span> Q360 AI Online</div>
+      <a href="ai.html" class="btn btn-ai btn-sm"><i class="ti ti-brand-openai"></i> Zungumza na AI</a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Welcome Bar -->
+    <div class="welcome-bar">
+      <div>
+        <div class="welcome-msg" id="welcomeMsg">Habari!</div>
+        <div class="welcome-sub" id="welcomeSub">Biashara yako inakusubiri — hebu tuangalie leo</div>
+      </div>
+      <div class="trial-box">
+        <div class="trial-days" id="trialDays">7</div>
+        <div class="trial-lbl">Siku za Bure</div>
+      </div>
+    </div>
+
+    <!-- AI Quick Ask -->
+    <div class="ai-quick" onclick="document.getElementById('aiInput').focus()">
+      <div class="ai-quick-icon"><i class="ti ti-brand-openai"></i></div>
+      <input id="aiInput" class="ai-quick-input" placeholder="Uliza Q360 AI — 'Biashara yangu imekwenda vipi leo?'" onkeydown="if(event.key==='Enter')goAI()">
+      <button class="ai-quick-btn" onclick="goAI()"><i class="ti ti-send"></i> Tuma</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="skeleton" style="height:12px;width:60%;margin-bottom:10px"></div><div class="skeleton" style="height:28px;width:80%"></div></div>
+      <div class="stat-card"><div class="skeleton" style="height:12px;width:60%;margin-bottom:10px"></div><div class="skeleton" style="height:28px;width:80%"></div></div>
+      <div class="stat-card"><div class="skeleton" style="height:12px;width:60%;margin-bottom:10px"></div><div class="skeleton" style="height:28px;width:80%"></div></div>
+      <div class="stat-card"><div class="skeleton" style="height:12px;width:60%;margin-bottom:10px"></div><div class="skeleton" style="height:28px;width:80%"></div></div>
+    </div>
+
+    <!-- AI Insight -->
+    <div class="insight-card" id="insightCard" style="display:none">
+      <div class="insight-header">
+        <div class="insight-icon"><i class="ti ti-bulb"></i></div>
+        <div class="insight-title">Q360 AI Insight</div>
+      </div>
+      <div class="insight-text" id="insightText">Inapakia...</div>
+    </div>
+
+    <!-- Activities -->
+    <div class="activity-grid">
+      <div>
+        <!-- Recent Sales -->
         <div class="table-card">
           <div class="table-card-header">
-            <div><div class="table-card-title">Mauzo ya Hivi Karibuni</div><div class="table-card-sub">Miamala ya leo</div></div>
+            <div>
+              <div class="table-card-title">Mauzo ya Hivi Karibuni</div>
+              <div class="table-card-sub">Miamala ya leo</div>
+            </div>
             <a href="mauzo.html" class="btn btn-outline btn-sm">Ona Yote</a>
           </div>
-          <div id="recentSales"><div style="text-align:center;padding:30px;color:var(--text-muted)"><i class="ti ti-loader-2" style="font-size:24px;display:block;margin-bottom:8px"></i>Inapakia...</div></div>
+          <div id="recentSales"><div style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px"><i class="ti ti-loader-2 spin" style="display:block;font-size:24px;margin-bottom:8px"></i>Inapakia...</div></div>
         </div>
-        <div class="chart-area">
-          <div style="font-size:15px;font-weight:700;color:var(--navy)">Mauzo — Wiki Hii</div>
+        <!-- Week Chart -->
+        <div class="table-card" style="padding:20px">
+          <div style="font-size:14px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px"><i class="ti ti-chart-bar" style="color:var(--cyan)"></i> Mapato — Wiki Hii</div>
           <div class="bar-chart" id="weekChart"></div>
         </div>
       </div>
+
       <div>
+        <!-- Quick Actions -->
         <div class="table-card" style="margin-bottom:16px">
           <div class="table-card-header"><div class="table-card-title">Vitendo vya Haraka</div></div>
           <div style="padding:16px">
@@ -64,70 +135,110 @@
               <a href="invoice.html" class="qa-btn"><i class="ti ti-file-plus"></i><span>Invoice Mpya</span></a>
               <a href="stock.html" class="qa-btn"><i class="ti ti-package"></i><span>Angalia Stock</span></a>
               <a href="madeni.html" class="qa-btn"><i class="ti ti-credit-card"></i><span>Ona Madeni</span></a>
+              <a href="personal.html" class="qa-btn"><i class="ti ti-wallet"></i><span>Fedha Zangu</span></a>
+              <a href="projects.html" class="qa-btn"><i class="ti ti-layout-kanban"></i><span>Miradi</span></a>
             </div>
           </div>
         </div>
+        <!-- Stock Alerts -->
         <div class="table-card">
           <div class="table-card-header"><div class="table-card-title">Tahadhari za Stock</div></div>
-          <div id="stockAlerts"><div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px"><i class="ti ti-package" style="display:block;font-size:24px;margin-bottom:6px"></i>Inapakia...</div></div>
+          <div id="stockAlerts"><div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px"><i class="ti ti-loader-2 spin" style="display:block;font-size:24px;margin-bottom:6px"></i>Inapakia...</div></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script>
 (async () => {
   const session = await Auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
-
   await loadSidebar('dashboard');
+
   const profile = Auth.getCachedUser() || await DB.profile.get();
   if (profile) Auth.cacheUser(profile);
 
-  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('sw-TZ', {weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  // Set header date
+  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('sw-TZ', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+
+  // Welcome
   const hr = new Date().getHours();
-  const greeting = hr < 12 ? 'Habari za Asubuhi' : hr < 17 ? 'Habari za Mchana' : 'Habari za Jioni';
-  document.getElementById('welcomeMsg').textContent = greeting + ', ' + (profile?.jina?.split(' ')[0] || 'Karibu') + '!';
+  const greet = hr < 12 ? 'Habari za Asubuhi' : hr < 17 ? 'Habari za Mchana' : 'Habari za Jioni';
+  document.getElementById('welcomeMsg').textContent = `${greet}, ${profile?.jina?.split(' ')[0] || 'Karibu'}!`;
 
+  // Trial
   const elapsed = Math.floor((new Date() - new Date(profile?.trial_start || new Date())) / (1000*60*60*24));
-  document.getElementById('trialDays').textContent = Math.max(0, (profile?.trial_days || 7) - elapsed);
+  const remaining = Math.max(0, (profile?.trial_days || 7) - elapsed);
+  document.getElementById('trialDays').textContent = remaining;
 
-  // Load data parallel
-  const [mauzo, stockData, madeni] = await Promise.all([
-    DB.mauzo.getByDate(today()),
+  // Load data
+  const todayDate = today();
+  const [mauzoLeo, stockData, madeniData] = await Promise.all([
+    DB.mauzo.getByDate(todayDate),
     DB.stock.getAll(),
     DB.madeni.getAll()
   ]);
 
-  const mapato = mauzo.filter(m => m.aina === 'mapato').reduce((a,m) => a + Number(m.jumla), 0);
-  const matumizi = mauzo.filter(m => m.aina === 'matumizi').reduce((a,m) => a + Number(m.jumla), 0);
-  const madeniUnaodai = madeni.filter(m => m.aina === 'unaodai').reduce((a,m) => a + Number(m.kiasi), 0);
+  const mapato = mauzoLeo.filter(m => m.aina === 'mapato').reduce((a, m) => a + Number(m.jumla), 0);
+  const matumizi = mauzoLeo.filter(m => m.aina === 'matumizi').reduce((a, m) => a + Number(m.jumla), 0);
+  const unaodai = madeniData.filter(m => m.aina === 'unaodai').reduce((a, m) => a + Number(m.kiasi), 0);
   const stockLow = stockData.filter(s => Number(s.idadi) <= Number(s.kiwango_chini)).length;
 
+  // Stats
   document.getElementById('statsGrid').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Mapato Leo</div><div class="stat-value">${formatTZS(mapato)}</div><div class="stat-sub">Mauzo ya leo</div></div>
-    <div class="stat-card"><div class="stat-label">Faida Leo</div><div class="stat-value">${formatTZS(mapato-matumizi)}</div><div class="stat-sub">Mapato - Matumizi</div></div>
-    <div class="stat-card"><div class="stat-label">Madeni Unaodai</div><div class="stat-value">${formatTZS(madeniUnaodai)}</div><div class="stat-sub">${madeni.filter(m=>m.aina==='unaodai').length} watu</div></div>
-    <div class="stat-card"><div class="stat-label">Stock Inayokwisha</div><div class="stat-value" style="color:${stockLow>0?'#ef4444':'var(--gold)'}">${stockLow}</div><div class="stat-sub">${stockLow>0?'Zinahitaji kujazwa':'Zote ziko sawa'}</div></div>
+    <div class="stat-card">
+      <div class="stat-label">Mapato Leo</div>
+      <div class="stat-value">${formatTZS(mapato)}</div>
+      <div class="stat-sub">Mauzo ya leo</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Faida Leo</div>
+      <div class="stat-value" style="color:${mapato-matumizi>=0?'var(--gold)':'#ff6b6b'}">${formatTZS(mapato-matumizi)}</div>
+      <div class="stat-sub">Mapato - Matumizi</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Madeni Unaodai</div>
+      <div class="stat-value">${formatTZS(unaodai)}</div>
+      <div class="stat-sub">${madeniData.filter(m=>m.aina==='unaodai').length} watu</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Stock Inayokwisha</div>
+      <div class="stat-value" style="color:${stockLow>0?'#ef4444':'var(--gold)'}">${stockLow}</div>
+      <div class="stat-sub">${stockLow>0?'Zinahitaji kujazwa':'Zote ziko sawa'}</div>
+    </div>
   `;
 
-  document.getElementById('recentSales').innerHTML = mauzo.length
+  // AI Insight
+  const insight = document.getElementById('insightCard');
+  const insightText = document.getElementById('insightText');
+  insight.style.display = 'block';
+  if (stockLow > 0) {
+    insightText.textContent = `⚠️ Bidhaa ${stockLow} zinakwisha hivi karibuni. ${mapato > 0 ? `Mapato yako leo ni ${formatTZS(mapato)} — ` : ''}Jaza stock ili usipoteze mauzo.`;
+  } else if (mapato > 0) {
+    insightText.textContent = `✅ Vizuri! Mapato ya leo ni ${formatTZS(mapato)} na faida ni ${formatTZS(mapato-matumizi)}. ${mapato-matumizi > 0 ? 'Biashara yako inakwenda vizuri!' : 'Angalia matumizi yako.'}`;
+  } else {
+    insightText.textContent = `🚀 Habari ${profile?.jina?.split(' ')[0] || ''}! Anza kurekodi mauzo yako ya leo. Q360 AI itakusaidia kufuatilia biashara yako kwa wakati halisi.`;
+  }
+
+  // Recent sales
+  document.getElementById('recentSales').innerHTML = mauzoLeo.length
     ? `<table><thead><tr><th>Bidhaa</th><th>Aina</th><th class="text-right">Jumla</th></tr></thead><tbody>
-        ${mauzo.slice(0,6).map(m=>`<tr>
-          <td class="text-navy" style="font-weight:600">${m.bidhaa}</td>
+        ${mauzoLeo.slice(0,6).map(m=>`<tr>
+          <td class="text-navy">${m.bidhaa}</td>
           <td><span class="badge ${m.aina==='mapato'?'badge-success':'badge-danger'}">${m.aina==='mapato'?'Mapato':'Matumizi'}</span></td>
           <td class="text-right font-bold">${formatTZS(m.jumla)}</td>
         </tr>`).join('')}
       </tbody></table>`
-    : `<div style="text-align:center;padding:30px;color:var(--text-muted)"><i class="ti ti-shopping-cart" style="font-size:32px;display:block;margin-bottom:8px"></i>Hakuna mauzo leo — <a href="mauzo.html" style="color:var(--navy);font-weight:600">Anza kurekodi</a></div>`;
+    : `<div style="text-align:center;padding:28px;color:var(--text-muted)"><i class="ti ti-shopping-cart" style="font-size:28px;display:block;margin-bottom:8px"></i>Hakuna mauzo leo — <a href="mauzo.html" style="color:var(--navy);font-weight:600">Anza kurekodi</a></div>`;
 
   // Week chart
   const days = ['Ju','Al','Ju','Al','Ij','Sa','Ap'];
   const allMauzo = await DB.mauzo.getAll();
-  const weekData = days.map((_,i) => ({
+  const weekData = days.map((_, i) => ({
     label: days[i],
     val: allMauzo.filter(m => new Date(m.tarehe).getDay()===i && m.aina==='mapato').reduce((a,m)=>a+Number(m.jumla),0)
   }));
@@ -135,10 +246,11 @@
   const todayDay = new Date().getDay();
   document.getElementById('weekChart').innerHTML = weekData.map((d,i)=>`
     <div class="bar-wrap">
-      <div class="bar-fill" style="height:${Math.max((d.val/maxVal)*90,4)}px;background:${i===todayDay?'var(--gold)':'var(--navy)'}"></div>
+      <div class="bar-fill" style="height:${Math.max((d.val/maxVal)*80,4)}px;background:${i===todayDay?'var(--cyan)':'var(--navy)'}"></div>
       <div class="bar-label">${d.label}</div>
     </div>`).join('');
 
+  // Stock alerts
   const lowStock = stockData.filter(s => Number(s.idadi) <= Number(s.kiwango_chini));
   document.getElementById('stockAlerts').innerHTML = lowStock.length
     ? `<div style="padding:0 16px 16px">${lowStock.map(s=>`
@@ -149,19 +261,22 @@
         <a href="stock.html" style="display:block;text-align:center;font-size:12px;font-weight:600;color:var(--navy);padding-top:12px">Simamia Stock →</a>
       </div>`
     : `<div style="text-align:center;padding:20px;color:var(--success);font-size:13px"><i class="ti ti-circle-check" style="display:block;font-size:24px;margin-bottom:6px"></i>Stock zote ziko sawa!</div>`;
-
-  document.getElementById('loadingOverlay').style.display = 'none';
 })();
+
+function goAI() {
+  const q = document.getElementById('aiInput').value.trim();
+  if (!q) { window.location.href = 'ai.html'; return; }
+  sessionStorage.setItem('ai_prefill', q);
+  window.location.href = 'ai.html';
+}
 </script>
 
 <nav class="bottom-nav">
-<a href="dashboard.html" class="active"><i class="ti ti-home"></i><span>Nyumbani</span></a>
-<a href="mauzo.html" class=""><i class="ti ti-shopping-cart"></i><span>Mauzo</span></a>
-<a href="stock.html" class=""><i class="ti ti-package"></i><span>Stock</span></a>
-<a href="madeni.html" class=""><i class="ti ti-credit-card"></i><span>Madeni</span></a>
-<a href="invoice.html" class=""><i class="ti ti-file-invoice"></i><span>Invoice</span></a>
-<a href="ripoti.html" class=""><i class="ti ti-chart-bar"></i><span>Ripoti</span></a>
-<a href="mipangilio.html" class=""><i class="ti ti-settings"></i><span>Zaidi</span></a>
+  <a href="dashboard.html" class="active"><i class="ti ti-home"></i><span>Nyumbani</span></a>
+  <a href="ai.html"><i class="ti ti-brand-openai"></i><span>AI</span></a>
+  <a href="mauzo.html"><i class="ti ti-shopping-cart"></i><span>Mauzo</span></a>
+  <a href="personal.html"><i class="ti ti-wallet"></i><span>Fedha</span></a>
+  <a href="mipangilio.html"><i class="ti ti-settings"></i><span>Zaidi</span></a>
 </nav>
 </body>
 </html>
