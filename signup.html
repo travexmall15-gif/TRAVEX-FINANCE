@@ -8,207 +8,147 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#0a0f1e;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-font-smoothing:antialiased}
-
 .card{background:#fff;border-radius:20px;padding:36px 32px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
 .logo{display:flex;align-items:center;gap:8px;margin-bottom:24px;cursor:pointer}
 .logo-sq{width:30px;height:30px;background:linear-gradient(135deg,#00d4ff,#FFD700);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#0a0f1e;font-family:'Plus Jakarta Sans',sans-serif}
 .logo-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:#0a0f1e}
 .logo-name span{color:#00d4ff}
+.steps{display:flex;align-items:center;margin-bottom:22px}
+.sd{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;transition:all 0.3s}
+.sd.a{background:#0a0f1e;color:#fff}
+.sd.d{background:#00d4ff;color:#0a0f1e}
+.sd.i{background:#f3f4f6;color:#9ca3af}
+.sl{flex:1;height:2px;background:#e5e7eb;transition:background 0.3s}
+.sl.d{background:#00d4ff}
 h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#0a0f1e;margin-bottom:4px}
-.sub{font-size:13px;color:#9ca3af;margin-bottom:20px}
+.sub{font-size:13px;color:#9ca3af;margin-bottom:18px}
 label{display:block;font-size:13px;font-weight:600;color:#0a0f1e;margin-bottom:5px}
-.fgrp{margin-bottom:13px}
+.fg{margin-bottom:13px}
 input,select{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:13px;color:#0a0f1e;outline:none;font-family:'DM Sans',sans-serif;transition:border-color 0.2s;background:#fff}
 input:focus,select:focus{border-color:#00d4ff}
 select{cursor:pointer}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
-
-.btn-google{width:100%;padding:13px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:12px;transition:all 0.2s}
-.btn-google:hover{background:#f9fafb}
-.btn-google img{width:18px;height:18px}
-
-.divider{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.divider span{font-size:12px;color:#9ca3af}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
-
-.btn-main{width:100%;padding:13px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;margin-top:6px}
-.btn-main:hover{opacity:0.9}
-.btn-main.cy{background:linear-gradient(135deg,#00d4ff,#0099bb);color:#0a0f1e}
-
-.pur-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 20px}
-.pur{border:2px solid #e5e7eb;border-radius:12px;padding:16px 8px;text-align:center;cursor:pointer;transition:all 0.2s}
-.pur:hover{border-color:#0a0f1e}
-.pur.sel{border-color:#00d4ff;background:rgba(0,212,255,0.04)}
-.pur i{font-size:22px;color:#9ca3af;display:block;margin-bottom:7px}
-.pur.sel i{color:#00d4ff}
-.pur b{font-size:11px;font-weight:700;color:#6b7280;display:block}
-.pur.sel b{color:#0a0f1e}
-
-/* Steps */
-.steps{display:flex;align-items:center;margin-bottom:22px}
-.sd{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;transition:all 0.3s}
-.sd.active{background:#0a0f1e;color:#fff}
-.sd.done{background:#00d4ff;color:#0a0f1e}
-.sd.idle{background:#f3f4f6;color:#9ca3af}
-.sl{flex:1;height:2px;background:#e5e7eb;transition:background 0.3s}
-.sl.done{background:#00d4ff}
-
+.btn-g{width:100%;padding:12px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:12px}
+.btn-g:hover{background:#f9fafb}
+.btn-g img{width:18px;height:18px}
+.div{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.div span{font-size:12px;color:#9ca3af}
+.div::before,.div::after{content:'';flex:1;height:1px;background:#e5e7eb}
+.btn{width:100%;padding:13px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+.btn:hover{opacity:0.9}
+.btn.cy{background:linear-gradient(135deg,#00d4ff,#0099bb);color:#0a0f1e}
+.pur{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 20px}
+.p{border:2px solid #e5e7eb;border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;transition:all 0.2s}
+.p:hover,.p.s{border-color:#00d4ff;background:rgba(0,212,255,0.04)}
+.p i{font-size:22px;color:#9ca3af;display:block;margin-bottom:6px}
+.p.s i{color:#00d4ff}
+.p b{font-size:11px;font-weight:700;color:#6b7280;display:block}
+.p.s b{color:#0a0f1e}
 .pg{display:none}
-.pg.show{display:block}
-
+.pg.on{display:block}
 .row{text-align:center;font-size:13px;color:#9ca3af;margin-top:14px}
 .row a{color:#0a0f1e;font-weight:700;cursor:pointer}
-
-.veil{position:fixed;inset:0;background:#0a0f1e;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99;transition:opacity 0.25s}
-.veil.off{opacity:0;pointer-events:none}
-.veil-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#00d4ff;margin-bottom:16px}
-.veil-spin{width:28px;height:28px;border:2.5px solid rgba(0,212,255,0.15);border-top-color:#00d4ff;border-radius:50%;animation:spin 0.7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:460px){.card{padding:24px 18px}.g2{grid-template-columns:1fr}.pur-grid{grid-template-columns:1fr}}
+@media(max-width:460px){.card{padding:24px 18px}.g2{grid-template-columns:1fr}.pur{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="veil" id="veil">
-  <div class="veil-logo">Q360 AI</div>
-  <div class="veil-spin"></div>
-</div>
-
-<div class="card" id="card" style="display:none">
+<div class="card">
   <div class="logo" onclick="go()">
     <div class="logo-sq">Q3</div>
     <div class="logo-name">Q360<span> AI</span></div>
   </div>
 
-  <!-- Steps -->
-  <div class="steps" id="stBar">
-    <div class="sd active" id="sd1">1</div>
-    <div class="sl" id="sl1"></div>
-    <div class="sd idle" id="sd2">2</div>
-    <div class="sl" id="sl2"></div>
-    <div class="sd idle" id="sd3">3</div>
+  <div class="steps">
+    <div class="sd a" id="s1">1</div>
+    <div class="sl" id="l1"></div>
+    <div class="sd i" id="s2">2</div>
+    <div class="sl" id="l2"></div>
+    <div class="sd i" id="s3">3</div>
   </div>
 
-  <!-- ── STEP 1 ── -->
-  <div class="pg show" id="pg1">
+  <!-- Step 1 -->
+  <div class="pg on" id="pg1">
     <h2>Unda Akaunti</h2>
     <p class="sub">Bure · Dakika 1 tu</p>
-
-    <button class="btn-google" onclick="go()">
-      <img src="https://www.google.com/favicon.ico" alt="G"> Endelea na Google
-    </button>
-    <div class="divider"><span>au</span></div>
-
+    <button class="btn-g" onclick="go()"><img src="https://www.google.com/favicon.ico" alt="G"> Endelea na Google</button>
+    <div class="div"><span>au</span></div>
     <div class="g2">
-      <div class="fgrp"><label>Jina</label><input id="p1J" placeholder="Jina lako"></div>
-      <div class="fgrp"><label>Email</label><input type="email" id="p1E" placeholder="email@..."></div>
+      <div class="fg"><label>Jina</label><input id="j1" placeholder="Jina lako"></div>
+      <div class="fg"><label>Email</label><input type="email" id="e1" placeholder="email@..."></div>
     </div>
     <div class="g2">
-      <div class="fgrp"><label>Neno la Siri</label><input type="password" id="p1P" placeholder="••••••"></div>
-      <div class="fgrp"><label>Thibitisha</label><input type="password" id="p1C" placeholder="••••••" onkeydown="if(event.key==='Enter')next(1)"></div>
+      <div class="fg"><label>Neno la Siri</label><input type="password" id="p1" placeholder="••••••"></div>
+      <div class="fg"><label>Thibitisha</label><input type="password" id="c1" placeholder="••••••" onkeydown="if(event.key==='Enter')next(1)"></div>
     </div>
-
-    <button class="btn-main" onclick="next(1)">Endelea <i class="ti ti-arrow-right"></i></button>
+    <button class="btn" onclick="next(1)">Endelea <i class="ti ti-arrow-right"></i></button>
     <div class="row">Una akaunti? <a onclick="location.href='login.html'">Ingia</a></div>
   </div>
 
-  <!-- ── STEP 2 ── -->
+  <!-- Step 2 -->
   <div class="pg" id="pg2">
     <h2>Utatumia kwa nini?</h2>
     <p class="sub">Chagua — unaweza kubadilisha baadaye</p>
-    <div class="pur-grid">
-      <div class="pur" id="pu-personal" onclick="selP('personal')"><i class="ti ti-wallet"></i><b>Kibinafsi</b></div>
-      <div class="pur" id="pu-business" onclick="selP('business')"><i class="ti ti-building-store"></i><b>Biashara</b></div>
-      <div class="pur sel" id="pu-both" onclick="selP('both')"><i class="ti ti-layout-grid"></i><b>Vyote</b></div>
+    <div class="pur">
+      <div class="p" id="pp" onclick="sp('personal')"><i class="ti ti-wallet"></i><b>Kibinafsi</b></div>
+      <div class="p" id="pb" onclick="sp('business')"><i class="ti ti-building-store"></i><b>Biashara</b></div>
+      <div class="p s" id="pbo" onclick="sp('both')"><i class="ti ti-layout-grid"></i><b>Vyote</b></div>
     </div>
-    <button class="btn-main" onclick="next(2)">Endelea <i class="ti ti-arrow-right"></i></button>
+    <button class="btn" onclick="next(2)">Endelea <i class="ti ti-arrow-right"></i></button>
   </div>
 
-  <!-- ── STEP 3 ── -->
+  <!-- Step 3 -->
   <div class="pg" id="pg3">
-    <h2>Karibu, <span id="p3N">rafiki</span>!</h2>
+    <h2>Karibu, <span id="nm">rafiki</span>!</h2>
     <p class="sub">Hatua ya mwisho</p>
-
-    <div id="bizF" class="fgrp">
-      <label>Jina la Biashara (hiari)</label>
-      <input id="p3B" placeholder="Mfano: Duka la Amani">
-    </div>
+    <div class="fg" id="biz"><label>Jina la Biashara (hiari)</label><input id="bz" placeholder="Mfano: Duka la Amani"></div>
     <div class="g2">
-      <div>
-        <label>Nchi</label>
-        <select id="p3Nchi"><option value="TZ">Tanzania</option><option value="KE">Kenya</option><option value="UG">Uganda</option></select>
-      </div>
-      <div>
-        <label>Lugha ya AI</label>
-        <select id="p3L"><option value="sw">Kiswahili</option><option value="en">English</option></select>
-      </div>
+      <div><label>Nchi</label><select><option>Tanzania</option><option>Kenya</option><option>Uganda</option></select></div>
+      <div><label>Lugha ya AI</label><select><option>Kiswahili</option><option>English</option></select></div>
     </div>
-
-    <button class="btn-main cy" id="finBtn" onclick="go()">
-      <i class="ti ti-rocket" id="finIco"></i> Ingia Q360 AI
-    </button>
+    <button class="btn cy" onclick="go()"><i class="ti ti-rocket"></i> Ingia Q360 AI</button>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
 <script src="dev-config.js"></script>
 <script>
-let purpose = 'both';
+// Already in dev session? → go straight in
+if (localStorage.getItem('q360_dev_active') === 'true') {
+  window.location.replace('ai.html');
+}
 
-// ── INIT ─────────────────────────────────────────────────
-(async () => {
-  const session = await Auth.getSession().catch(()=>null);
-  if (session) { window.location.replace('ai.html'); return; }
-  document.getElementById('veil').classList.add('off');
-  document.getElementById('card').style.display = 'block';
-})();
+let pur = 'both';
 
-// ── STEPS ─────────────────────────────────────────────────
-function setStep(n) {
+function step(n) {
   [1,2,3].forEach(i => {
-    const d = document.getElementById('sd'+i);
-    if (i < n) { d.className='sd done'; d.innerHTML='<i class="ti ti-check" style="font-size:9px"></i>'; document.getElementById('sl'+i)?.classList.add('done'); }
-    else if (i===n) { d.className='sd active'; d.textContent=i; }
-    else { d.className='sd idle'; d.textContent=i; }
+    const d = document.getElementById('s'+i);
+    if (i < n) { d.className='sd d'; d.innerHTML='<i class="ti ti-check" style="font-size:9px"></i>'; document.getElementById('l'+i)?.classList.add('d'); }
+    else if (i===n) { d.className='sd a'; d.textContent=i; }
+    else { d.className='sd i'; d.textContent=i; }
   });
 }
 
 function next(from) {
-  // Step 1 → 2
   if (from === 1) {
-    const jina = document.getElementById('p1J').value.trim();
-    document.getElementById('p3N').textContent = jina.split(' ')[0] || 'rafiki';
-    document.getElementById('pg1').classList.remove('show');
-    document.getElementById('pg2').classList.add('show');
-    setStep(2);
-    return;
-  }
-  // Step 2 → 3
-  if (from === 2) {
-    if (purpose === 'personal') document.getElementById('bizF').style.display='none';
-    document.getElementById('pg2').classList.remove('show');
-    document.getElementById('pg3').classList.add('show');
-    setStep(3);
+    const j = document.getElementById('j1').value.trim();
+    document.getElementById('nm').textContent = j.split(' ')[0] || 'rafiki';
+    document.getElementById('pg1').classList.remove('on');
+    document.getElementById('pg2').classList.add('on');
+    step(2);
+  } else {
+    if (pur === 'personal') document.getElementById('biz').style.display = 'none';
+    document.getElementById('pg2').classList.remove('on');
+    document.getElementById('pg3').classList.add('on');
+    step(3);
   }
 }
 
-function selP(p) {
-  purpose = p;
-  ['personal','business','both'].forEach(x => document.getElementById('pu-'+x)?.classList.toggle('sel', x===p));
+function sp(p) {
+  pur = p;
+  ['pp','pb','pbo'].forEach(x => document.getElementById(x)?.classList.remove('s'));
+  document.getElementById(p==='personal'?'pp':p==='business'?'pb':'pbo')?.classList.add('s');
 }
 
-// ── GO → direct entry, no validation ─────────────────────
-async function go() {
-  const btn = document.getElementById('finBtn');
-  if (btn) { btn.disabled=true; btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite"></i> Inaingia...'; }
-
-  if (typeof devQuickLogin === 'function') {
-    await devQuickLogin();
-    return;
-  }
-  window.location.replace('ai.html');
-}
+function go() { devQuickLogin(); }
 </script>
 </body>
 </html>
