@@ -5,225 +5,168 @@
 <title>Jiandikishe — Q360 AI</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--navy:#0a0f1e;--cyan:#00d4ff;--gold:#FFD700;--white:#fff;--bg:#f0f2f8;--border:#e5e7eb;--text:#1a2332;--muted:#9ca3af;--danger:#ef4444;--danger-bg:#fee2e2;--success:#10b981;--success-bg:#d1fae5;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}
+body{font-family:'DM Sans',sans-serif;background:#0a0f1e;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-font-smoothing:antialiased}
 
-/* TOPBAR */
-.topbar{background:var(--navy);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.logo{display:flex;align-items:center;gap:8px;cursor:pointer}
-.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--cyan),var(--gold));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif}
-.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--white)}
-.logo-text span{color:var(--cyan)}
-.login-hint{font-size:13px;color:rgba(255,255,255,0.5)}
-.login-hint a{color:var(--cyan);font-weight:600}
+.card{background:#fff;border-radius:20px;padding:36px 32px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.card-logo{display:flex;align-items:center;gap:8px;margin-bottom:24px;cursor:pointer}
+.logo-sq{width:30px;height:30px;background:linear-gradient(135deg,#00d4ff,#FFD700);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#0a0f1e;font-family:'Plus Jakarta Sans',sans-serif}
+.logo-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:#0a0f1e}
+.logo-name span{color:#00d4ff}
 
-/* STEPS BAR */
-.steps-bar{background:var(--white);border-bottom:1px solid var(--border);padding:16px 24px}
-.steps{display:flex;align-items:center;justify-content:center;gap:0;max-width:480px;margin:0 auto}
-.step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
-.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:all 0.3s}
-.step-num.done{background:var(--cyan);color:var(--navy)}
-.step-num.active{background:var(--navy);color:var(--white)}
-.step-num.pending{background:var(--bg);color:var(--muted);border:2px solid var(--border)}
-.step-label{font-size:12px}
-.step-label.active{color:var(--navy)}
-.step-label.pending{color:var(--muted)}
-.step-line{width:48px;height:2px;background:var(--border);margin:0 8px;flex-shrink:0;transition:background 0.3s}
-.step-line.done{background:var(--cyan)}
+/* Steps indicator */
+.steps{display:flex;align-items:center;gap:0;margin-bottom:24px}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:all 0.3s}
+.step-dot.done{background:#00d4ff;color:#0a0f1e}
+.step-dot.active{background:#0a0f1e;color:#fff}
+.step-dot.idle{background:#f3f4f6;color:#9ca3af}
+.step-line{flex:1;height:2px;background:#e5e7eb;transition:background 0.3s}
+.step-line.done{background:#00d4ff}
 
-/* CONTENT */
-.content{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px}
+h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#0a0f1e;margin-bottom:4px}
+.sub{font-size:13px;color:#9ca3af;margin-bottom:20px}
 
-/* STEP 1 — Google or Email */
-.auth-wrap{max-width:480px;width:100%;background:var(--white);border-radius:20px;padding:36px;box-shadow:0 2px 16px rgba(0,0,0,0.06)}
-.auth-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px}
-.auth-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
-.btn-google{width:100%;padding:13px;background:var(--white);color:var(--text);border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;margin-bottom:16px}
+label{display:block;font-size:13px;font-weight:600;color:#0a0f1e;margin-bottom:5px}
+input,select{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:13px;color:#0a0f1e;background:#fff;outline:none;transition:border-color 0.2s;font-family:'DM Sans',sans-serif;margin-bottom:14px}
+input:focus,select:focus{border-color:#00d4ff}
+select{cursor:pointer}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.btn-main{width:100%;padding:13px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;margin-top:4px}
+.btn-main:hover{opacity:0.9}
+.btn-main.cyan{background:linear-gradient(135deg,#00d4ff,#0099bb);color:#0a0f1e}
+.btn-main:disabled{opacity:0.6;cursor:not-allowed}
+.btn-google{width:100%;padding:12px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;transition:all 0.2s;margin-bottom:12px}
 .btn-google:hover{background:#f9fafb}
 .btn-google img{width:18px;height:18px}
-.divider{display:flex;align-items:center;gap:12px;margin:16px 0}
-.divider span{font-size:12px;color:var(--muted)}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.form-group{margin-bottom:16px}
-.form-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
-.form-control{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;color:var(--text);background:var(--white);outline:none;transition:border-color 0.2s;font-family:'DM Sans',sans-serif}
-.form-control:focus{border-color:var(--cyan)}
-select.form-control{cursor:pointer}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.btn-main{width:100%;padding:13px;background:linear-gradient(135deg,var(--navy),#1a2332);color:var(--white);border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s}
-.btn-main:hover{opacity:0.9}
-.btn-cyan{background:linear-gradient(135deg,#00d4ff,#0099bb);color:var(--navy)}
-.btn-outline{background:var(--white);color:var(--navy);border:1.5px solid var(--border)}
-.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none;align-items:center;gap:8px}
-.alert-error.show{display:flex}
 
-/* STEP 2 — Onboarding: Purpose */
-.onboard-wrap{max-width:560px;width:100%;text-align:center}
-.onboard-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;color:var(--text);margin-bottom:8px}
-.onboard-sub{font-size:14px;color:var(--muted);margin-bottom:32px}
-.purpose-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
-.purpose-card{background:var(--white);border:2px solid var(--border);border-radius:16px;padding:24px 16px;cursor:pointer;transition:all 0.2s;text-align:center}
-.purpose-card:hover{border-color:var(--navy)}
-.purpose-card.selected{border-color:var(--cyan);background:rgba(0,212,255,0.04)}
-.purpose-card i{font-size:32px;color:var(--muted);display:block;margin-bottom:10px}
-.purpose-card.selected i{color:var(--cyan)}
-.purpose-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
-.purpose-desc{font-size:11px;color:var(--muted)}
+.divider{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.divider span{font-size:12px;color:#9ca3af;white-space:nowrap}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
 
-/* STEP 3 — Profile */
-.profile-wrap{max-width:500px;width:100%;background:var(--white);border-radius:20px;padding:32px;box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.err{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;border-radius:8px;padding:10px 14px;font-size:13px;display:none;align-items:center;gap:8px;margin-bottom:14px}
+.err.show{display:flex}
 
-/* SUCCESS */
-.success-wrap{max-width:460px;width:100%;text-align:center;padding:40px 20px}
+/* Purpose cards */
+.pur-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.pur-card{border:2px solid #e5e7eb;border-radius:12px;padding:16px 10px;text-align:center;cursor:pointer;transition:all 0.2s}
+.pur-card:hover{border-color:#0a0f1e}
+.pur-card.sel{border-color:#00d4ff;background:rgba(0,212,255,0.04)}
+.pur-card i{font-size:24px;color:#9ca3af;display:block;margin-bottom:7px}
+.pur-card.sel i{color:#00d4ff}
+.pur-card b{font-size:12px;font-weight:700;color:#6b7280;display:block}
+.pur-card.sel b{color:#0a0f1e}
+
+.login-row{text-align:center;font-size:13px;color:#9ca3af;margin-top:14px}
+.login-row a{color:#0a0f1e;font-weight:700;cursor:pointer}
+
+/* Page sections */
+.pg{display:none}
+.pg.active{display:block}
 
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:600px){
-  .purpose-grid{grid-template-columns:1fr}
-  .grid-2{grid-template-columns:1fr}
-  .auth-wrap,.profile-wrap{padding:24px 18px}
-}
+
+.overlay{position:fixed;inset:0;background:#0a0f1e;display:flex;align-items:center;justify-content:center;z-index:999;transition:opacity 0.3s}
+.overlay.off{opacity:0;pointer-events:none}
+.ov-txt{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#00d4ff;text-align:center}
+.ov-spin{width:28px;height:28px;border:2.5px solid rgba(0,212,255,0.2);border-top-color:#00d4ff;border-radius:50%;animation:spin 0.7s linear infinite;margin:14px auto 0}
+
+@media(max-width:480px){.card{padding:24px 18px}.grid2{grid-template-columns:1fr}.pur-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="logo" onclick="location.href='index.html'">
-    <div class="logo-icon">Q3</div>
-    <div class="logo-text">Q360<span> AI</span></div>
-  </div>
-  <div class="login-hint">Una akaunti? <a href="login.html">Ingia</a></div>
+<div class="overlay" id="overlay">
+  <div><div class="ov-txt">Q360 AI</div><div class="ov-spin"></div></div>
 </div>
 
-<div class="steps-bar">
-  <div class="steps">
-    <div class="step"><div class="step-num active" id="s1num">1</div><div class="step-label active" id="s1lbl">Akaunti</div></div>
-    <div class="step-line" id="line1"></div>
-    <div class="step"><div class="step-num pending" id="s2num">2</div><div class="step-label pending" id="s2lbl">Lengo</div></div>
-    <div class="step-line" id="line2"></div>
-    <div class="step"><div class="step-num pending" id="s3num">3</div><div class="step-label pending" id="s3lbl">Taarifa</div></div>
+<div class="card" id="mainCard" style="display:none">
+  <div class="card-logo" onclick="location.href='index.html'">
+    <div class="logo-sq">Q3</div>
+    <div class="logo-name">Q360<span> AI</span></div>
   </div>
-</div>
 
-<div class="content" id="mainContent">
+  <!-- Steps -->
+  <div class="steps" id="stepsBar">
+    <div class="step-dot active" id="sd1">1</div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step-dot idle" id="sd2">2</div>
+    <div class="step-line" id="sl2"></div>
+    <div class="step-dot idle" id="sd3">3</div>
+  </div>
 
-  <!-- STEP 1: Auth -->
-  <div id="step1" class="auth-wrap">
-    <div class="auth-title">Anza Safari Yako na Q360 AI</div>
-    <div class="auth-sub">Jiandikishe — bure kabisa, siku 7 bila malipo</div>
+  <!-- ── PAGE 1: Akaunti ── -->
+  <div class="pg active" id="pg1">
+    <h2>Unda Akaunti</h2>
+    <p class="sub">Bure kabisa · Dakika 1 tu</p>
+
+    <div class="err" id="e1"><i class="ti ti-alert-circle"></i><span id="e1m"></span></div>
 
     <button class="btn-google" onclick="doGoogle()">
       <img src="https://www.google.com/favicon.ico" alt="G"> Endelea na Google
     </button>
+    <div class="divider"><span>au jaza hapa</span></div>
 
-    <div class="divider"><span>au jaza fomu</span></div>
-
-    <div class="alert-error" id="s1Error"><i class="ti ti-alert-circle"></i><span id="s1ErrorMsg"></span></div>
-
-    <div class="grid-2">
-      <div class="form-group"><label class="form-label">Barua Pepe *</label><input type="email" class="form-control" id="fEmail" placeholder="mfano@email.com"></div>
-      <div class="form-group"><label class="form-label">Jina Lako *</label><input class="form-control" id="fJina" placeholder="Jina lako kamili"></div>
+    <div class="grid2">
+      <div>
+        <label>Jina *</label>
+        <input id="p1Jina" placeholder="Jina lako">
+      </div>
+      <div>
+        <label>Email *</label>
+        <input type="email" id="p1Email" placeholder="mfano@email.com">
+      </div>
     </div>
-    <div class="grid-2">
-      <div class="form-group"><label class="form-label">Neno la Siri *</label><input type="password" class="form-control" id="fPass" placeholder="Angalau herufi 6"></div>
-      <div class="form-group"><label class="form-label">Thibitisha *</label><input type="password" class="form-control" id="fConf" placeholder="Rudia neno la siri"></div>
+    <div class="grid2">
+      <div>
+        <label>Neno la Siri *</label>
+        <input type="password" id="p1Pass" placeholder="Min. herufi 6">
+      </div>
+      <div>
+        <label>Thibitisha *</label>
+        <input type="password" id="p1Conf" placeholder="Rudia neno" onkeydown="if(event.key==='Enter')nextTo2()">
+      </div>
     </div>
-    <button class="btn-main" id="s1Btn" onclick="goStep2Email()">
-      Endelea <i class="ti ti-arrow-right"></i>
+    <button class="btn-main" onclick="nextTo2()">Endelea <i class="ti ti-arrow-right"></i></button>
+    <div class="login-row">Una akaunti? <a onclick="location.href='login.html'">Ingia</a></div>
+  </div>
+
+  <!-- ── PAGE 2: Lengo ── -->
+  <div class="pg" id="pg2">
+    <h2>Utatumia Q360 AI kwa nini?</h2>
+    <p class="sub">Chagua moja — unaweza kubadilisha baadaye</p>
+    <div class="pur-grid">
+      <div class="pur-card" id="pu-personal" onclick="selPur('personal')"><i class="ti ti-wallet"></i><b>Kibinafsi</b></div>
+      <div class="pur-card" id="pu-business" onclick="selPur('business')"><i class="ti ti-building-store"></i><b>Biashara</b></div>
+      <div class="pur-card sel" id="pu-both" onclick="selPur('both')"><i class="ti ti-layout-grid"></i><b>Vyote</b></div>
+    </div>
+    <button class="btn-main" onclick="nextTo3()">Endelea <i class="ti ti-arrow-right"></i></button>
+  </div>
+
+  <!-- ── PAGE 3: Taarifa ── -->
+  <div class="pg" id="pg3">
+    <h2>Karibu, <span id="pg3Name">rafiki</span>!</h2>
+    <p class="sub">Maelezo mafupi ya mwisho</p>
+    <div class="err" id="e3"><i class="ti ti-alert-circle"></i><span id="e3m"></span></div>
+
+    <div id="bizField">
+      <label>Jina la Biashara</label>
+      <input id="p3Biz" placeholder="Mfano: Duka la Amani (hiari)">
+    </div>
+    <div class="grid2">
+      <div>
+        <label>Nchi</label>
+        <select id="p3Nchi"><option value="TZ">Tanzania</option><option value="KE">Kenya</option><option value="UG">Uganda</option><option value="RW">Rwanda</option></select>
+      </div>
+      <div>
+        <label>Lugha ya AI</label>
+        <select id="p3Lugha"><option value="sw">Kiswahili</option><option value="en">English</option></select>
+      </div>
+    </div>
+    <button class="btn-main cyan" id="finishBtn" onclick="finish()">
+      <i class="ti ti-rocket"></i> Ingia Q360 AI
     </button>
-  </div>
-
-  <!-- STEP 2: Purpose -->
-  <div id="step2" class="onboard-wrap" style="display:none">
-    <div class="onboard-title">Q360 AI Itakusaidia Nini?</div>
-    <div class="onboard-sub">Chagua moja au zaidi — unaweza kubadilisha baadaye</div>
-    <div class="purpose-grid">
-      <div class="purpose-card" id="pur-personal" onclick="selectPurpose('personal')">
-        <i class="ti ti-wallet"></i>
-        <div class="purpose-name">Kibinafsi</div>
-        <div class="purpose-desc">Fedha zangu, bajeti, na malengo ya kifedha</div>
-      </div>
-      <div class="purpose-card" id="pur-business" onclick="selectPurpose('business')">
-        <i class="ti ti-building-store"></i>
-        <div class="purpose-name">Biashara</div>
-        <div class="purpose-desc">Mauzo, stock, madeni, wafanyakazi</div>
-      </div>
-      <div class="purpose-card" id="pur-both" onclick="selectPurpose('both')">
-        <i class="ti ti-layout-grid"></i>
-        <div class="purpose-name">Vyote Viwili</div>
-        <div class="purpose-desc">Kibinafsi na biashara pamoja</div>
-      </div>
-    </div>
-    <button class="btn-main" id="s2Btn" onclick="goStep3()" disabled style="max-width:280px;margin:0 auto">
-      Endelea <i class="ti ti-arrow-right"></i>
-    </button>
-  </div>
-
-  <!-- STEP 3: Profile -->
-  <div id="step3" style="display:none;width:100%;justify-content:center">
-    <div class="profile-wrap">
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px">Karibu! Tukujue Zaidi</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:20px">Taarifa hizi zitasaidia AI yako kukupa ushauri bora</div>
-      <div class="alert-error" id="s3Error"><i class="ti ti-alert-circle"></i><span id="s3ErrorMsg"></span></div>
-      <div id="businessFields">
-        <div class="form-group"><label class="form-label">Jina la Biashara</label><input class="form-control" id="fBiashara" placeholder="Mfano: Duka la Amani"></div>
-      </div>
-      <div class="grid-2">
-        <div class="form-group">
-          <label class="form-label">Nchi *</label>
-          <select class="form-control" id="fNchi">
-            <option value="">Chagua Nchi</option>
-            <option value="TZ" selected>Tanzania</option>
-            <option value="KE">Kenya</option>
-            <option value="UG">Uganda</option>
-            <option value="RW">Rwanda</option>
-            <option value="OTHER">Nyingine</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Mkoa</label>
-          <select class="form-control" id="fMkoa">
-            <option value="">Chagua Mkoa</option>
-            <option>Dar es Salaam</option><option>Arusha</option><option>Mwanza</option>
-            <option>Dodoma</option><option>Mbeya</option><option>Tanga</option>
-            <option>Zanzibar</option><option>Nyingine</option>
-          </select>
-        </div>
-      </div>
-      <div class="grid-2">
-        <div class="form-group">
-          <label class="form-label">Lugha ya AI</label>
-          <select class="form-control" id="fLugha">
-            <option value="sw">Kiswahili</option>
-            <option value="en">English</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Utu wa AI</label>
-          <select class="form-control" id="fPersonality">
-            <option value="friendly">Mwenye Urafiki</option>
-            <option value="professional">Mtaalamu</option>
-            <option value="analyst">Mchambuzi</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group"><label class="form-label">Namba ya Simu</label><input class="form-control" id="fSimu" placeholder="+255 7XX XXX XXX" type="tel"></div>
-      <button class="btn-main btn-cyan" id="s3Btn" onclick="finish()">
-        <i class="ti ti-rocket"></i> Maliza — Ingia Q360 AI
-      </button>
-    </div>
-  </div>
-
-  <!-- SUCCESS -->
-  <div id="success" class="success-wrap" style="display:none">
-    <div style="width:72px;height:72px;background:rgba(0,212,255,0.1);border:2px solid rgba(0,212,255,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
-      <i class="ti ti-check" style="font-size:32px;color:var(--cyan)"></i>
-    </div>
-    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:10px">Karibu Q360 AI!</h2>
-    <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px" id="successMsg">Akaunti yako imeundwa. Angalia email yako kwa uthibitisho, kisha urudi kuingia.</p>
-    <a href="login.html" class="btn-main btn-cyan" style="display:inline-flex;max-width:240px;margin:0 auto"><i class="ti ti-login"></i> Nenda Kuingia</a>
   </div>
 
 </div>
@@ -231,103 +174,111 @@ select.form-control{cursor:pointer}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script>
-(async () => { if (await Auth.isLoggedIn()) window.location.replace('dashboard.html'); })();
+(async () => {
+  const session = await Auth.getSession();
+  if (session) { window.location.replace('ai.html'); return; }
+  document.getElementById('overlay').classList.add('off');
+  document.getElementById('mainCard').style.display = 'block';
+  // Pre-select plan from URL
+  const plan = new URLSearchParams(window.location.search).get('plan');
+  if (plan === 'personal') selPur('personal');
+  else if (plan === 'business') selPur('business');
+})();
 
-const params = new URLSearchParams(window.location.search);
-let selectedPurpose = '';
-let tempEmail = '', tempJina = '';
+let purpose = 'both';
+let p1Email = '', p1Pass = '', p1Jina = '';
 
-// Pre-select plan from URL
-if (params.get('plan')) {
-  const planPurpose = { free:'both', starter:'business', professional:'both', enterprise:'both' };
-  selectPurpose(planPurpose[params.get('plan')] || 'both');
-}
-
+// Steps update
 function setStep(n) {
   [1,2,3].forEach(i => {
-    const num = document.getElementById('s'+i+'num');
-    const lbl = document.getElementById('s'+i+'lbl');
-    if (i < n) { num.className='step-num done'; num.innerHTML='<i class="ti ti-check" style="font-size:11px"></i>'; }
-    else if (i === n) { num.className='step-num active'; num.textContent=i; lbl?.classList.replace('pending','active'); }
-    else { num.className='step-num pending'; num.textContent=i; }
-    if (i < n) document.getElementById('line'+i)?.classList.add('done');
+    const dot = document.getElementById('sd'+i);
+    if (i < n) { dot.className='step-dot done'; dot.innerHTML='<i class="ti ti-check" style="font-size:10px"></i>'; document.getElementById('sl'+i)?.classList.add('done'); }
+    else if (i===n) { dot.className='step-dot active'; dot.textContent=i; }
+    else { dot.className='step-dot idle'; dot.textContent=i; }
   });
 }
 
-async function doGoogle() {
-  await Auth.loginWithGoogle();
+async function doGoogle() { await Auth.loginWithGoogle(); }
+
+function selPur(p) {
+  purpose = p;
+  ['personal','business','both'].forEach(x => document.getElementById('pu-'+x)?.classList.toggle('sel', x===p));
+  document.getElementById('bizField').style.display = p === 'personal' ? 'none' : 'block';
 }
 
-async function goStep2Email() {
-  const email = document.getElementById('fEmail').value.trim();
-  const jina = document.getElementById('fJina').value.trim();
-  const pass = document.getElementById('fPass').value;
-  const conf = document.getElementById('fConf').value;
-  if (!email || !jina || !pass) { showS1Error('Jaza taarifa zote'); return; }
-  if (pass.length < 6) { showS1Error('Neno la siri lazima liwe na herufi 6+'); return; }
-  if (pass !== conf) { showS1Error('Maneno ya siri hayafanani'); return; }
-  tempEmail = email; tempJina = jina;
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'block';
+function nextTo2() {
+  const jina  = document.getElementById('p1Jina').value.trim();
+  const email = document.getElementById('p1Email').value.trim();
+  const pass  = document.getElementById('p1Pass').value;
+  const conf  = document.getElementById('p1Conf').value;
+  if (!jina||!email||!pass) { showE1('Jaza taarifa zote'); return; }
+  if (pass.length < 6)  { showE1('Neno la siri lazima liwe na herufi 6+'); return; }
+  if (pass !== conf)    { showE1('Maneno ya siri hayafanani'); return; }
+  p1Jina=jina; p1Email=email; p1Pass=pass;
+  document.getElementById('pg1').classList.remove('active');
+  document.getElementById('pg2').classList.add('active');
   setStep(2);
 }
 
-function selectPurpose(p) {
-  selectedPurpose = p;
-  ['personal','business','both'].forEach(x => {
-    document.getElementById('pur-'+x)?.classList.toggle('selected', x===p);
-  });
-  const btn = document.getElementById('s2Btn');
-  if (btn) btn.disabled = false;
-  const bf = document.getElementById('businessFields');
-  if (bf) bf.style.display = (p === 'personal') ? 'none' : 'block';
-}
-
-function goStep3() {
-  if (!selectedPurpose) return;
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('step3').style.display = 'flex';
+function nextTo3() {
+  document.getElementById('pg2').classList.remove('active');
+  document.getElementById('pg3').classList.add('active');
+  document.getElementById('pg3Name').textContent = p1Jina.split(' ')[0];
+  if (purpose === 'personal') document.getElementById('bizField').style.display = 'none';
   setStep(3);
-  if (selectedPurpose === 'personal') document.getElementById('businessFields').style.display = 'none';
 }
 
 async function finish() {
-  const nchi = document.getElementById('fNchi').value;
-  const btn = document.getElementById('s3Btn');
-  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Inaunda akaunti...';
-  btn.style.pointerEvents = 'none';
+  const btn = document.getElementById('finishBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite"></i> Inaunda...';
 
   const meta = {
-    jina: tempJina,
-    simu: document.getElementById('fSimu').value.trim(),
-    biashara: document.getElementById('fBiashara')?.value.trim() || '',
-    mkoa: document.getElementById('fMkoa').value,
-    nchi,
-    lugha: document.getElementById('fLugha').value,
-    personality: document.getElementById('fPersonality').value,
-    purpose: selectedPurpose,
-    plan: params.get('plan') || 'free',
+    jina:        p1Jina,
+    biashara:    document.getElementById('p3Biz').value.trim(),
+    nchi:        document.getElementById('p3Nchi').value,
+    lugha:       document.getElementById('p3Lugha').value,
+    personality: 'friendly',
+    purpose,
+    plan:        new URLSearchParams(window.location.search).get('plan') || 'free',
     trial_start: new Date().toISOString(),
-    trial_days: 7
+    trial_days:  7
   };
 
-  const { error } = await Auth.signup(tempEmail, document.getElementById('fPass')?.value || '', meta);
+  const { data, error } = await Auth.signup(p1Email, p1Pass, meta);
 
   if (error) {
-    btn.innerHTML = '<i class="ti ti-rocket"></i> Maliza — Ingia Q360 AI';
-    btn.style.pointerEvents = '';
-    document.getElementById('s3ErrorMsg').textContent = error.message.includes('already') ? 'Email hii imetumika — Ingia badala yake' : error.message;
-    document.getElementById('s3Error').classList.add('show');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-rocket"></i> Ingia Q360 AI';
+    if (error.message.includes('already')) showE3('Email hii inatumika tayari — <a onclick="location.href=\'login.html\'">Ingia</a>');
+    else showE3(error.message);
     return;
   }
 
-  document.getElementById('step3').style.display = 'none';
-  document.getElementById('success').style.display = 'block';
-  document.getElementById('successMsg').textContent = `Tumekutumia email ya uthibitisho kwenye ${tempEmail}. Angalia inbox (na spam) kisha urudi kuingia.`;
+  // ✅ Kama session ipo moja kwa moja (email confirmation imezimwa) — redirect moja kwa moja
+  const session = await Auth.getSession();
+  if (session) {
+    window.location.replace('ai.html');
+    return;
+  }
+
+  // Email confirmation inahitajika — onyesha ujumbe mfupi
+  document.getElementById('pg3').innerHTML = `
+    <div style="text-align:center;padding:20px 0">
+      <div style="width:60px;height:60px;background:rgba(0,212,255,0.1);border:2px solid rgba(0,212,255,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+        <i class="ti ti-mail" style="font-size:28px;color:#00d4ff"></i>
+      </div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#0a0f1e;margin-bottom:8px">Angalia Email Yako</div>
+      <div style="font-size:13px;color:#9ca3af;margin-bottom:20px;line-height:1.6">Tumekutumia kiungo cha uthibitisho kwenye<br><strong style="color:#0a0f1e">${p1Email}</strong></div>
+      <div style="font-size:12px;color:#9ca3af">Bonyeza kiungo hicho kisha urudi kuingia</div>
+      <button onclick="location.href='login.html'" style="margin-top:20px;padding:12px 28px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;width:100%">
+        <i class="ti ti-login"></i> Nenda Kuingia
+      </button>
+    </div>`;
 }
 
-function showS1Error(msg) { document.getElementById('s1ErrorMsg').textContent = msg; document.getElementById('s1Error').classList.add('show'); }
-function showS3Error(msg) { document.getElementById('s3ErrorMsg').textContent = msg; document.getElementById('s3Error').classList.add('show'); }
+function showE1(m) { document.getElementById('e1m').textContent=m; document.getElementById('e1').classList.add('show'); }
+function showE3(m) { document.getElementById('e3m').innerHTML=m; document.getElementById('e3').classList.add('show'); }
 </script>
 </body>
 </html>
