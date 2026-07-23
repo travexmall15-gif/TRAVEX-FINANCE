@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q360 AI — Msaidizi Wako wa AI</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+.chat-layout{display:flex;height:calc(100vh - var(--header-h));overflow:hidden}
+.chat-sidebar{width:260px;background:var(--navy-card);border-right:1px solid var(--border-dark);display:flex;flex-direction:column;flex-shrink:0}
+.chat-sidebar-header{padding:16px;border-bottom:1px solid var(--border-dark)}
+.btn-new-chat{width:100%;padding:10px 14px;background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,168,204,0.1));border:1px solid var(--cyan-border);border-radius:var(--radius-sm);color:var(--cyan);font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;justify-content:center;cursor:pointer;transition:all 0.2s}
+.btn-new-chat:hover{background:var(--cyan-glow)}
+.chat-history{flex:1;overflow-y:auto;padding:8px}
+.history-item{padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:2px;transition:all 0.2s;display:flex;align-items:center;gap:8px}
+.history-item:hover{background:var(--border-dark)}
+.history-item.active{background:var(--cyan-glow)}
+.history-item i{font-size:14px;color:var(--text-white-dim);flex-shrink:0}
+.history-title{font-size:12px;color:var(--text-white-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.history-date{font-size:10px;color:rgba(255,255,255,0.2);margin-top:2px}
+.credits-bar{padding:12px 16px;border-top:1px solid var(--border-dark)}
+.credits-label{font-size:10px;color:var(--text-white-dim);margin-bottom:6px;display:flex;justify-content:space-between}
+.credits-prog{height:4px;background:rgba(255,255,255,0.1);border-radius:20px}
+.credits-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--gold));border-radius:20px;transition:width 0.4s}
+
+/* CHAT MAIN */
+.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.chat-header{padding:14px 20px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.chat-header-left{display:flex;align-items:center;gap:10px}
+.ai-status{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--navy)}
+.ai-status-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+.chat-messages::-webkit-scrollbar{width:4px}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* Messages */
+.msg-wrap{display:flex;gap:10px;max-width:85%;animation:fadeIn 0.3s ease}
+.msg-wrap.user{flex-direction:row-reverse;align-self:flex-end}
+.msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700}
+.msg-avatar.ai{background:linear-gradient(135deg,var(--cyan-dim),rgba(0,168,204,0.3));color:var(--cyan);border:1px solid var(--cyan-border)}
+.msg-avatar.user{background:var(--navy);color:var(--gold)}
+.msg-bubble{padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.6;max-width:100%}
+.msg-bubble.ai{background:var(--white);color:var(--text);border-radius:16px 16px 16px 4px;border:1px solid var(--border);box-shadow:var(--shadow)}
+.msg-bubble.user{background:var(--navy);color:var(--white);border-radius:16px 16px 4px 16px}
+.msg-meta{font-size:10px;color:var(--text-muted);margin-top:5px;text-align:right}
+.msg-wrap.user .msg-meta{text-align:left}
+
+/* AI response formatting */
+.msg-bubble.ai strong{color:var(--navy);font-weight:700}
+.msg-bubble.ai code{background:#f3f4f6;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px}
+.msg-bubble.ai .ai-stat-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
+.msg-bubble.ai .ai-stat-row:last-child{border-bottom:none}
+.msg-bubble.ai .ai-chip-tag{display:inline-flex;align-items:center;gap:4px;background:rgba(0,212,255,0.1);color:var(--cyan-dim);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin:2px}
+
+/* Typing indicator */
+.typing-wrap{display:flex;gap:10px;align-items:flex-end}
+.typing-bubble{background:var(--white);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:12px 16px;display:flex;gap:5px;align-items:center}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:typing 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:0.2s}
+.typing-dot:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,100%{opacity:0.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+
+/* Empty state */
+.chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px}
+.chat-empty-icon{width:72px;height:72px;background:linear-gradient(135deg,var(--cyan-glow),rgba(0,168,204,0.05));border:1px solid var(--cyan-border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.chat-empty-icon i{font-size:32px;color:var(--cyan)}
+.chat-empty h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px}
+.chat-empty p{font-size:13px;color:var(--text-muted);max-width:360px;line-height:1.6}
+
+/* Suggestions */
+.suggestions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px}
+.suggest-btn{padding:8px 16px;background:var(--white);border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--text);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.suggest-btn:hover{border-color:var(--cyan);color:var(--navy);background:rgba(0,212,255,0.05)}
+
+/* Input area */
+.chat-input-area{padding:16px 20px;background:var(--white);border-top:1px solid var(--border);flex-shrink:0}
+.input-wrap{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;display:flex;align-items:flex-end;gap:8px;padding:10px 14px;transition:border-color 0.2s}
+.input-wrap:focus-within{border-color:var(--cyan)}
+.chat-input{flex:1;border:none;background:transparent;font-size:14px;color:var(--text);resize:none;outline:none;font-family:'DM Sans',sans-serif;max-height:120px;min-height:24px;line-height:1.5}
+.chat-input::placeholder{color:var(--text-muted)}
+.send-btn{width:36px;height:36px;border-radius:10px;background:var(--navy);border:none;color:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0}
+.send-btn:hover{background:var(--navy-light)}
+.send-btn.active{background:linear-gradient(135deg,var(--cyan),#0099bb);color:var(--navy)}
+.send-btn i{font-size:16px}
+.input-actions{display:flex;align-items:center;gap:8px;margin-top:8px}
+.input-action-btn{padding:5px 12px;background:none;border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.input-action-btn:hover{color:var(--navy);border-color:var(--navy)}
+
+/* Action confirm */
+.action-confirm{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:var(--radius);padding:12px 16px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.action-msg{font-size:13px;color:var(--navy)}
+.action-btns{display:flex;gap:8px}
+.btn-confirm{padding:6px 16px;background:var(--gold);color:var(--navy);border-radius:6px;font-size:12px;font-weight:700;border:none;cursor:pointer}
+.btn-decline{padding:6px 16px;background:var(--bg);color:var(--text);border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);cursor:pointer}
+
+/* Mobile */
+@media(max-width:768px){
+  .chat-sidebar{display:none}
+  .chat-main{height:calc(100vh - 56px - 64px)}
+  .chat-messages{padding:14px}
+  .msg-wrap{max-width:95%}
+  .chat-input-area{padding:12px 14px}
+}
+</style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div class="header-left">
+      <div>
+        <div class="header-title">Q360 AI</div>
+        <div class="header-sub">Msaidizi wako wa AI wa kibinafsi</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-ai-badge"><span class="ai-dot"></span> Online</div>
+    </div>
+  </div>
+
+  <div class="chat-layout">
+    <!-- Chat History Sidebar -->
+    <div class="chat-sidebar">
+      <div class="chat-sidebar-header">
+        <button class="btn-new-chat" onclick="newChat()"><i class="ti ti-plus"></i> Mazungumzo Mapya</button>
+      </div>
+      <div class="chat-history" id="chatHistory">
+        <div style="padding:20px;text-align:center;font-size:12px;color:rgba(255,255,255,0.3)">Mazungumzo yataonekana hapa</div>
+      </div>
+      <div class="credits-bar">
+        <div class="credits-label">
+          <span>AI Credits</span>
+          <span id="creditsText">— / —</span>
+        </div>
+        <div class="credits-prog"><div class="credits-fill" id="creditsFill" style="width:100%"></div></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.25);margin-top:6px" id="planLabel">Inapakia...</div>
+      </div>
+    </div>
+
+    <!-- Main Chat -->
+    <div class="chat-main">
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <div class="ai-status"><span class="ai-status-dot"></span> Q360 AI inasikiliza</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button onclick="clearChat()" style="padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif"><i class="ti ti-trash"></i> Futa</button>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-empty" id="emptyState">
+          <div class="chat-empty-icon"><i class="ti ti-brand-openai"></i></div>
+          <h3>Habari! Mimi ni Q360 AI</h3>
+          <p>Msaidizi wako wa kibinafsi wa AI. Uliza swali lolote kuhusu biashara yako, fedha, au miradi.</p>
+          <div class="suggestions" id="suggestions">
+            <button class="suggest-btn" onclick="sendSuggestion(this)">📊 Biashara yangu leo imekwenda vipi?</button>
+            <button class="suggest-btn" onclick="sendSuggestion(this)">⚠️ Stock zipi zinakwisha?</button>
+            <button class="suggest-btn" onclick="sendSuggestion(this)">💰 Niko na madeni kiasi gani?</button>
+            <button class="suggest-btn" onclick="sendSuggestion(this)">📈 Nionyeshe ripoti ya mwezi huu</button>
+            <button class="suggest-btn" onclick="sendSuggestion(this)">🧾 Tengeneza invoice mpya</button>
+            <button class="suggest-btn" onclick="sendSuggestion(this)">💡 Nipe ushauri wa kuboresha biashara yangu</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Confirmation (hidden by default) -->
+      <div id="actionConfirm" class="action-confirm" style="display:none;margin:0 20px 8px">
+        <div class="action-msg" id="actionMsg"></div>
+        <div class="action-btns">
+          <button class="btn-confirm" onclick="confirmAction()">Thibitisha</button>
+          <button class="btn-decline" onclick="declineAction()">Kataa</button>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="input-wrap">
+          <textarea class="chat-input" id="chatInput" placeholder="Uliza Q360 AI kitu chochote..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()"><i class="ti ti-send"></i></button>
+        </div>
+        <div class="input-actions">
+          <button class="input-action-btn"><i class="ti ti-paperclip"></i> Ambatanisha Faili</button>
+          <button class="input-action-btn"><i class="ti ti-microphone"></i> Sauti</button>
+          <span style="margin-left:auto;font-size:11px;color:var(--text-muted)">Enter = Tuma · Shift+Enter = Mstari mpya</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+let messages = [];
+let aiContext = {};
+let pendingAction = null;
+let isThinking = false;
+let profile = null;
+let credits = { used: 0, limit: 100 };
+
+(async () => {
+  const session = await Auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  await loadSidebar('ai');
+  profile = Auth.getCachedUser() || await DB.profile.get();
+  if (profile) Auth.cacheUser(profile);
+  aiContext = await buildAIContext();
+  await loadCredits();
+  setWelcome();
+})();
+
+function setWelcome() {
+  if (!profile) return;
+  const hr = new Date().getHours();
+  const greet = hr < 12 ? 'Habari za Asubuhi' : hr < 17 ? 'Habari za Mchana' : 'Habari za Jioni';
+  addAIMessage(`${greet}, **${profile.jina?.split(' ')[0] || 'rafiki'}**! 👋\n\nMimi ni Q360 AI, msaidizi wako wa kibinafsi. Leo tarehe **${new Date().toLocaleDateString('sw-TZ', {weekday:'long', day:'2-digit', month:'long'})}**.\n\n${aiContext.leo ? `📊 Leo biashara yako: Mapato **${formatTZS(aiContext.leo.mapato_leo)}** · Faida **${formatTZS(aiContext.leo.faida_leo)}**` : ''}\n\nUnaweza kuniuliza chochote — biashara, fedha, miradi, au ushauri. 🚀`);
+}
+
+async function loadCredits() {
+  try {
+    const plan = profile?.plan || 'free';
+    const limits = { free: 100, starter: 500, professional: 2000, enterprise: 99999 };
+    credits.limit = limits[plan] || 100;
+    const usage = await DB.usage.get();
+    credits.used = usage?.credits_used || 0;
+    const pct = Math.min((credits.used / credits.limit) * 100, 100);
+    const el = document.getElementById('creditsText');
+    const fill = document.getElementById('creditsFill');
+    const lbl = document.getElementById('planLabel');
+    if (el) el.textContent = `${credits.used} / ${credits.limit === 99999 ? '∞' : credits.limit}`;
+    if (fill) fill.style.width = `${100 - pct}%`;
+    if (lbl) lbl.textContent = `Plan: ${plan.charAt(0).toUpperCase() + plan.slice(1)}`;
+  } catch {}
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  document.getElementById('sendBtn').classList.toggle('active', el.value.trim().length > 0);
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function sendSuggestion(btn) {
+  document.getElementById('chatInput').value = btn.textContent.trim().replace(/^[^\s]+\s/, '');
+  sendMessage();
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || isThinking) return;
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('sendBtn').classList.remove('active');
+  hideEmpty();
+  addUserMessage(text);
+  messages.push({ role: 'user', content: text });
+  await getAIResponse();
+}
+
+async function getAIResponse() {
+  isThinking = true;
+  showTyping();
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: messages.slice(-20),
+        context: aiContext,
+        language: profile?.lugha || 'sw',
+        personality: profile?.personality || 'friendly'
+      })
+    });
+
+    removeTyping();
+
+    if (!response.ok) {
+      const err = await response.json();
+      addAIMessage(`❌ Samahani, kuna tatizo: ${err.error || 'Jaribu tena.'}`, true);
+      isThinking = false;
+      return;
+    }
+
+    const data = await response.json();
+    const aiText = data.content || 'Samahani, sijapata jibu. Jaribu tena.';
+
+    messages.push({ role: 'assistant', content: aiText });
+
+    // Check for actions
+    const actionMatch = aiText.match(/ACTION:({.*?})/s);
+    if (actionMatch) {
+      const cleanText = aiText.replace(/ACTION:({.*?})/s, '').trim();
+      addAIMessage(cleanText);
+      try {
+        const action = JSON.parse(actionMatch[1]);
+        showActionConfirm(action);
+      } catch {}
+    } else {
+      addAIMessage(aiText);
+    }
+
+    // Track usage (3 credits per message)
+    await DB.usage.increment(3).catch(() => {});
+    credits.used += 3;
+    await loadCredits();
+
+  } catch (err) {
+    removeTyping();
+    addAIMessage(`❌ Hitilafu ya mtandao. Hakikisha una internet kisha jaribu tena.`, true);
+  }
+  isThinking = false;
+}
+
+function addUserMessage(text) {
+  const profile_initials = (profile?.jina || 'U').charAt(0).toUpperCase();
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap user fade-in';
+  wrap.innerHTML = `
+    <div class="msg-avatar user">${profile_initials}</div>
+    <div>
+      <div class="msg-bubble user">${escapeHtml(text)}</div>
+      <div class="msg-meta">${new Date().toLocaleTimeString('sw-TZ', {hour:'2-digit', minute:'2-digit'})}</div>
+    </div>`;
+  document.getElementById('chatMessages').appendChild(wrap);
+  scrollBottom();
+}
+
+function addAIMessage(text, isError = false) {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap fade-in';
+  const formatted = formatAIText(text);
+  wrap.innerHTML = `
+    <div class="msg-avatar ai"><i class="ti ti-brand-openai" style="font-size:14px"></i></div>
+    <div>
+      <div class="msg-bubble ai ${isError ? 'error' : ''}">${formatted}</div>
+      <div class="msg-meta">Q360 AI · ${new Date().toLocaleTimeString('sw-TZ', {hour:'2-digit', minute:'2-digit'})}</div>
+    </div>`;
+  document.getElementById('chatMessages').appendChild(wrap);
+  scrollBottom();
+}
+
+function formatAIText(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function showTyping() {
+  const wrap = document.createElement('div');
+  wrap.className = 'typing-wrap fade-in';
+  wrap.id = 'typingIndicator';
+  wrap.innerHTML = `
+    <div class="msg-avatar ai"><i class="ti ti-brand-openai" style="font-size:14px"></i></div>
+    <div class="typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+  document.getElementById('chatMessages').appendChild(wrap);
+  scrollBottom();
+}
+
+function removeTyping() { document.getElementById('typingIndicator')?.remove(); }
+function hideEmpty() { document.getElementById('emptyState')?.remove(); }
+function scrollBottom() {
+  const el = document.getElementById('chatMessages');
+  el.scrollTop = el.scrollHeight;
+}
+
+function showActionConfirm(action) {
+  const msgs = {
+    create_invoice: `Unda invoice mpya?`,
+    add_product: `Ongeza bidhaa mpya kwenye stock?`,
+    create_sale: `Rekodi muamala mpya?`,
+    add_expense: `Rekodi matumizi mapya?`
+  };
+  pendingAction = action;
+  document.getElementById('actionMsg').textContent = msgs[action.type] || `Fanya: ${action.type}?`;
+  document.getElementById('actionConfirm').style.display = 'flex';
+}
+
+async function confirmAction() {
+  document.getElementById('actionConfirm').style.display = 'none';
+  if (!pendingAction) return;
+  addAIMessage(`✅ Imefanyika! ${pendingAction.type} imekamilika.`);
+  pendingAction = null;
+}
+
+function declineAction() {
+  document.getElementById('actionConfirm').style.display = 'none';
+  addAIMessage('Sawa, sifanyi chochote. Unaweza kuniambia ukitaka kitu kingine.');
+  pendingAction = null;
+}
+
+function newChat() { messages = []; document.getElementById('chatMessages').innerHTML = ''; setWelcome(); }
+function clearChat() { newChat(); }
+</script>
+</body>
+</html>
