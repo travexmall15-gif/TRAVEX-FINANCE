@@ -2,135 +2,161 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mauzo — TRAVEX Finance</title>
+<title>Mauzo — Q360 AI</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="shared.css">
 <style>
-.pos-grid{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-bottom:24px;}
-.pos-form{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:20px;}
-.autocomplete-wrap{position:relative;}
-.autocomplete-list{position:absolute;top:100%;left:0;right:0;background:var(--white);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-md);z-index:50;max-height:180px;overflow-y:auto;display:none;}
-.autocomplete-list.open{display:block;}
-.ac-item{padding:10px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px;border-bottom:1px solid #f3f4f6;}
-.ac-item:hover{background:var(--bg);}
-.ac-item:last-child{border-bottom:none;}
-.pos-total-box{background:var(--navy);border-radius:10px;padding:16px;margin-bottom:14px;}
-.pos-total-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
-.pos-total-row span{font-size:13px;color:rgba(255,255,255,0.6);}
-.pos-total-big{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--gold);}
-.payment-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
-.pay-btn{padding:10px 6px;border-radius:8px;border:2px solid var(--border);background:var(--white);font-size:11px;font-weight:600;color:var(--navy);cursor:pointer;text-align:center;transition:all 0.2s;}
-.pay-btn.selected{border-color:var(--gold);background:#fffdf0;}
-.pay-btn i{display:block;font-size:18px;margin-bottom:3px;}
+.pos-grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+.pos-left{}
+.pos-right{}
+.pos-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.pos-card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fafbfc}
+.pos-card-title{font-size:14px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:7px}
+.pos-card-title i{color:var(--cyan)}
+.pos-card-body{padding:16px 18px}
+.pay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.pay-btn{padding:10px 6px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--white);font-size:12px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--text-muted);transition:all 0.2s}
+.pay-btn i{font-size:18px}
+.pay-btn.selected,.pay-btn:hover{border-color:var(--navy);color:var(--navy);background:var(--bg)}
+.total-box{background:var(--navy);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.total-label{font-size:11px;color:var(--text-white-dim)}
+.total-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--gold)}
+.pos-submit{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:var(--white);border-radius:var(--radius);font-size:14px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.pos-submit:hover{opacity:0.9}
+.autocomplete-wrap{position:relative}
+.autocomplete-list{position:absolute;top:100%;left:0;right:0;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);z-index:50;display:none;max-height:180px;overflow-y:auto;box-shadow:var(--shadow-md)}
+.autocomplete-list.open{display:block}
+.ac-item{padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;border-bottom:1px solid #f3f4f6}
+.ac-item:hover{background:var(--bg)}
+.ai-insight{background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:var(--radius-lg);border:1px solid var(--cyan-border);padding:16px 20px;margin-bottom:20px}
+.ai-insight-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ai-insight-title{font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:0.5px}
+.ai-insight-text{font-size:13px;color:var(--text-white);line-height:1.65}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:768px){
-  .pos-grid{grid-template-columns:1fr;}
-}
+@media(max-width:900px){.pos-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="sidebar" id="sidebar"></div>
 <div class="main-wrapper">
   <div class="main-header">
-    <div><div class="header-title">Mauzo</div><div class="header-sub">Rekodi mauzo, mapato na matumizi</div></div>
+    <div>
+      <div class="header-title">Mauzo</div>
+      <div class="header-sub">POS · Mapato · Matumizi</div>
+    </div>
+    <div class="header-right">
+      <a href="ai.html" class="btn btn-ai btn-sm"><i class="ti ti-brand-openai"></i> Uliza AI</a>
+      <button class="btn btn-outline btn-sm" onclick="openAddModal('matumizi')"><i class="ti ti-minus"></i> Gharama</button>
+      <button class="btn btn-gold btn-sm" onclick="openAddModal('mapato')"><i class="ti ti-plus"></i> Mapato</button>
+    </div>
   </div>
+
   <div class="main-content">
-    <div class="stats-grid" id="statsGrid">
-      <div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div>
-      <div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div>
-      <div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div>
-      <div class="stat-card"><div class="stat-label">Inapakia...</div><div class="stat-value">—</div></div>
+    <!-- AI Insight -->
+    <div class="ai-insight" id="aiInsight" style="display:none">
+      <div class="ai-insight-header">
+        <i class="ti ti-brand-openai" style="color:var(--cyan);font-size:16px"></i>
+        <span class="ai-insight-title">Q360 AI — Uchambuzi wa Leo</span>
+      </div>
+      <div class="ai-insight-text" id="aiInsightText"></div>
     </div>
 
-    <div class="tabs tab-group">
-      <button class="tab-btn active" data-tab="tab-pos">Muamala Mpya</button>
-      <button class="tab-btn" data-tab="tab-mapato">Mapato na Matumizi</button>
-    </div>
+    <!-- Today Stats -->
+    <div class="stats-grid" id="statsGrid" style="margin-bottom:20px"></div>
 
-    <!-- TAB POS -->
-    <div class="tab-content active" id="tab-pos">
-      <div class="pos-grid">
-        <div class="pos-form">
-          <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px"><i class="ti ti-shopping-cart"></i> Ingiza Muamala</div>
-          <div id="posItems"></div>
-          <button class="btn btn-outline btn-sm" onclick="addItem()" style="margin-bottom:16px;width:100%"><i class="ti ti-plus"></i> Ongeza Bidhaa Nyingine</button>
-          <div class="form-group">
-            <label class="form-label">Maelezo (Si lazima)</label>
-            <input type="text" class="form-control" id="fMaelezo" placeholder="Mfano: Muamala wa Amina">
+    <!-- POS + History -->
+    <div class="pos-grid">
+      <!-- LEFT: History -->
+      <div class="pos-left">
+        <!-- Period Filter -->
+        <div class="filter-row" style="margin-bottom:16px">
+          <button class="filter-btn active" onclick="filterPeriod('leo',this)">Leo</button>
+          <button class="filter-btn" onclick="filterPeriod('wiki',this)">Wiki Hii</button>
+          <button class="filter-btn" onclick="filterPeriod('mwezi',this)">Mwezi</button>
+          <button class="filter-btn" onclick="filterPeriod('mwaka',this)">Mwaka</button>
+        </div>
+        <!-- Period Stats -->
+        <div class="stats-grid" id="periodStats" style="margin-bottom:16px;grid-template-columns:repeat(3,1fr)"></div>
+
+        <!-- Tabs -->
+        <div class="tabs tab-group" style="margin-bottom:0">
+          <button class="tab-btn active" data-tab="tab-mapato">Mapato</button>
+          <button class="tab-btn" data-tab="tab-matumizi">Matumizi</button>
+        </div>
+        <div class="tab-content active" id="tab-mapato">
+          <div class="table-card" style="border-radius:0 0 var(--radius) var(--radius)">
+            <table><thead><tr><th>Bidhaa</th><th>Tarehe</th><th class="text-right">Jumla</th></tr></thead>
+            <tbody id="mapatoBody"></tbody></table>
           </div>
         </div>
-        <div>
-          <div class="pos-form">
-            <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px"><i class="ti ti-receipt"></i> Muhtasari</div>
-            <div class="pos-total-box">
-              <div class="pos-total-row"><span>Bidhaa</span><span style="color:rgba(255,255,255,0.8)" id="totalItems">0</span></div>
-              <div class="pos-total-row"><span>Jumla ya Malipo</span></div>
-              <div class="pos-total-big" id="totalAmount">TZS 0</div>
+        <div class="tab-content" id="tab-matumizi">
+          <div class="table-card" style="border-radius:0 0 var(--radius) var(--radius)">
+            <table><thead><tr><th>Maelezo</th><th>Tarehe</th><th class="text-right">Jumla</th></tr></thead>
+            <tbody id="matumiziBody"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: POS -->
+      <div class="pos-right">
+        <div class="pos-card">
+          <div class="pos-card-header">
+            <div class="pos-card-title"><i class="ti ti-shopping-cart"></i> Muamala Mpya</div>
+            <button onclick="clearForm()" style="font-size:12px;color:var(--text-muted);background:none;border:none;cursor:pointer"><i class="ti ti-refresh"></i></button>
+          </div>
+          <div class="pos-card-body">
+            <div style="margin-bottom:12px">
+              <div style="display:grid;grid-template-columns:1fr 60px 90px 28px;gap:6px;margin-bottom:6px">
+                <div style="font-size:11px;font-weight:600;color:var(--text-muted)">Bidhaa</div>
+                <div style="font-size:11px;font-weight:600;color:var(--text-muted)">Idadi</div>
+                <div style="font-size:11px;font-weight:600;color:var(--text-muted)">Bei</div>
+                <div></div>
+              </div>
+              <div id="posItems"></div>
+              <button onclick="addItem()" class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:6px"><i class="ti ti-plus"></i> Bidhaa</button>
             </div>
-            <div style="margin-bottom:14px">
-              <div class="form-label" style="margin-bottom:10px">Njia ya Malipo</div>
-              <div class="payment-btns">
-                <div class="pay-btn selected" id="pay-cash" onclick="selectPay('cash')"><i class="ti ti-cash"></i>Taslimu</div>
-                <div class="pay-btn" id="pay-mpesa" onclick="selectPay('mpesa')"><i class="ti ti-phone"></i>M-Pesa</div>
-                <div class="pay-btn" id="pay-deni" onclick="selectPay('deni')"><i class="ti ti-credit-card"></i>Deni</div>
+            <div class="form-group">
+              <label class="form-label">Maelezo (hiari)</label>
+              <input class="form-control" id="fMaelezo" placeholder="Maelezo ya muamala...">
+            </div>
+            <div style="margin-bottom:12px">
+              <div class="form-label" style="margin-bottom:8px">Njia ya Malipo</div>
+              <div class="pay-grid">
+                <button class="pay-btn selected" id="pay-cash" onclick="selectPay('cash')"><i class="ti ti-cash"></i>Taslimu</button>
+                <button class="pay-btn" id="pay-mpesa" onclick="selectPay('mpesa')"><i class="ti ti-device-mobile"></i>M-Pesa</button>
+                <button class="pay-btn" id="pay-deni" onclick="selectPay('deni')"><i class="ti ti-credit-card"></i>Deni</button>
               </div>
             </div>
-            <div id="deniFields" style="display:none">
-              <div class="form-group"><label class="form-label">Jina la Mdeni</label><input type="text" class="form-control" id="fDeniJina" placeholder="Jina la mtu anayedaiwa"></div>
-              <div class="form-group"><label class="form-label">Namba ya Simu</label><input type="text" class="form-control" id="fDeniSimu" placeholder="+255 7XX XXX XXX"></div>
+            <div id="deniFields" style="display:none;margin-bottom:12px">
+              <div class="form-group"><label class="form-label">Jina la Mdeni *</label><input class="form-control" id="fDeniJina" placeholder="Jina kamili"></div>
+              <div class="form-group"><label class="form-label">Simu</label><input class="form-control" id="fDeniSimu" placeholder="+255..."></div>
             </div>
-            <button class="btn btn-gold" style="width:100%;padding:13px;font-size:14px;justify-content:center;" id="submitBtn" onclick="submitMuamala()">
+            <div class="total-box">
+              <div><div class="total-label">Bidhaa <span id="totalItems">0</span></div></div>
+              <div><div class="total-label" style="text-align:right">Jumla</div><div class="total-val" id="totalAmount">TZS 0</div></div>
+            </div>
+            <button class="pos-submit" id="submitBtn" onclick="submitMuamala()">
               <i class="ti ti-check"></i> Maliza Muamala
             </button>
-            <button class="btn btn-outline" style="width:100%;margin-top:8px;padding:10px;justify-content:center;" onclick="clearForm()">
-              <i class="ti ti-x"></i> Futa
-            </button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB MAPATO/MATUMIZI -->
-    <div class="tab-content" id="tab-mapato">
-      <div class="filter-row">
-        <button class="filter-btn active" onclick="filterPeriod('leo',this)">Leo</button>
-        <button class="filter-btn" onclick="filterPeriod('wiki',this)">Wiki</button>
-        <button class="filter-btn" onclick="filterPeriod('mwezi',this)">Mwezi</button>
-        <button class="filter-btn" onclick="filterPeriod('mwaka',this)">Mwaka</button>
-      </div>
-      <div class="stats-grid" id="periodStats"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div class="table-card">
-          <div class="table-card-header">
-            <div><div class="table-card-title" style="color:var(--success)">📈 Mapato</div></div>
-            <button class="btn btn-gold btn-sm" onclick="openAddModal('mapato')">+ Ongeza</button>
-          </div>
-          <table><thead><tr><th>Bidhaa</th><th>Tarehe</th><th class="text-right">Jumla</th></tr></thead>
-          <tbody id="mapatoBody"></tbody></table>
-        </div>
-        <div class="table-card">
-          <div class="table-card-header">
-            <div><div class="table-card-title" style="color:var(--danger)">📉 Matumizi</div></div>
-            <button class="btn btn-navy btn-sm" onclick="openAddModal('matumizi')">+ Ongeza</button>
-          </div>
-          <table><thead><tr><th>Maelezo</th><th>Tarehe</th><th class="text-right">Jumla</th></tr></thead>
-          <tbody id="matumiziBody"></tbody></table>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- MODAL: Manual entry -->
 <div class="modal-overlay" id="modalAdd">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" id="modalAddTitle">Ongeza Mapato</div>
+      <div class="modal-title" id="modalAddTitle">Ongeza Rekodi</div>
       <button class="modal-close" onclick="closeModal('modalAdd')"><i class="ti ti-x"></i></button>
     </div>
-    <div class="form-group"><label class="form-label">Maelezo *</label><input type="text" class="form-control" id="mfMaelezo" placeholder="Mfano: Mauzo ya unga"></div>
-    <div class="form-group"><label class="form-label">Kiasi (TZS) *</label><input type="number" class="form-control" id="mfKiasi" placeholder="0"></div>
-    <div class="form-group"><label class="form-label">Tarehe</label><input type="date" class="form-control" id="mfTarehe"></div>
+    <div class="form-group"><label class="form-label">Maelezo *</label><input class="form-control" id="mfMaelezo" placeholder="Mfano: Kodi ya duka, Mshahara..."></div>
+    <div class="grid-2">
+      <div class="form-group"><label class="form-label">Kiasi (TZS) *</label><input type="number" class="form-control" id="mfKiasi" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Tarehe</label><input type="date" class="form-control" id="mfTarehe"></div>
+    </div>
     <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveManual()"><i class="ti ti-check"></i> Hifadhi</button>
   </div>
 </div>
@@ -156,7 +182,21 @@ let allStockCache = [];
   addItem();
   await buildStats();
   await loadPeriodData();
+  showAIInsight();
 })();
+
+async function showAIInsight() {
+  const mauzo = await DB.mauzo.getByDate(today());
+  if (!mauzo.length) return;
+  const mapato = mauzo.filter(m=>m.aina==='mapato').reduce((a,m)=>a+Number(m.jumla),0);
+  const matumizi = mauzo.filter(m=>m.aina==='matumizi').reduce((a,m)=>a+Number(m.jumla),0);
+  const faida = mapato - matumizi;
+  const stockLow = allStockCache.filter(s=>Number(s.idadi)<=Number(s.kiwango_chini));
+  let msg = `📊 Leo umefanya miamala ${mauzo.length}. Mapato: <strong>${formatTZS(mapato)}</strong>, Faida: <strong style="color:${faida>=0?'var(--gold)':'#ff6b6b'}">${formatTZS(faida)}</strong>.`;
+  if (stockLow.length) msg += ` ⚠️ Bidhaa ${stockLow.length} zinakwisha: <strong>${stockLow.slice(0,2).map(s=>s.jina).join(', ')}</strong>.`;
+  document.getElementById('aiInsightText').innerHTML = msg;
+  document.getElementById('aiInsight').style.display = 'block';
+}
 
 async function buildStats() {
   const mauzo = await DB.mauzo.getByDate(today());
@@ -165,21 +205,20 @@ async function buildStats() {
   document.getElementById('statsGrid').innerHTML = `
     <div class="stat-card"><div class="stat-label">Mapato Leo</div><div class="stat-value">${formatTZS(mapato)}</div><div class="stat-sub">Jumla ya mauzo</div></div>
     <div class="stat-card"><div class="stat-label">Matumizi Leo</div><div class="stat-value">${formatTZS(matumizi)}</div><div class="stat-sub">Jumla ya gharama</div></div>
-    <div class="stat-card"><div class="stat-label">Faida Leo</div><div class="stat-value" style="color:${mapato-matumizi>=0?'var(--gold)':'#ef4444'}">${formatTZS(mapato-matumizi)}</div><div class="stat-sub">Mapato - Matumizi</div></div>
+    <div class="stat-card"><div class="stat-label">Faida Leo</div><div class="stat-value" style="color:${mapato-matumizi>=0?'var(--gold)':'#ef4444'}">${formatTZS(mapato-matumizi)}</div><div class="stat-sub">Mapato − Matumizi</div></div>
     <div class="stat-card"><div class="stat-label">Miamala Leo</div><div class="stat-value">${mauzo.length}</div><div class="stat-sub">Rekodi za leo</div></div>`;
 }
 
-// POS
 function renderItems() {
   document.getElementById('posItems').innerHTML = items.map((item,i) => `
-    <div style="display:grid;grid-template-columns:1fr 65px 95px 30px;gap:6px;align-items:center;margin-bottom:8px;">
+    <div style="display:grid;grid-template-columns:1fr 60px 90px 28px;gap:6px;align-items:center;margin-bottom:8px">
       <div class="autocomplete-wrap">
-        <input class="form-control" style="font-size:13px" placeholder="Andika bidhaa..." value="${item.bidhaa}" oninput="searchBidhaa(${i},this.value)" id="inp${i}" autocomplete="off">
+        <input class="form-control" style="font-size:12px" placeholder="Bidhaa..." value="${item.bidhaa}" oninput="searchBidhaa(${i},this.value)" id="inp${i}" autocomplete="off">
         <div class="autocomplete-list" id="ac${i}"></div>
       </div>
-      <input class="form-control" style="font-size:13px" type="number" min="1" value="${item.idadi}" oninput="updateItem(${i},'idadi',this.value)" placeholder="Idadi">
-      <input class="form-control" style="font-size:13px" type="number" value="${item.bei}" oninput="updateItem(${i},'bei',this.value)" placeholder="Bei">
-      <button onclick="removeItem(${i})" style="background:none;border:none;cursor:pointer;color:var(--danger);font-size:16px"><i class="ti ti-trash"></i></button>
+      <input class="form-control" style="font-size:12px" type="number" min="1" value="${item.idadi}" oninput="updateItem(${i},'idadi',this.value)" placeholder="1">
+      <input class="form-control" style="font-size:12px" type="number" value="${item.bei}" oninput="updateItem(${i},'bei',this.value)" placeholder="Bei">
+      <button onclick="removeItem(${i})" style="background:none;border:none;cursor:pointer;color:var(--danger);font-size:15px"><i class="ti ti-trash"></i></button>
     </div>`).join('');
   updateTotals();
 }
@@ -187,7 +226,6 @@ function renderItems() {
 function addItem() { items.push({bidhaa:'',idadi:1,bei:0,stockId:null}); renderItems(); }
 function removeItem(i) { items.splice(i,1); renderItems(); }
 function updateItem(i,field,val) { items[i][field]=field==='idadi'||field==='bei'?parseFloat(val)||0:val; updateTotals(); }
-
 function updateTotals() {
   const total = items.reduce((a,item)=>a+(item.idadi*item.bei),0);
   document.getElementById('totalItems').textContent = items.reduce((a,item)=>a+item.idadi,0);
@@ -197,19 +235,14 @@ function updateTotals() {
 function searchBidhaa(i, val) {
   const list = document.getElementById('ac'+i);
   items[i].bidhaa = val;
-  if(!val||val.length<1){list.classList.remove('open');return;}
+  if(!val){list.classList.remove('open');return;}
   const filtered = allStockCache.filter(s=>s.jina.toLowerCase().includes(val.toLowerCase()));
   if(!filtered.length){list.classList.remove('open');return;}
-  list.innerHTML = filtered.map(s=>`
-    <div class="ac-item" onclick='selectBidhaa(${i},${JSON.stringify(s)})'>
-      <div><div style="font-weight:600;color:var(--navy)">${s.jina}</div><div style="font-size:11px;color:var(--text-muted)">Imebaki: ${s.idadi}</div></div>
-      <div style="font-size:12px;color:var(--gold-dark);font-weight:600">${formatTZS(s.bei_kuuza)}</div>
-    </div>`).join('');
+  list.innerHTML = filtered.map(s=>`<div class="ac-item" onclick='selectBidhaa(${i},${JSON.stringify(s)})'><div><div style="font-weight:600;color:var(--navy);font-size:12px">${s.jina}</div><div style="font-size:10px;color:var(--text-muted)">Imebaki: ${s.idadi}</div></div><div style="font-size:12px;color:var(--gold-dark);font-weight:700">${formatTZS(s.bei_kuuza||s.bei_mauzo||0)}</div></div>`).join('');
   list.classList.add('open');
 }
-
 function selectBidhaa(i,s){
-  items[i]={...items[i],bidhaa:s.jina,bei:s.bei_kuuza,stockId:s.id};
+  items[i]={...items[i],bidhaa:s.jina,bei:s.bei_kuuza||s.bei_mauzo||0,stockId:s.id};
   document.getElementById('ac'+i).classList.remove('open');
   renderItems();
 }
@@ -227,40 +260,17 @@ async function submitMuamala(){
   const btn = document.getElementById('submitBtn');
   btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Inahifadhi...';
   btn.style.pointerEvents='none';
-
   for(const item of validItems){
-    await DB.mauzo.add({
-      bidhaa:item.bidhaa, idadi:item.idadi, bei:item.bei,
-      jumla:item.idadi*item.bei, aina:'mapato',
-      malipo:payMethod, tarehe:today(),
-      maelezo:document.getElementById('fMaelezo').value
-    });
-    // Punguza stock
-    if(item.stockId){
-      const stock = allStockCache.find(s=>s.id===item.stockId);
-      if(stock) await DB.stock.update(item.stockId,{idadi:Math.max(0,Number(stock.idadi)-item.idadi)});
-    }
+    await DB.mauzo.add({bidhaa:item.bidhaa,idadi:item.idadi,bei:item.bei,jumla:item.idadi*item.bei,aina:'mapato',malipo:payMethod,tarehe:today(),maelezo:document.getElementById('fMaelezo').value});
+    if(item.stockId){const stock=allStockCache.find(s=>s.id===item.stockId);if(stock)await DB.stock.update(item.stockId,{idadi:Math.max(0,Number(stock.idadi)-item.idadi)});}
   }
-
-  // Kama deni — ongeza madeni
-  if(payMethod==='deni'){
-    const jina=document.getElementById('fDeniJina').value.trim();
-    if(jina) await DB.madeni.add({
-      jina, simu:document.getElementById('fDeniSimu').value.trim(),
-      aina:'unaodai', kiasi:validItems.reduce((a,i)=>a+(i.idadi*i.bei),0),
-      tarehe:today(), maelezo:'Deni kutoka mauzo'
-    });
-  }
-
+  if(payMethod==='deni'){const jina=document.getElementById('fDeniJina').value.trim();if(jina)await DB.madeni.add({jina,simu:document.getElementById('fDeniSimu').value.trim(),aina:'unaodai',kiasi:validItems.reduce((a,i)=>a+(i.idadi*i.bei),0),tarehe:today(),maelezo:'Deni kutoka mauzo'});}
   btn.innerHTML='<i class="ti ti-check"></i> Maliza Muamala';
   btn.style.pointerEvents='';
   showToast('Muamala umehifadhiwa! 🎉');
-  items=[];
-  document.getElementById('fMaelezo').value='';
-  allStockCache = await DB.stock.getAll();
-  addItem();
-  await buildStats();
-  await loadPeriodData();
+  items=[];document.getElementById('fMaelezo').value='';
+  allStockCache=await DB.stock.getAll();
+  addItem();await buildStats();await loadPeriodData();showAIInsight();
 }
 
 function clearForm(){items=[];document.getElementById('fMaelezo').value='';addItem();}
@@ -273,59 +283,42 @@ async function filterPeriod(period,btn){
 }
 
 async function loadPeriodData(){
-  const all = await DB.mauzo.getAll();
-  const now = new Date();
-  let filtered = all;
+  const all=await DB.mauzo.getAll();
+  const now=new Date();
+  let filtered=all;
   if(currentPeriod==='leo') filtered=all.filter(m=>m.tarehe===today());
   else if(currentPeriod==='wiki'){const s=new Date(now);s.setDate(s.getDate()-7);filtered=all.filter(m=>new Date(m.tarehe)>=s);}
   else if(currentPeriod==='mwezi') filtered=all.filter(m=>{const d=new Date(m.tarehe);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();});
   else filtered=all.filter(m=>new Date(m.tarehe).getFullYear()===now.getFullYear());
-
   const mapato=filtered.filter(m=>m.aina==='mapato');
   const matumizi=filtered.filter(m=>m.aina==='matumizi');
   const tm=mapato.reduce((a,m)=>a+Number(m.jumla),0);
   const tmt=matumizi.reduce((a,m)=>a+Number(m.jumla),0);
-
   document.getElementById('periodStats').innerHTML=`
     <div class="stat-card"><div class="stat-label">Jumla Mapato</div><div class="stat-value">${formatTZS(tm)}</div><div class="stat-sub">${mapato.length} rekodi</div></div>
     <div class="stat-card"><div class="stat-label">Jumla Matumizi</div><div class="stat-value">${formatTZS(tmt)}</div><div class="stat-sub">${matumizi.length} rekodi</div></div>
-    <div class="stat-card"><div class="stat-label">Faida</div><div class="stat-value" style="color:${tm-tmt>=0?'var(--gold)':'#ef4444'}">${formatTZS(tm-tmt)}</div><div class="stat-sub">Jumla</div></div>`;
-
+    <div class="stat-card"><div class="stat-label">Faida</div><div class="stat-value" style="color:${tm-tmt>=0?'var(--gold)':'#ef4444'}">${formatTZS(tm-tmt)}</div></div>`;
   const empty='<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:20px">Hakuna rekodi</td></tr>';
-  document.getElementById('mapatoBody').innerHTML=mapato.length?mapato.map(m=>`<tr><td class="text-navy">${m.bidhaa}</td><td class="text-muted" style="font-size:11px">${formatDate(m.tarehe)}</td><td class="text-right font-bold text-success">${formatTZS(m.jumla)}</td></tr>`).join(''):empty;
-  document.getElementById('matumiziBody').innerHTML=matumizi.length?matumizi.map(m=>`<tr><td class="text-navy">${m.bidhaa||m.maelezo}</td><td class="text-muted" style="font-size:11px">${formatDate(m.tarehe)}</td><td class="text-right font-bold text-danger">${formatTZS(m.jumla)}</td></tr>`).join(''):empty;
+  document.getElementById('mapatoBody').innerHTML=mapato.length?mapato.map(m=>`<tr><td class="text-navy">${m.bidhaa}</td><td class="text-muted" style="font-size:11px">${formatDate(m.tarehe)}</td><td class="text-right font-bold text-success">+${formatTZS(m.jumla)}</td></tr>`).join(''):empty;
+  document.getElementById('matumiziBody').innerHTML=matumizi.length?matumizi.map(m=>`<tr><td class="text-navy">${m.bidhaa||m.maelezo}</td><td class="text-muted" style="font-size:11px">${formatDate(m.tarehe)}</td><td class="text-right font-bold text-danger">-${formatTZS(m.jumla)}</td></tr>`).join(''):empty;
 }
 
-function openAddModal(aina){
-  currentAina=aina;
-  document.getElementById('modalAddTitle').textContent=aina==='mapato'?'Ongeza Mapato':'Ongeza Matumizi';
-  document.getElementById('mfMaelezo').value='';
-  document.getElementById('mfKiasi').value='';
-  document.getElementById('mfTarehe').value=today();
-  openModal('modalAdd');
-}
-
+function openAddModal(aina){currentAina=aina;document.getElementById('modalAddTitle').textContent=aina==='mapato'?'Ongeza Mapato':'Ongeza Matumizi';document.getElementById('mfMaelezo').value='';document.getElementById('mfKiasi').value='';document.getElementById('mfTarehe').value=today();openModal('modalAdd');}
 async function saveManual(){
   const maelezo=document.getElementById('mfMaelezo').value.trim();
   const kiasi=parseFloat(document.getElementById('mfKiasi').value)||0;
-  const tarehe=document.getElementById('mfTarehe').value;
   if(!maelezo||!kiasi){showToast('Jaza taarifa zote','error');return;}
-  await DB.mauzo.add({bidhaa:maelezo,idadi:1,bei:kiasi,jumla:kiasi,aina:currentAina,tarehe,maelezo:''});
-  closeModal('modalAdd');
-  showToast('Imehifadhiwa!');
-  await buildStats();
-  await loadPeriodData();
+  await DB.mauzo.add({bidhaa:maelezo,idadi:1,bei:kiasi,jumla:kiasi,aina:currentAina,tarehe:document.getElementById('mfTarehe').value,maelezo:''});
+  closeModal('modalAdd');showToast('Imehifadhiwa!');
+  await buildStats();await loadPeriodData();showAIInsight();
 }
 </script>
-
 <nav class="bottom-nav">
-<a href="dashboard.html" class=""><i class="ti ti-home"></i><span>Nyumbani</span></a>
-<a href="mauzo.html" class="active"><i class="ti ti-shopping-cart"></i><span>Mauzo</span></a>
-<a href="stock.html" class=""><i class="ti ti-package"></i><span>Stock</span></a>
-<a href="madeni.html" class=""><i class="ti ti-credit-card"></i><span>Madeni</span></a>
-<a href="invoice.html" class=""><i class="ti ti-file-invoice"></i><span>Invoice</span></a>
-<a href="ripoti.html" class=""><i class="ti ti-chart-bar"></i><span>Ripoti</span></a>
-<a href="mipangilio.html" class=""><i class="ti ti-settings"></i><span>Zaidi</span></a>
+  <a href="dashboard.html"><i class="ti ti-home"></i><span>Nyumbani</span></a>
+  <a href="ai.html"><i class="ti ti-brand-openai"></i><span>AI</span></a>
+  <a href="mauzo.html" class="active"><i class="ti ti-shopping-cart"></i><span>Mauzo</span></a>
+  <a href="stock.html"><i class="ti ti-package"></i><span>Stock</span></a>
+  <a href="mipangilio.html"><i class="ti ti-settings"></i><span>Zaidi</span></a>
 </nav>
 </body>
 </html>
