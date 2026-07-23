@@ -2,166 +2,305 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mipangilio — TRAVEX Finance</title>
+<title>Mipangilio — Q360 AI</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="shared.css">
 <style>
-.settings-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:16px;}
-.settings-card-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
-.settings-card-sub{font-size:12px;color:var(--text-muted);margin-bottom:20px;}
-.plan-info{background:var(--navy);border-radius:var(--radius);padding:20px;color:var(--white);display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-.plan-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--gold);}
-.plan-price{font-size:13px;color:rgba(255,255,255,0.6);margin-top:2px;}
-.danger-zone{background:#fff5f5;border:1px solid #fecaca;border-radius:var(--radius);padding:20px;margin-top:20px;}
-.danger-title{font-size:14px;font-weight:700;color:var(--danger);margin-bottom:8px;}
+.settings-grid{display:grid;grid-template-columns:240px 1fr;gap:20px}
+.settings-nav{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:8px;height:fit-content;position:sticky;top:80px}
+.snav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text-secondary);transition:all 0.2s;border-left:2px solid transparent}
+.snav-item:hover{background:var(--bg);color:var(--navy)}
+.snav-item.active{background:rgba(0,212,255,0.06);color:var(--navy);border-left-color:var(--cyan);font-weight:600}
+.snav-item i{font-size:16px}
+.settings-section{display:none}
+.settings-section.active{display:block}
+.section-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:24px;margin-bottom:16px}
+.section-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.section-sub{font-size:12px;color:var(--text-muted);margin-bottom:20px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-label{font-size:13px;font-weight:600;color:var(--navy)}
+.toggle-sub{font-size:11px;color:var(--text-muted);margin-top:2px}
+.toggle{position:relative;display:inline-block;width:42px;height:24px}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#e5e7eb;border-radius:24px;cursor:pointer;transition:all 0.3s}
+.toggle-slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:all 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
+.toggle input:checked + .toggle-slider{background:var(--cyan)}
+.toggle input:checked + .toggle-slider::before{transform:translateX(18px)}
+.avatar-upload{width:72px;height:72px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--gold);cursor:pointer;flex-shrink:0;position:relative}
+.avatar-upload:hover::after{content:'Badilisha';position:absolute;inset:0;background:rgba(0,0,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:white}
+.radio-group{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.radio-card{background:var(--bg);border-radius:var(--radius-sm);padding:12px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all 0.2s}
+.radio-card.active{border-color:var(--cyan);background:rgba(0,212,255,0.04)}
+.radio-card i{font-size:20px;color:var(--text-muted);display:block;margin-bottom:6px}
+.radio-card.active i{color:var(--cyan)}
+.radio-card span{font-size:11px;font-weight:600;color:var(--text-secondary)}
+.radio-card.active span{color:var(--navy)}
+.danger-zone{background:#fff5f5;border:1px solid #fecaca;border-radius:var(--radius);padding:16px;margin-top:12px}
+.danger-title{font-size:13px;font-weight:700;color:var(--danger);margin-bottom:8px}
 </style>
 </head>
 <body>
 <div class="sidebar" id="sidebar"></div>
 <div class="main-wrapper">
   <div class="main-header">
-    <div><div class="header-title">Mipangilio</div><div class="header-sub">Simamia taarifa za biashara yako na akaunti</div></div>
+    <div>
+      <div class="header-title">Mipangilio</div>
+      <div class="header-sub">Simamia akaunti yako, AI, na mapendeleo yako</div>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-gold" onclick="saveAllSettings()"><i class="ti ti-check"></i> Hifadhi Mabadiliko</button>
+    </div>
   </div>
-  <div class="main-content" style="max-width:700px">
 
-    <!-- PLAN INFO -->
-    <div class="plan-info">
+  <div class="main-content">
+    <div class="settings-grid">
+      <!-- Side Nav -->
+      <div class="settings-nav">
+        <div class="snav-item active" onclick="showSection('profile',this)"><i class="ti ti-user"></i> Wasifu</div>
+        <div class="snav-item" onclick="showSection('ai',this)"><i class="ti ti-brand-openai"></i> Q360 AI</div>
+        <div class="snav-item" onclick="showSection('biashara',this)"><i class="ti ti-building-store"></i> Biashara</div>
+        <div class="snav-item" onclick="showSection('notifs',this)"><i class="ti ti-bell"></i> Arifa</div>
+        <div class="snav-item" onclick="showSection('security',this)"><i class="ti ti-shield"></i> Usalama</div>
+        <div class="snav-item" onclick="showSection('about',this)"><i class="ti ti-info-circle"></i> Kuhusu Q360</div>
+      </div>
+
+      <!-- Settings Content -->
       <div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px">Mpango Wako wa Sasa</div>
-        <div class="plan-name" id="planName">Retailer</div>
-        <div class="plan-price" id="planPrice">TZS 10,000 / mwezi</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px">Siku za Bure Zimebaki</div>
-        <div style="font-family:Plus Jakarta Sans;font-size:28px;font-weight:800;color:var(--gold)" id="trialLeft">7</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.4)">Kisha lipa ili uendelee</div>
+
+        <!-- PROFILE -->
+        <div class="settings-section active" id="sec-profile">
+          <div class="section-card">
+            <div class="section-title">Taarifa za Kibinafsi</div>
+            <div class="section-sub">Jina, email, simu, na eneo lako</div>
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+              <div class="avatar-upload" id="avatarDisplay">J</div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--navy)" id="displayName">Inapakia...</div>
+                <div style="font-size:12px;color:var(--text-muted)" id="displayEmail"></div>
+                <div class="ai-chip" style="margin-top:6px"><i class="ti ti-crown"></i> <span id="displayPlan">Free</span></div>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group"><label class="form-label">Jina Kamili</label><input class="form-control" id="sJina" placeholder="Jina lako"></div>
+              <div class="form-group"><label class="form-label">Namba ya Simu</label><input class="form-control" id="sSimu" placeholder="+255 7XX XXX XXX"></div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Nchi</label>
+                <select class="form-control" id="sNchi">
+                  <option value="TZ">Tanzania</option>
+                  <option value="KE">Kenya</option>
+                  <option value="UG">Uganda</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mkoa</label>
+                <select class="form-control" id="sMkoa">
+                  <option>Dar es Salaam</option><option>Arusha</option><option>Mwanza</option>
+                  <option>Dodoma</option><option>Mbeya</option><option>Tanga</option><option>Zanzibar</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI SETTINGS -->
+        <div class="settings-section" id="sec-ai">
+          <div class="section-card">
+            <div class="section-title">Mipangilio ya Q360 AI</div>
+            <div class="section-sub">Badilisha jinsi AI yako inavyojibu na kutenda</div>
+
+            <div class="form-group">
+              <label class="form-label">Lugha ya AI</label>
+              <select class="form-control" id="sLugha">
+                <option value="sw">Kiswahili</option>
+                <option value="en">English</option>
+              </select>
+              <div class="form-hint">AI itajibu kwa lugha uliyochagua</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" style="margin-bottom:10px">Utu wa AI (Personality)</label>
+              <div class="radio-group">
+                <div class="radio-card active" id="pers-friendly" onclick="setPersonality('friendly')">
+                  <i class="ti ti-mood-happy"></i><span>Mwenye Urafiki</span>
+                </div>
+                <div class="radio-card" id="pers-professional" onclick="setPersonality('professional')">
+                  <i class="ti ti-briefcase"></i><span>Mtaalamu</span>
+                </div>
+                <div class="radio-card" id="pers-analyst" onclick="setPersonality('analyst')">
+                  <i class="ti ti-chart-dots"></i><span>Mchambuzi</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle-row">
+              <div><div class="toggle-label">Majibu ya Kina</div><div class="toggle-sub">AI itoe maelezo ya kina zaidi</div></div>
+              <label class="toggle"><input type="checkbox" id="sTDetailed"><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">AI Mapendekezo ya Otomatiki</div><div class="toggle-sub">AI itoe mapendekezo bila kuulizwa</div></div>
+              <label class="toggle"><input type="checkbox" id="sAutoSuggest" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Hifadhi Historia ya Mazungumzo</div><div class="toggle-sub">Mazungumzo yako yahifadhiwe kwa wiki 4</div></div>
+              <label class="toggle"><input type="checkbox" id="sSaveHistory" checked><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- BIASHARA -->
+        <div class="settings-section" id="sec-biashara">
+          <div class="section-card">
+            <div class="section-title">Taarifa za Biashara</div>
+            <div class="section-sub">Jina la biashara, sarafu, na mazingira ya mauzo</div>
+            <div class="form-group"><label class="form-label">Jina la Biashara</label><input class="form-control" id="sBiashara" placeholder="Jina la biashara yako"></div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Sarafu</label>
+                <select class="form-control" id="sSarafu">
+                  <option value="TZS">TZS — Shilingi ya Tanzania</option>
+                  <option value="KES">KES — Shilingi ya Kenya</option>
+                  <option value="USD">USD — Dola ya Marekani</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Aina ya Biashara</label>
+                <select class="form-control" id="sAinaBiashara">
+                  <option>Rejareja (Retail)</option>
+                  <option>Jumla (Wholesale)</option>
+                  <option>Huduma (Services)</option>
+                  <option>Uzalishaji</option>
+                  <option>Nyingine</option>
+                </select>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Onyesha Kiwango cha Chini cha Stock</div><div class="toggle-sub">Pata tahadhari ukifikia kiwango cha chini</div></div>
+              <label class="toggle"><input type="checkbox" id="sStockAlert" checked><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div class="settings-section" id="sec-notifs">
+          <div class="section-card">
+            <div class="section-title">Arifa</div>
+            <div class="section-sub">Chagua arifa unazotaka kupokea</div>
+            <div class="toggle-row"><div><div class="toggle-label">Arifa za Stock Inayokwisha</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div><div class="toggle-label">Ripoti ya Kila Wiki</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div><div class="toggle-label">Ukumbusho wa Malipo ya Madeni</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div><div class="toggle-label">Habari za AI Credits Zinazokwisha</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          </div>
+        </div>
+
+        <!-- SECURITY -->
+        <div class="settings-section" id="sec-security">
+          <div class="section-card">
+            <div class="section-title">Usalama wa Akaunti</div>
+            <div class="section-sub">Badilisha neno la siri na futa akaunti</div>
+            <div class="form-group"><label class="form-label">Neno la Siri Jipya</label><input type="password" class="form-control" id="sNewPass" placeholder="Neno la siri jipya"></div>
+            <div class="form-group"><label class="form-label">Thibitisha Neno Jipya</label><input type="password" class="form-control" id="sConfPass" placeholder="Rudia neno jipya"></div>
+            <button class="btn btn-navy" onclick="changePassword()"><i class="ti ti-key"></i> Badilisha Neno la Siri</button>
+          </div>
+          <div class="danger-zone">
+            <div class="danger-title"><i class="ti ti-alert-triangle"></i> Hatari — Futa Akaunti</div>
+            <div style="font-size:12px;color:var(--danger);margin-bottom:12px">Kufuta akaunti kutaondoa data yako yote milele. Hatua hii haiwezi kubatilishwa.</div>
+            <button class="btn btn-danger btn-sm" onclick="if(confirm('Una uhakika kabisa? Data yote itafutwa milele!'))showToast('Wasiliana nasi kwa kufuta akaunti: travexdigital15@gmail.com')">Futa Akaunti Yangu</button>
+          </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="settings-section" id="sec-about">
+          <div class="section-card" style="text-align:center;padding:32px">
+            <div style="width:60px;height:60px;background:linear-gradient(135deg,var(--cyan),var(--gold));border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--navy)">Q3</div>
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:4px">Q360 AI</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Smart life, smarter business · Version 2.0</div>
+            <div class="ai-chip" style="display:inline-flex"><i class="ti ti-check"></i> Toleo jipya linapatikana</div>
+            <div style="display:flex;gap:12px;justify-content:center;margin-top:20px">
+              <a href="mailto:travexdigital15@gmail.com" class="btn btn-outline btn-sm"><i class="ti ti-mail"></i> Email</a>
+              <a href="https://wa.me/255651919915" class="btn btn-outline btn-sm"><i class="ti ti-brand-whatsapp"></i> WhatsApp</a>
+            </div>
+            <div style="margin-top:20px;font-size:11px;color:var(--text-muted)">
+              © 2026 TRAVEX Digital Group · Dar es Salaam, Tanzania
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-
-    <!-- TAARIFA ZA BIASHARA -->
-    <div class="settings-card">
-      <div class="settings-card-title"><i class="ti ti-building-store"></i> Taarifa za Biashara</div>
-      <div class="settings-card-sub">Taarifa hizi zitatumika kwenye invoice na ripoti zako</div>
-      <div class="grid-2">
-        <div class="form-group"><label class="form-label">Jina la Biashara</label><input class="form-control" id="sBiashara"></div>
-        <div class="form-group"><label class="form-label">Aina ya Biashara</label><input class="form-control" id="sAina"></div>
-      </div>
-      <div class="grid-2">
-        <div class="form-group"><label class="form-label">Mkoa / Wilaya</label><input class="form-control" id="sMkoa"></div>
-        <div class="form-group"><label class="form-label">Namba ya Simu ya Biashara</label><input class="form-control" id="sSimu"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Namba ya TIN (Tax)</label><input class="form-control" id="sTin" placeholder="Kama una TIN namba"></div>
-      <button class="btn btn-gold" onclick="saveBiashara()"><i class="ti ti-check"></i> Hifadhi Mabadiliko</button>
-    </div>
-
-    <!-- TAARIFA ZA MTUMIAJI -->
-    <div class="settings-card">
-      <div class="settings-card-title"><i class="ti ti-user"></i> Taarifa Zangu</div>
-      <div class="settings-card-sub">Taarifa za akaunti yako ya TRAVEX Finance</div>
-      <div class="grid-2">
-        <div class="form-group"><label class="form-label">Jina Langu Kamili</label><input class="form-control" id="sJina"></div>
-        <div class="form-group"><label class="form-label">Namba ya Simu</label><input class="form-control" id="sUserSimu"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Barua Pepe (Email)</label><input class="form-control" id="sEmail" type="email"></div>
-      <button class="btn btn-navy" onclick="saveUser()"><i class="ti ti-check"></i> Hifadhi Taarifa</button>
-    </div>
-
-    <!-- NENO LA SIRI -->
-    <div class="settings-card">
-      <div class="settings-card-title"><i class="ti ti-lock"></i> Badilisha Neno la Siri</div>
-      <div class="settings-card-sub">Badilisha neno la siri la akaunti yako</div>
-      <div class="form-group"><label class="form-label">Neno la Siri Jipya</label><input type="password" class="form-control" id="sNewPass" placeholder="Angalau herufi 6"></div>
-      <div class="form-group"><label class="form-label">Thibitisha Neno Jipya</label><input type="password" class="form-control" id="sConfPass" placeholder="Rudia neno la siri jipya"></div>
-      <button class="btn btn-outline" onclick="changePass()"><i class="ti ti-lock"></i> Badilisha</button>
-    </div>
-
-    <!-- DANGER ZONE -->
-    <div class="danger-zone">
-      <div class="danger-title"><i class="ti ti-alert-triangle"></i> Hatua za Tahadhari</div>
-      <div style="font-size:13px;color:var(--text);margin-bottom:16px">Hatua hizi haziwezi kurejeshwa. Uwe makini.</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-danger btn-sm" onclick="clearData()"><i class="ti ti-trash"></i> Futa Data Yote</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteAccount()"><i class="ti ti-user-x"></i> Futa Akaunti</button>
-      </div>
-    </div>
-
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script>
-(async()=>{const s=await Auth.getSession();if(!s){window.location.replace('login.html');return;}
-await loadSidebar('mipangilio');
+let profile = null;
+let currentPersonality = 'friendly';
+
+(async () => {
+  const session = await Auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  await loadSidebar('mipangilio');
+  profile = await DB.profile.get();
+  if (profile) {
+    Auth.cacheUser(profile);
+    const initials = (profile.jina||'U').charAt(0).toUpperCase();
+    document.getElementById('avatarDisplay').textContent = initials;
+    document.getElementById('displayName').textContent = profile.jina||'';
+    document.getElementById('displayEmail').textContent = (await Auth.getUser())?.email||'';
+    document.getElementById('displayPlan').textContent = (profile.plan||'free').charAt(0).toUpperCase()+(profile.plan||'free').slice(1);
+    document.getElementById('sJina').value = profile.jina||'';
+    document.getElementById('sSimu').value = profile.simu||'';
+    document.getElementById('sBiashara').value = profile.biashara||'';
+    if (profile.lugha) document.getElementById('sLugha').value = profile.lugha;
+    if (profile.nchi) document.getElementById('sNchi').value = profile.nchi;
+    if (profile.mkoa) { try { document.getElementById('sMkoa').value = profile.mkoa; } catch {} }
+    if (profile.personality) setPersonality(profile.personality);
+  }
 })();
 
-// profile loaded async above
-
-function loadProfileForm(){
-  if(!profile) return;
-  document.getElementById('sBiashara').value=profile.biashara||'';
-  document.getElementById('sAina').value=profile.aina_biashara||'';
-  document.getElementById('sMkoa').value=profile.mkoa||'';
-  document.getElementById('sSimu').value=profile.simu||'';
-  document.getElementById('sTin').value=profile.tin||'';
-  document.getElementById('sJina').value=profile.jina||'';
-  document.getElementById('sUserSimu').value=profile.simu||'';
-  const user=supabaseClient.auth.getUser().then(({data})=>{ if(data.user) document.getElementById('sEmail').value=data.user.email||''; });
-  const plan=profile.plan||'retailer';
-  document.getElementById('planName').textContent=plan==='wholesaler'?'Wholesaler':'Retailer';
-  document.getElementById('planPrice').textContent=plan==='wholesaler'?'TZS 25,000 / mwezi':'TZS 10,000 / mwezi';
-  const elapsed=Math.floor((new Date()-new Date(profile.trial_start||new Date()))/(1000*60*60*24));
-  document.getElementById('trialLeft').textContent=Math.max(0,(profile.trial_days||7)-elapsed);
+function showSection(id, el) {
+  document.querySelectorAll('.settings-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.snav-item').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  el.classList.add('active');
 }
 
-
-
-async function saveBiashara() {
-  await DB.profile.update({biashara:document.getElementById('sBiashara').value.trim(),aina_biashara:document.getElementById('sAina').value.trim(),mkoa:document.getElementById('sMkoa').value.trim(),simu:document.getElementById('sSimu').value.trim(),tin:document.getElementById('sTin').value.trim()});
-  profile = await DB.profile.get();
-  Auth.cacheUser(profile);
-  showToast('Taarifa za biashara zimehifadhiwa! ✅');
-  await loadSidebar('mipangilio');
+function setPersonality(p) {
+  currentPersonality = p;
+  ['friendly','professional','analyst'].forEach(x=>{
+    document.getElementById('pers-'+x)?.classList.toggle('active', x===p);
+  });
 }
 
-async function saveUser() {
-  await DB.profile.update({jina:document.getElementById('sJina').value.trim(),simu:document.getElementById('sUserSimu').value.trim()});
-  profile = await DB.profile.get();
-  Auth.cacheUser(profile);
-  showToast('Taarifa zako zimehifadhiwa! ✅');
-  await loadSidebar('mipangilio');
+async function saveAllSettings() {
+  await DB.profile.update({
+    jina: document.getElementById('sJina').value.trim(),
+    simu: document.getElementById('sSimu').value.trim(),
+    biashara: document.getElementById('sBiashara').value.trim(),
+    nchi: document.getElementById('sNchi').value,
+    mkoa: document.getElementById('sMkoa').value,
+    lugha: document.getElementById('sLugha').value,
+    personality: currentPersonality
+  });
+  Auth.clearCache();
+  showToast('Mipangilio imehifadhiwa! ✅');
 }
 
-async function changePass() {
-  const np=document.getElementById('sNewPass').value;
-  const cp=document.getElementById('sConfPass').value;
-  if(np.length<6){showToast('Neno la siri lazima liwe na herufi 6+','error');return;}
-  if(np!==cp){showToast('Maneno ya siri hayafanani','error');return;}
-  const {error}=await supabaseClient.auth.updateUser({password:np});
-  if(error){showToast(error.message,'error');return;}
-  showToast('Neno la siri limebadilishwa! ✅');
-  document.getElementById('sNewPass').value='';
-  document.getElementById('sConfPass').value='';
-}
-
-function clearData() {
-  showToast('Wasiliana na msaMinisters wa TRAVEX Finance kufuta data','error');
-}
-
-async function deleteAccount() {
-  if(!confirm('Una uhakika wa kufuta akaunti yako? Hatua hii haiwezi kurejeshwa!')) return;
-  await Auth.logout();
+async function changePassword() {
+  const p1 = document.getElementById('sNewPass').value;
+  const p2 = document.getElementById('sConfPass').value;
+  if (!p1 || p1.length < 6) { showToast('Neno la siri lazima liwe herufi 6+','error'); return; }
+  if (p1 !== p2) { showToast('Maneno hayafanani','error'); return; }
+  const { error } = await supabaseClient.auth.updateUser({ password: p1 });
+  if (error) { showToast(error.message,'error'); return; }
+  showToast('Neno la siri limebadilishwa!');
+  document.getElementById('sNewPass').value = '';
+  document.getElementById('sConfPass').value = '';
 }
 </script>
-
-<nav class="bottom-nav">
-<a href="dashboard.html" class=""><i class="ti ti-home"></i><span>Nyumbani</span></a>
-<a href="mauzo.html" class=""><i class="ti ti-shopping-cart"></i><span>Mauzo</span></a>
-<a href="stock.html" class=""><i class="ti ti-package"></i><span>Stock</span></a>
-<a href="madeni.html" class=""><i class="ti ti-credit-card"></i><span>Madeni</span></a>
-<a href="invoice.html" class=""><i class="ti ti-file-invoice"></i><span>Invoice</span></a>
-<a href="ripoti.html" class=""><i class="ti ti-chart-bar"></i><span>Ripoti</span></a>
-<a href="mipangilio.html" class="active"><i class="ti ti-settings"></i><span>Zaidi</span></a>
-</nav>
 </body>
 </html>
