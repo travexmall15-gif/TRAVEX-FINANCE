@@ -2,104 +2,94 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Q360 AI — Msaidizi Wako wa AI</title>
+<title>Q360 AI — Msaidizi Wako</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="shared.css">
 <style>
-.chat-layout{display:flex;height:calc(100vh - var(--header-h));overflow:hidden}
-.chat-sidebar{width:260px;background:var(--navy-card);border-right:1px solid var(--border-dark);display:flex;flex-direction:column;flex-shrink:0}
-.chat-sidebar-header{padding:16px;border-bottom:1px solid var(--border-dark)}
-.btn-new-chat{width:100%;padding:10px 14px;background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,168,204,0.1));border:1px solid var(--cyan-border);border-radius:var(--radius-sm);color:var(--cyan);font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;justify-content:center;cursor:pointer;transition:all 0.2s}
-.btn-new-chat:hover{background:var(--cyan-glow)}
-.chat-history{flex:1;overflow-y:auto;padding:8px}
-.history-item{padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:2px;transition:all 0.2s;display:flex;align-items:center;gap:8px}
-.history-item:hover{background:var(--border-dark)}
-.history-item.active{background:var(--cyan-glow)}
-.history-item i{font-size:14px;color:var(--text-white-dim);flex-shrink:0}
-.history-title{font-size:12px;color:var(--text-white-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.history-date{font-size:10px;color:rgba(255,255,255,0.2);margin-top:2px}
-.credits-bar{padding:12px 16px;border-top:1px solid var(--border-dark)}
-.credits-label{font-size:10px;color:var(--text-white-dim);margin-bottom:6px;display:flex;justify-content:space-between}
-.credits-prog{height:4px;background:rgba(255,255,255,0.1);border-radius:20px}
-.credits-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--gold));border-radius:20px;transition:width 0.4s}
+/* ── LAYOUT ────────────────────────────── */
+.ai-wrap{display:flex;height:calc(100vh - var(--header-h));overflow:hidden}
 
-/* CHAT MAIN */
+/* ── HISTORY SIDEBAR ───────────────────── */
+.ai-side{width:252px;background:var(--navy-card);border-right:1px solid var(--border-dark);display:flex;flex-direction:column;flex-shrink:0}
+.ai-side-top{padding:14px;border-bottom:1px solid var(--border-dark)}
+.btn-new{width:100%;padding:10px 14px;background:rgba(0,212,255,0.08);border:1px solid var(--cyan-border);border-radius:var(--radius-sm);color:var(--cyan);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.btn-new:hover{background:var(--cyan-glow)}
+.ai-hist{flex:1;overflow-y:auto;padding:8px}
+.hist-item{padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:2px;transition:all 0.2s}
+.hist-item:hover{background:var(--border-dark)}
+.hist-title{font-size:12px;color:rgba(255,255,255,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist-time{font-size:10px;color:rgba(255,255,255,0.2);margin-top:2px}
+.ai-side-plan{padding:12px 14px;border-top:1px solid var(--border-dark)}
+.ai-plan-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ai-plan-lbl{font-size:10px;color:rgba(255,255,255,0.3)}
+.ai-plan-val{font-size:10px;font-weight:700;color:var(--cyan)}
+.ai-plan-link{display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.18);border-radius:7px;padding:7px;font-size:11px;font-weight:700;color:var(--cyan);text-decoration:none;transition:all 0.2s}
+.ai-plan-link:hover{background:rgba(0,212,255,0.14)}
+
+/* ── CHAT MAIN ─────────────────────────── */
 .chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
-.chat-header{padding:14px 20px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.chat-header-left{display:flex;align-items:center;gap:10px}
-.ai-status{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--navy)}
-.ai-status-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
-.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
-.chat-messages::-webkit-scrollbar{width:4px}
-.chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.chat-bar{padding:12px 20px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.chat-status{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--navy)}
+.chat-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.chat-msgs{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;gap:18px}
+.chat-msgs::-webkit-scrollbar{width:4px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
 
-/* Messages */
-.msg-wrap{display:flex;gap:10px;max-width:85%;animation:fadeIn 0.3s ease}
-.msg-wrap.user{flex-direction:row-reverse;align-self:flex-end}
-.msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700}
-.msg-avatar.ai{background:linear-gradient(135deg,var(--cyan-dim),rgba(0,168,204,0.3));color:var(--cyan);border:1px solid var(--cyan-border)}
-.msg-avatar.user{background:var(--navy);color:var(--gold)}
-.msg-bubble{padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.6;max-width:100%}
-.msg-bubble.ai{background:var(--white);color:var(--text);border-radius:16px 16px 16px 4px;border:1px solid var(--border);box-shadow:var(--shadow)}
-.msg-bubble.user{background:var(--navy);color:var(--white);border-radius:16px 16px 4px 16px}
-.msg-meta{font-size:10px;color:var(--text-muted);margin-top:5px;text-align:right}
-.msg-wrap.user .msg-meta{text-align:left}
+/* ── MESSAGES ──────────────────────────── */
+.msg{display:flex;gap:10px;max-width:82%;animation:fadeIn 0.25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse;align-self:flex-end}
+.msg-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700}
+.msg-av.ai{background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,168,204,0.15));color:var(--cyan);border:1px solid var(--cyan-border)}
+.msg-av.user{background:var(--navy);color:var(--gold)}
+.msg-bub{padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.65}
+.msg-bub.ai{background:var(--white);color:var(--text);border-radius:16px 16px 16px 4px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.msg-bub.user{background:var(--navy);color:var(--white);border-radius:16px 16px 4px 16px}
+.msg-time{font-size:10px;color:var(--text-muted);margin-top:4px}
+.msg.user .msg-time{text-align:left}
+.msg-bub.ai strong{color:var(--navy);font-weight:700}
+.msg-bub.ai em{color:var(--text-muted)}
+.msg-bub.ai code{background:#f3f4f6;padding:1px 6px;border-radius:4px;font-family:monospace;font-size:12px}
+.msg-bub.ai ul{padding-left:18px;margin-top:6px}
+.msg-bub.ai li{margin-bottom:4px}
 
-/* AI response formatting */
-.msg-bubble.ai strong{color:var(--navy);font-weight:700}
-.msg-bubble.ai code{background:#f3f4f6;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px}
-.msg-bubble.ai .ai-stat-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
-.msg-bubble.ai .ai-stat-row:last-child{border-bottom:none}
-.msg-bubble.ai .ai-chip-tag{display:inline-flex;align-items:center;gap:4px;background:rgba(0,212,255,0.1);color:var(--cyan-dim);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin:2px}
+/* ── TYPING ────────────────────────────── */
+.typing{display:flex;gap:10px;align-items:flex-end}
+.typing-bub{background:var(--white);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:14px 18px;display:flex;gap:5px;align-items:center}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:bounce 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
 
-/* Typing indicator */
-.typing-wrap{display:flex;gap:10px;align-items:flex-end}
-.typing-bubble{background:var(--white);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:12px 16px;display:flex;gap:5px;align-items:center}
-.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:typing 1.2s infinite}
-.typing-dot:nth-child(2){animation-delay:0.2s}
-.typing-dot:nth-child(3){animation-delay:0.4s}
-@keyframes typing{0%,100%{opacity:0.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+/* ── EMPTY STATE ───────────────────────── */
+.chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 20px}
+.empty-ring{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,168,204,0.04));border:1.5px solid var(--cyan-border);display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative}
+.empty-ring::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,212,255,0.12)}
+.empty-ring i{font-size:34px;color:var(--cyan)}
+.empty-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px}
+.empty-sub{font-size:13px;color:var(--text-muted);max-width:340px;line-height:1.65;margin-bottom:24px}
+.sugg-wrap{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:560px}
+.sugg{padding:9px 16px;background:var(--white);border:1.5px solid var(--border);border-radius:20px;font-size:12px;color:var(--text);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;text-align:left}
+.sugg:hover{border-color:var(--cyan);color:var(--navy);background:rgba(0,212,255,0.04)}
 
-/* Empty state */
-.chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px}
-.chat-empty-icon{width:72px;height:72px;background:linear-gradient(135deg,var(--cyan-glow),rgba(0,168,204,0.05));border:1px solid var(--cyan-border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.chat-empty-icon i{font-size:32px;color:var(--cyan)}
-.chat-empty h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px}
-.chat-empty p{font-size:13px;color:var(--text-muted);max-width:360px;line-height:1.6}
-
-/* Suggestions */
-.suggestions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px}
-.suggest-btn{padding:8px 16px;background:var(--white);border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--text);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
-.suggest-btn:hover{border-color:var(--cyan);color:var(--navy);background:rgba(0,212,255,0.05)}
-
-/* Input area */
-.chat-input-area{padding:16px 20px;background:var(--white);border-top:1px solid var(--border);flex-shrink:0}
-.input-wrap{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;display:flex;align-items:flex-end;gap:8px;padding:10px 14px;transition:border-color 0.2s}
-.input-wrap:focus-within{border-color:var(--cyan)}
-.chat-input{flex:1;border:none;background:transparent;font-size:14px;color:var(--text);resize:none;outline:none;font-family:'DM Sans',sans-serif;max-height:120px;min-height:24px;line-height:1.5}
-.chat-input::placeholder{color:var(--text-muted)}
-.send-btn{width:36px;height:36px;border-radius:10px;background:var(--navy);border:none;color:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0}
-.send-btn:hover{background:var(--navy-light)}
-.send-btn.active{background:linear-gradient(135deg,var(--cyan),#0099bb);color:var(--navy)}
+/* ── INPUT ─────────────────────────────── */
+.chat-input-area{padding:14px 20px 16px;background:var(--white);border-top:1px solid var(--border);flex-shrink:0}
+.inp-box{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;display:flex;align-items:flex-end;gap:8px;padding:10px 14px;transition:border-color .2s}
+.inp-box:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-glow)}
+.msg-inp{flex:1;border:none;background:transparent;font-size:14px;color:var(--text);resize:none;outline:none;font-family:'DM Sans',sans-serif;max-height:120px;min-height:24px;line-height:1.5}
+.msg-inp::placeholder{color:var(--text-muted)}
+.send-btn{width:36px;height:36px;border-radius:10px;background:var(--navy);border:none;color:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.send-btn.on{background:linear-gradient(135deg,var(--cyan),#0099bb);color:var(--navy)}
 .send-btn i{font-size:16px}
-.input-actions{display:flex;align-items:center;gap:8px;margin-top:8px}
-.input-action-btn{padding:5px 12px;background:none;border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all 0.2s}
-.input-action-btn:hover{color:var(--navy);border-color:var(--navy)}
+.inp-hint{font-size:11px;color:var(--text-muted);margin-top:7px;text-align:center}
 
-/* Action confirm */
-.action-confirm{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:var(--radius);padding:12px 16px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.action-msg{font-size:13px;color:var(--navy)}
-.action-btns{display:flex;gap:8px}
-.btn-confirm{padding:6px 16px;background:var(--gold);color:var(--navy);border-radius:6px;font-size:12px;font-weight:700;border:none;cursor:pointer}
-.btn-decline{padding:6px 16px;background:var(--bg);color:var(--text);border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);cursor:pointer}
-
-/* Mobile */
 @media(max-width:768px){
-  .chat-sidebar{display:none}
+  .ai-side{display:none}
   .chat-main{height:calc(100vh - 56px - 64px)}
-  .chat-messages{padding:14px}
-  .msg-wrap{max-width:95%}
-  .chat-input-area{padding:12px 14px}
+  .chat-msgs{padding:14px}
+  .msg{max-width:95%}
+  .chat-input-area{padding:10px 12px 12px}
 }
 </style>
 </head>
@@ -107,82 +97,60 @@
 <div class="sidebar" id="sidebar"></div>
 <div class="main-wrapper">
   <div class="main-header">
-    <div class="header-left">
-      <div>
-        <div class="header-title">Q360 AI</div>
-        <div class="header-sub">Msaidizi wako wa AI wa kibinafsi</div>
-      </div>
+    <div>
+      <div class="header-title">Q360 AI</div>
+      <div class="header-sub">Msaidizi wako wa akili bandia</div>
     </div>
     <div class="header-right">
       <div class="header-ai-badge"><span class="ai-dot"></span> Online</div>
     </div>
   </div>
 
-  <div class="chat-layout">
-    <!-- Chat History Sidebar -->
-    <div class="chat-sidebar">
-      <div class="chat-sidebar-header">
-        <button class="btn-new-chat" onclick="newChat()"><i class="ti ti-plus"></i> Mazungumzo Mapya</button>
+  <div class="ai-wrap">
+
+    <!-- History sidebar -->
+    <div class="ai-side">
+      <div class="ai-side-top">
+        <button class="btn-new" onclick="newChat()"><i class="ti ti-plus"></i> Mazungumzo Mapya</button>
       </div>
-      <div class="chat-history" id="chatHistory">
-        <div style="padding:20px;text-align:center;font-size:12px;color:rgba(255,255,255,0.3)">Mazungumzo yataonekana hapa</div>
+      <div class="ai-hist" id="histList">
+        <div style="padding:20px 12px;font-size:12px;color:rgba(255,255,255,0.25);text-align:center">Historia itaonekana hapa</div>
       </div>
-      <div class="credits-bar">
-        <div class="credits-label">
-          <span>AI Credits</span>
-          <span id="creditsText">— / —</span>
+      <div class="ai-side-plan">
+        <div class="ai-plan-row">
+          <span class="ai-plan-lbl">Mpango Wako</span>
+          <span class="ai-plan-val" id="planLbl">—</span>
         </div>
-        <div class="credits-prog"><div class="credits-fill" id="creditsFill" style="width:100%"></div></div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.25);margin-top:6px" id="planLabel">Inapakia...</div>
+        <a href="subscription.html" class="ai-plan-link"><i class="ti ti-crown" style="font-size:12px"></i> Boresha Mpango</a>
       </div>
     </div>
 
-    <!-- Main Chat -->
+    <!-- Chat area -->
     <div class="chat-main">
-      <div class="chat-header">
-        <div class="chat-header-left">
-          <div class="ai-status"><span class="ai-status-dot"></span> Q360 AI inasikiliza</div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button onclick="clearChat()" style="padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif"><i class="ti ti-trash"></i> Futa</button>
-        </div>
+      <div class="chat-bar">
+        <div class="chat-status"><span class="chat-dot"></span> Q360 AI inasikiliza</div>
+        <button onclick="newChat()" style="padding:6px 14px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px">
+          <i class="ti ti-trash"></i> Futa
+        </button>
       </div>
 
-      <div class="chat-messages" id="chatMessages">
+      <div class="chat-msgs" id="chatMsgs">
+        <!-- Empty state -->
         <div class="chat-empty" id="emptyState">
-          <div class="chat-empty-icon"><i class="ti ti-brand-openai"></i></div>
-          <h3>Habari! Mimi ni Q360 AI</h3>
-          <p>Msaidizi wako wa kibinafsi wa AI. Uliza swali lolote kuhusu biashara yako, fedha, au miradi.</p>
-          <div class="suggestions" id="suggestions">
-            <button class="suggest-btn" onclick="sendSuggestion(this)">📊 Biashara yangu leo imekwenda vipi?</button>
-            <button class="suggest-btn" onclick="sendSuggestion(this)">⚠️ Stock zipi zinakwisha?</button>
-            <button class="suggest-btn" onclick="sendSuggestion(this)">💰 Niko na madeni kiasi gani?</button>
-            <button class="suggest-btn" onclick="sendSuggestion(this)">📈 Nionyeshe ripoti ya mwezi huu</button>
-            <button class="suggest-btn" onclick="sendSuggestion(this)">🧾 Tengeneza invoice mpya</button>
-            <button class="suggest-btn" onclick="sendSuggestion(this)">💡 Nipe ushauri wa kuboresha biashara yangu</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Action Confirmation (hidden by default) -->
-      <div id="actionConfirm" class="action-confirm" style="display:none;margin:0 20px 8px">
-        <div class="action-msg" id="actionMsg"></div>
-        <div class="action-btns">
-          <button class="btn-confirm" onclick="confirmAction()">Thibitisha</button>
-          <button class="btn-decline" onclick="declineAction()">Kataa</button>
+          <div class="empty-ring"><i class="ti ti-brand-openai"></i></div>
+          <div class="empty-name">Habari! Mimi ni Q360 AI</div>
+          <div class="empty-sub">Msaidizi wako wa kibinafsi wa akili bandia. Niulize chochote kuhusu biashara yako, fedha, au miradi.</div>
+          <div class="sugg-wrap" id="suggWrap"></div>
         </div>
       </div>
 
       <div class="chat-input-area">
-        <div class="input-wrap">
-          <textarea class="chat-input" id="chatInput" placeholder="Uliza Q360 AI kitu chochote..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-          <button class="send-btn" id="sendBtn" onclick="sendMessage()"><i class="ti ti-send"></i></button>
+        <div class="inp-box">
+          <textarea class="msg-inp" id="msgInp" placeholder="Andika ujumbe wako..." rows="1"
+            onkeydown="handleKey(event)" oninput="onInput(this)"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMsg()"><i class="ti ti-send"></i></button>
         </div>
-        <div class="input-actions">
-          <button class="input-action-btn"><i class="ti ti-paperclip"></i> Ambatanisha Faili</button>
-          <button class="input-action-btn"><i class="ti ti-microphone"></i> Sauti</button>
-          <span style="margin-left:auto;font-size:11px;color:var(--text-muted)">Enter = Tuma · Shift+Enter = Mstari mpya</span>
-        </div>
+        <div class="inp-hint">Enter = Tuma &nbsp;·&nbsp; Shift+Enter = Mstari mpya</div>
       </div>
     </div>
   </div>
@@ -193,86 +161,109 @@
 <script src="supabase.js"></script>
 <script src="dev-config.js"></script>
 <script>
-let messages = [];
-let aiContext = {};
-let pendingAction = null;
-let isThinking = false;
-let profile = null;
-let credits = { used: 0, limit: 100 };
+// ── STATE ───────────────────────────────────────────────────
+let msgs    = [];
+let thinking = false;
+let profile  = null;
+let histSaved = [];
 
+// ── DEV MOCK RESPONSES ──────────────────────────────────────
+// Used when ANTHROPIC_API_KEY is not set in Vercel env vars
+const MOCK_RESPONSES = [
+  `Habari! Nimesoma swali lako vizuri.\n\nKwa sasa mimi (Q360 AI) nipo katika **Dev Mode** — majibu yangu ni ya mazoezi tu.\n\nUkiweka **ANTHROPIC_API_KEY** kwenye Vercel → Settings → Environment Variables, nitajibu kwa akili halisi na data ya biashara yako. 🚀`,
+  `Nzuri sana! Hiyo ni swali zuri.\n\n**Q360 AI** itaweza kukusaidia na:\n- 📊 Uchambuzi wa mauzo yako\n- 📦 Hali ya stock\n- 💳 Madeni yanayokudai\n- 📈 Ripoti za biashara\n- 💡 Ushauri wa kibinafsi\n\nSaaaa hivi niko kwenye **Dev Mode** — ongeza API key ili nianze kufanya kazi halisi. 🎯`,
+  `Asante kwa swali lako!\n\n**Dev Mode** inamaanisha mimi sijaunganyishwa na Anthropic Claude API bado.\n\nHatua inayohitajika:\n1. Nenda **Vercel Dashboard**\n2. Project yako → **Settings** → **Environment Variables**\n3. Ongeza: \`ANTHROPIC_API_KEY\` = \`sk-ant-xxx...\`\n4. Redeploy\n\nBaada ya hapo nitakuwa hai kabisa! ⚡`,
+  `Unajua, ukiniuliza swali hilo kwa biashara halisi, ningekuambia:\n\n_"Kulingana na data yako ya leo, mapato yamepanda 12% ukilinganisha na wiki iliyopita. Bidhaa inayoongoza ni..."_\n\nLakini kwa sasa — **Dev Mode** 😄\n\nWeka API key uone uchawi wa kweli wa Q360 AI!`
+];
+let mockIdx = 0;
+
+// ── SUGGESTIONS ─────────────────────────────────────────────
+const SUGGESTIONS = [
+  '📊 Biashara yangu imekwenda vipi leo?',
+  '⚠️ Stock zipi zinakwisha?',
+  '💰 Nina madeni kiasi gani?',
+  '📈 Nionyeshe mwenendo wa mauzo wiki hii',
+  '💡 Nipe ushauri wa kuboresha biashara',
+  '🧾 Tengeneza invoice kwa mteja'
+];
+
+// ── INIT ────────────────────────────────────────────────────
 (async () => {
   const session = await Auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
+
   await loadSidebar('ai');
   profile = Auth.getCachedUser() || await DB.profile.get();
   if (profile) Auth.cacheUser(profile);
-  aiContext = await buildAIContext();
-  await loadCredits();
-  setWelcome();
+
+  // Plan label (no credits)
+  const plans = { free:'Free', starter:'Starter', professional:'Professional', enterprise:'Enterprise' };
+  const planColors = { free:'#9ca3af', starter:'#FFD700', professional:'#00d4ff', enterprise:'#a78bfa' };
+  const plan = profile?.plan || 'free';
+  const plEl = document.getElementById('planLbl');
+  plEl.textContent = plans[plan];
+  plEl.style.color = planColors[plan];
+
+  // Suggestions
+  document.getElementById('suggWrap').innerHTML = SUGGESTIONS.map(s =>
+    `<button class="sugg" onclick="sendSugg(this)">${s}</button>`
+  ).join('');
+
+  // Check for prefill from dashboard
+  const prefill = sessionStorage.getItem('ai_prefill');
+  if (prefill) { sessionStorage.removeItem('ai_prefill'); await doSend(prefill); return; }
+
+  // Welcome message after short delay
+  setTimeout(() => {
+    const hr = new Date().getHours();
+    const gr = hr < 12 ? 'Habari za Asubuhi' : hr < 17 ? 'Habari za Mchana' : 'Habari za Jioni';
+    addAIMsg(`${gr}, **${profile?.jina?.split(' ')[0] || 'rafiki'}**! 👋\n\nMimi ni Q360 AI, msaidizi wako wa kibinafsi. Leo tarehe **${new Date().toLocaleDateString('sw-TZ', {weekday:'long', day:'2-digit', month:'long'})}**.\n\nNiulize chochote — biashara, fedha, miradi, au ushauri wowote. 🚀`);
+  }, 300);
 })();
 
-function setWelcome() {
-  if (!profile) return;
-  const hr = new Date().getHours();
-  const greet = hr < 12 ? 'Habari za Asubuhi' : hr < 17 ? 'Habari za Mchana' : 'Habari za Jioni';
-  addAIMessage(`${greet}, **${profile.jina?.split(' ')[0] || 'rafiki'}**! 👋\n\nMimi ni Q360 AI, msaidizi wako wa kibinafsi. Leo tarehe **${new Date().toLocaleDateString('sw-TZ', {weekday:'long', day:'2-digit', month:'long'})}**.\n\n${aiContext.leo ? `📊 Leo biashara yako: Mapato **${formatTZS(aiContext.leo.mapato_leo)}** · Faida **${formatTZS(aiContext.leo.faida_leo)}**` : ''}\n\nUnaweza kuniuliza chochote — biashara, fedha, miradi, au ushauri. 🚀`);
-}
-
-async function loadCredits() {
-  try {
-    const plan = profile?.plan || 'free';
-    const limits = { free: 100, starter: 500, professional: 2000, enterprise: 99999 };
-    credits.limit = limits[plan] || 100;
-    const usage = await DB.usage.get();
-    credits.used = usage?.credits_used || 0;
-    const pct = Math.min((credits.used / credits.limit) * 100, 100);
-    const el = document.getElementById('creditsText');
-    const fill = document.getElementById('creditsFill');
-    const lbl = document.getElementById('planLabel');
-    if (el) el.textContent = `${credits.used} / ${credits.limit === 99999 ? '∞' : credits.limit}`;
-    if (fill) fill.style.width = `${100 - pct}%`;
-    if (lbl) lbl.textContent = `Plan: ${plan.charAt(0).toUpperCase() + plan.slice(1)}`;
-  } catch {}
-}
-
-function autoResize(el) {
+// ── SEND ────────────────────────────────────────────────────
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } }
+function onInput(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-  document.getElementById('sendBtn').classList.toggle('active', el.value.trim().length > 0);
+  document.getElementById('sendBtn').classList.toggle('on', el.value.trim().length > 0);
 }
 
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+async function sendMsg() {
+  const inp = document.getElementById('msgInp');
+  const txt = inp.value.trim();
+  if (!txt || thinking) return;
+  inp.value = ''; inp.style.height = 'auto';
+  document.getElementById('sendBtn').classList.remove('on');
+  await doSend(txt);
 }
 
-function sendSuggestion(btn) {
-  document.getElementById('chatInput').value = btn.textContent.trim().replace(/^[^\s]+\s/, '');
-  sendMessage();
+function sendSugg(btn) {
+  const txt = btn.textContent.replace(/^[^\s]+\s/, '').trim();
+  doSend(txt);
 }
 
-async function sendMessage() {
-  const input = document.getElementById('chatInput');
-  const text = input.value.trim();
-  if (!text || isThinking) return;
-  input.value = '';
-  input.style.height = 'auto';
-  document.getElementById('sendBtn').classList.remove('active');
+async function doSend(txt) {
   hideEmpty();
-  addUserMessage(text);
-  messages.push({ role: 'user', content: text });
-  await getAIResponse();
+  addUserMsg(txt);
+  msgs.push({ role: 'user', content: txt });
+  await getReply();
 }
 
-async function getAIResponse() {
-  isThinking = true;
+// ── AI REPLY ────────────────────────────────────────────────
+async function getReply() {
+  thinking = true;
   showTyping();
+
   try {
-    const response = await fetch('/api/chat', {
+    // Try real API first
+    const context = await buildAIContext();
+    const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        messages: messages.slice(-20),
-        context: aiContext,
+        messages: msgs.slice(-20),
+        context,
         language: profile?.lugha || 'sw',
         personality: profile?.personality || 'friendly'
       })
@@ -280,128 +271,133 @@ async function getAIResponse() {
 
     removeTyping();
 
-    if (!response.ok) {
-      const err = await response.json();
-      addAIMessage(`❌ Samahani, kuna tatizo: ${err.error || 'Jaribu tena.'}`, true);
-      isThinking = false;
-      return;
-    }
-
-    const data = await response.json();
-    const aiText = data.content || 'Samahani, sijapata jibu. Jaribu tena.';
-
-    messages.push({ role: 'assistant', content: aiText });
-
-    // Check for actions
-    const actionMatch = aiText.match(/ACTION:({.*?})/s);
-    if (actionMatch) {
-      const cleanText = aiText.replace(/ACTION:({.*?})/s, '').trim();
-      addAIMessage(cleanText);
-      try {
-        const action = JSON.parse(actionMatch[1]);
-        showActionConfirm(action);
-      } catch {}
+    if (res.ok) {
+      const d = await res.json();
+      const txt = d.content || 'Samahani, hakuna jibu. Jaribu tena.';
+      msgs.push({ role: 'assistant', content: txt });
+      addAIMsg(txt);
+      saveToHistory(msgs[0]?.content || 'Mazungumzo');
     } else {
-      addAIMessage(aiText);
+      // API not ready — use dev mock
+      useMockResponse();
     }
-
-    // Track usage (3 credits per message)
-    await DB.usage.increment(3).catch(() => {});
-    credits.used += 3;
-    await loadCredits();
-
-  } catch (err) {
+  } catch {
     removeTyping();
-    addAIMessage(`❌ Hitilafu ya mtandao. Hakikisha una internet kisha jaribu tena.`, true);
+    useMockResponse();
   }
-  isThinking = false;
+
+  thinking = false;
 }
 
-function addUserMessage(text) {
-  const profile_initials = (profile?.jina || 'U').charAt(0).toUpperCase();
-  const wrap = document.createElement('div');
-  wrap.className = 'msg-wrap user fade-in';
-  wrap.innerHTML = `
-    <div class="msg-avatar user">${profile_initials}</div>
+function useMockResponse() {
+  removeTyping();
+  const reply = MOCK_RESPONSES[mockIdx % MOCK_RESPONSES.length];
+  mockIdx++;
+  msgs.push({ role: 'assistant', content: reply });
+  addAIMsg(reply);
+}
+
+// ── MESSAGE BUILDERS ─────────────────────────────────────────
+function addUserMsg(txt) {
+  const init = (profile?.jina || 'U').charAt(0).toUpperCase();
+  const el = document.createElement('div');
+  el.className = 'msg user';
+  el.innerHTML = `
+    <div class="msg-av user">${init}</div>
     <div>
-      <div class="msg-bubble user">${escapeHtml(text)}</div>
-      <div class="msg-meta">${new Date().toLocaleTimeString('sw-TZ', {hour:'2-digit', minute:'2-digit'})}</div>
+      <div class="msg-bub user">${esc(txt)}</div>
+      <div class="msg-time">${time()}</div>
     </div>`;
-  document.getElementById('chatMessages').appendChild(wrap);
-  scrollBottom();
+  chatEl().appendChild(el);
+  scrollEnd();
 }
 
-function addAIMessage(text, isError = false) {
-  const wrap = document.createElement('div');
-  wrap.className = 'msg-wrap fade-in';
-  const formatted = formatAIText(text);
-  wrap.innerHTML = `
-    <div class="msg-avatar ai"><i class="ti ti-brand-openai" style="font-size:14px"></i></div>
-    <div>
-      <div class="msg-bubble ai ${isError ? 'error' : ''}">${formatted}</div>
-      <div class="msg-meta">Q360 AI · ${new Date().toLocaleTimeString('sw-TZ', {hour:'2-digit', minute:'2-digit'})}</div>
+function addAIMsg(txt) {
+  const el = document.createElement('div');
+  el.className = 'msg';
+  el.innerHTML = `
+    <div class="msg-av ai"><i class="ti ti-brand-openai" style="font-size:14px"></i></div>
+    <div style="flex:1;min-width:0">
+      <div class="msg-bub ai">${fmt(txt)}</div>
+      <div class="msg-time">Q360 AI · ${time()}</div>
     </div>`;
-  document.getElementById('chatMessages').appendChild(wrap);
-  scrollBottom();
-}
-
-function formatAIText(text) {
-  return text
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`(.+?)`/g, '<code>$1</code>')
-    .replace(/\n/g, '<br>');
-}
-
-function escapeHtml(text) {
-  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  chatEl().appendChild(el);
+  scrollEnd();
 }
 
 function showTyping() {
-  const wrap = document.createElement('div');
-  wrap.className = 'typing-wrap fade-in';
-  wrap.id = 'typingIndicator';
-  wrap.innerHTML = `
-    <div class="msg-avatar ai"><i class="ti ti-brand-openai" style="font-size:14px"></i></div>
-    <div class="typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
-  document.getElementById('chatMessages').appendChild(wrap);
-  scrollBottom();
+  const el = document.createElement('div');
+  el.className = 'typing'; el.id = 'typingEl';
+  el.innerHTML = `
+    <div class="msg-av ai"><i class="ti ti-brand-openai" style="font-size:14px"></i></div>
+    <div class="typing-bub"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+  chatEl().appendChild(el);
+  scrollEnd();
 }
 
-function removeTyping() { document.getElementById('typingIndicator')?.remove(); }
-function hideEmpty() { document.getElementById('emptyState')?.remove(); }
-function scrollBottom() {
-  const el = document.getElementById('chatMessages');
-  el.scrollTop = el.scrollHeight;
+function removeTyping() { document.getElementById('typingEl')?.remove(); }
+function hideEmpty()    { document.getElementById('emptyState')?.remove(); }
+function chatEl()       { return document.getElementById('chatMsgs'); }
+function scrollEnd()    { const el = chatEl(); el.scrollTop = el.scrollHeight; }
+function time()         { return new Date().toLocaleTimeString('sw-TZ', {hour:'2-digit', minute:'2-digit'}); }
+function esc(t)         { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmt(t) {
+  return t
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code>$1</code>')
+    .replace(/^[-•]\s(.+)/gm,'<li>$1</li>')
+    .replace(/<li>/g,'<ul><li>').replace(/<\/li>(?!<li>)/g,'</li></ul>')
+    .replace(/\n/g,'<br>');
 }
 
-function showActionConfirm(action) {
-  const msgs = {
-    create_invoice: `Unda invoice mpya?`,
-    add_product: `Ongeza bidhaa mpya kwenye stock?`,
-    create_sale: `Rekodi muamala mpya?`,
-    add_expense: `Rekodi matumizi mapya?`
-  };
-  pendingAction = action;
-  document.getElementById('actionMsg').textContent = msgs[action.type] || `Fanya: ${action.type}?`;
-  document.getElementById('actionConfirm').style.display = 'flex';
+// ── HISTORY ─────────────────────────────────────────────────
+function saveToHistory(title) {
+  const item = { title: title.substring(0,40), time: new Date().toLocaleDateString('sw-TZ',{day:'2-digit',month:'short'}), msgs: [...msgs] };
+  histSaved.unshift(item);
+  renderHistory();
 }
 
-async function confirmAction() {
-  document.getElementById('actionConfirm').style.display = 'none';
-  if (!pendingAction) return;
-  addAIMessage(`✅ Imefanyika! ${pendingAction.type} imekamilika.`);
-  pendingAction = null;
+function renderHistory() {
+  const el = document.getElementById('histList');
+  el.innerHTML = histSaved.length
+    ? histSaved.map((h,i) => `
+        <div class="hist-item" onclick="loadHist(${i})">
+          <div class="hist-title">${h.title}</div>
+          <div class="hist-time">${h.time}</div>
+        </div>`).join('')
+    : `<div style="padding:20px 12px;font-size:12px;color:rgba(255,255,255,0.25);text-align:center">Historia itaonekana hapa</div>`;
 }
 
-function declineAction() {
-  document.getElementById('actionConfirm').style.display = 'none';
-  addAIMessage('Sawa, sifanyi chochote. Unaweza kuniambia ukitaka kitu kingine.');
-  pendingAction = null;
+function loadHist(i) {
+  const h = histSaved[i];
+  if (!h) return;
+  msgs = [...h.msgs];
+  const el = chatEl();
+  el.innerHTML = '';
+  msgs.forEach(m => { if(m.role==='user') addUserMsg(m.content); else addAIMsg(m.content); });
 }
 
-function newChat() { messages = []; document.getElementById('chatMessages').innerHTML = ''; setWelcome(); }
-function clearChat() { newChat(); }
+function newChat() {
+  if (msgs.length > 0) saveToHistory(msgs[0]?.content || 'Mazungumzo');
+  msgs = [];
+  const el = chatEl();
+  el.innerHTML = `
+    <div class="chat-empty" id="emptyState">
+      <div class="empty-ring"><i class="ti ti-brand-openai"></i></div>
+      <div class="empty-name">Mazungumzo Mapya</div>
+      <div class="empty-sub">Niulize chochote — biashara, fedha, miradi, au ushauri wowote.</div>
+      <div class="sugg-wrap">${SUGGESTIONS.map(s=>`<button class="sugg" onclick="sendSugg(this)">${s}</button>`).join('')}</div>
+    </div>`;
+}
 </script>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html"><i class="ti ti-home"></i><span>Nyumbani</span></a>
+  <a href="ai.html" class="active"><i class="ti ti-brand-openai"></i><span>AI</span></a>
+  <a href="mauzo.html"><i class="ti ti-shopping-cart"></i><span>Mauzo</span></a>
+  <a href="personal.html"><i class="ti ti-wallet"></i><span>Fedha</span></a>
+  <a href="mipangilio.html"><i class="ti ti-settings"></i><span>Zaidi</span></a>
+</nav>
 </body>
 </html>
