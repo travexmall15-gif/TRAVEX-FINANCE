@@ -6,96 +6,149 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="shared.css">
 <style>
-/* ── LAYOUT ────────────────────────────── */
-.ai-wrap{display:flex;height:calc(100vh - var(--header-h));overflow:hidden}
+/* ══ FULL LAYOUT ══════════════════════════════════════════ */
+.ai-root{display:flex;height:calc(100vh - var(--header-h));overflow:hidden}
 
-/* ── HISTORY SIDEBAR ───────────────────── */
-.ai-side{width:252px;background:var(--navy-card);border-right:1px solid var(--border-dark);display:flex;flex-direction:column;flex-shrink:0}
-.ai-side-top{padding:14px;border-bottom:1px solid var(--border-dark)}
-.btn-new{width:100%;padding:10px 14px;background:rgba(0,212,255,0.08);border:1px solid var(--cyan-border);border-radius:var(--radius-sm);color:var(--cyan);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+/* ══ LEFT SIDEBAR ═════════════════════════════════════════ */
+.ai-left{width:240px;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;border-right:1px solid var(--border-dark)}
+
+/* App Nav */
+.app-nav{padding:12px 10px;border-bottom:1px solid var(--border-dark)}
+.app-nav-title{font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.2px;padding:0 6px 8px}
+.nav-link{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;transition:all 0.18s;margin-bottom:1px;border-left:2px solid transparent}
+.nav-link:hover{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.85)}
+.nav-link.active{background:rgba(0,212,255,0.1);color:var(--cyan);border-left-color:var(--cyan)}
+.nav-link i{font-size:16px;flex-shrink:0}
+.nav-link .nav-badge{margin-left:auto;font-size:9px;padding:1px 6px;background:var(--cyan);color:var(--navy);border-radius:10px;font-weight:700}
+
+/* Chat history */
+.ai-hist-section{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.hist-head{padding:12px 14px 6px;border-bottom:1px solid var(--border-dark)}
+.hist-head-row{display:flex;align-items:center;justify-content:space-between}
+.hist-label{font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.2px}
+.btn-new{background:rgba(0,212,255,0.08);border:1px solid var(--cyan-border);color:var(--cyan);border-radius:6px;font-size:11px;font-weight:600;padding:4px 10px;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:4px;transition:all 0.2s}
 .btn-new:hover{background:var(--cyan-glow)}
-.ai-hist{flex:1;overflow-y:auto;padding:8px}
-.hist-item{padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:2px;transition:all 0.2s}
-.hist-item:hover{background:var(--border-dark)}
-.hist-title{font-size:12px;color:rgba(255,255,255,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hist-time{font-size:10px;color:rgba(255,255,255,0.2);margin-top:2px}
-.ai-side-plan{padding:12px 14px;border-top:1px solid var(--border-dark)}
-.ai-plan-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.ai-plan-lbl{font-size:10px;color:rgba(255,255,255,0.3)}
-.ai-plan-val{font-size:10px;font-weight:700;color:var(--cyan)}
-.ai-plan-link{display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.18);border-radius:7px;padding:7px;font-size:11px;font-weight:700;color:var(--cyan);text-decoration:none;transition:all 0.2s}
-.ai-plan-link:hover{background:rgba(0,212,255,0.14)}
+.ai-hist{flex:1;overflow-y:auto;padding:6px 8px}
+.hist-item{padding:9px 10px;border-radius:7px;cursor:pointer;margin-bottom:2px;transition:all 0.18s}
+.hist-item:hover{background:rgba(255,255,255,0.05)}
+.hist-title{font-size:12px;color:rgba(255,255,255,0.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist-time{font-size:10px;color:rgba(255,255,255,0.2);margin-top:1px}
 
-/* ── CHAT MAIN ─────────────────────────── */
-.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
-.chat-bar{padding:12px 20px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.chat-status{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--navy)}
-.chat-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;flex-shrink:0}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
-.chat-msgs{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;gap:18px}
+/* Plan */
+.ai-plan{padding:10px 12px;border-top:1px solid var(--border-dark)}
+.ai-plan-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ai-plan-name{font-size:10px;font-weight:700}
+.ai-upgrade{display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.2);border-radius:7px;padding:7px;font-size:11px;font-weight:700;color:var(--cyan);text-decoration:none}
+.ai-upgrade:hover{background:rgba(0,212,255,0.14)}
+
+/* ══ CHAT AREA ════════════════════════════════════════════ */
+.ai-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#f4f6fa}
+
+/* Inner nav bar */
+.ai-nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;gap:2px;overflow-x:auto;flex-shrink:0;-webkit-overflow-scrolling:touch}
+.ai-nav::-webkit-scrollbar{display:none}
+.ai-nav-item{display:flex;align-items:center;gap:6px;padding:11px 14px;font-size:12px;font-weight:600;color:var(--text-muted);white-space:nowrap;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.18s;text-decoration:none;background:none;border-left:none;border-right:none;border-top:none;font-family:'DM Sans',sans-serif}
+.ai-nav-item:hover{color:var(--navy)}
+.ai-nav-item.active{color:var(--navy);border-bottom-color:var(--cyan)}
+.ai-nav-item i{font-size:15px}
+.ai-nav-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 4px}
+
+/* Messages */
+.chat-msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
 .chat-msgs::-webkit-scrollbar{width:4px}
 .chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
 
-/* ── MESSAGES ──────────────────────────── */
-.msg{display:flex;gap:10px;max-width:82%;animation:fadeIn 0.25s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg{display:flex;gap:10px;max-width:80%;animation:msgIn 0.22s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .msg.user{flex-direction:row-reverse;align-self:flex-end}
 .msg-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700}
-.msg-av.ai{background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,168,204,0.15));color:var(--cyan);border:1px solid var(--cyan-border)}
-.msg-av.user{background:var(--navy);color:var(--gold)}
-.msg-bub{padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.65}
+.msg-av.ai{background:linear-gradient(135deg,rgba(0,212,255,0.18),rgba(0,168,204,0.12));color:var(--cyan);border:1px solid var(--cyan-border)}
+.msg-av.usr{background:var(--navy);color:var(--gold)}
+.msg-bub{padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.65;word-break:break-word}
 .msg-bub.ai{background:var(--white);color:var(--text);border-radius:16px 16px 16px 4px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.06)}
-.msg-bub.user{background:var(--navy);color:var(--white);border-radius:16px 16px 4px 16px}
+.msg-bub.usr{background:var(--navy);color:var(--white);border-radius:16px 16px 4px 16px}
+.msg-bub.ai strong{color:var(--navy);font-weight:700}
+.msg-bub.ai code{background:#f3f4f6;padding:1px 6px;border-radius:4px;font-family:monospace;font-size:12px}
+.msg-bub.ai ul{padding-left:18px;margin:6px 0}
+.msg-bub.ai li{margin-bottom:3px}
 .msg-time{font-size:10px;color:var(--text-muted);margin-top:4px}
 .msg.user .msg-time{text-align:left}
-.msg-bub.ai strong{color:var(--navy);font-weight:700}
-.msg-bub.ai em{color:var(--text-muted)}
-.msg-bub.ai code{background:#f3f4f6;padding:1px 6px;border-radius:4px;font-family:monospace;font-size:12px}
-.msg-bub.ai ul{padding-left:18px;margin-top:6px}
-.msg-bub.ai li{margin-bottom:4px}
 
-/* ── TYPING ────────────────────────────── */
+/* File attachment bubble */
+.file-bubble{display:flex;align-items:center;gap:8px;background:rgba(0,212,255,0.08);border:1px solid var(--cyan-border);border-radius:10px;padding:8px 12px;margin-bottom:6px;max-width:260px}
+.file-bubble i{color:var(--cyan);font-size:18px;flex-shrink:0}
+.file-name{font-size:12px;font-weight:600;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-size{font-size:10px;color:var(--text-muted)}
+
+/* Typing */
 .typing{display:flex;gap:10px;align-items:flex-end}
-.typing-bub{background:var(--white);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:14px 18px;display:flex;gap:5px;align-items:center}
-.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:bounce 1.2s infinite}
-.typing-dot:nth-child(2){animation-delay:.2s}
-.typing-dot:nth-child(3){animation-delay:.4s}
-@keyframes bounce{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+.typing-bub{background:var(--white);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:14px 18px;display:flex;gap:5px}
+.td{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:tdot 1.2s infinite}
+.td:nth-child(2){animation-delay:.2s}
+.td:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
 
-/* ── EMPTY STATE ───────────────────────── */
-.chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 20px}
-.empty-ring{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,168,204,0.04));border:1.5px solid var(--cyan-border);display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative}
-.empty-ring::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,212,255,0.12)}
-.empty-ring i{font-size:34px;color:var(--cyan)}
-.empty-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px}
-.empty-sub{font-size:13px;color:var(--text-muted);max-width:340px;line-height:1.65;margin-bottom:24px}
-.sugg-wrap{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:560px}
-.sugg{padding:9px 16px;background:var(--white);border:1.5px solid var(--border);border-radius:20px;font-size:12px;color:var(--text);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;text-align:left}
+/* Empty */
+.chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 16px}
+.e-ring{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,rgba(0,212,255,0.07),transparent);border:1.5px solid var(--cyan-border);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.e-ring i{font-size:32px;color:var(--cyan)}
+.e-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:7px}
+.e-sub{font-size:13px;color:var(--text-muted);max-width:320px;line-height:1.65;margin-bottom:20px}
+.sugg-wrap{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:520px}
+.sugg{padding:8px 14px;background:var(--white);border:1.5px solid var(--border);border-radius:20px;font-size:12px;color:var(--text);cursor:pointer;transition:all 0.18s;font-family:'DM Sans',sans-serif}
 .sugg:hover{border-color:var(--cyan);color:var(--navy);background:rgba(0,212,255,0.04)}
 
-/* ── INPUT ─────────────────────────────── */
-.chat-input-area{padding:14px 20px 16px;background:var(--white);border-top:1px solid var(--border);flex-shrink:0}
-.inp-box{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;display:flex;align-items:flex-end;gap:8px;padding:10px 14px;transition:border-color .2s}
-.inp-box:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-glow)}
-.msg-inp{flex:1;border:none;background:transparent;font-size:14px;color:var(--text);resize:none;outline:none;font-family:'DM Sans',sans-serif;max-height:120px;min-height:24px;line-height:1.5}
-.msg-inp::placeholder{color:var(--text-muted)}
-.send-btn{width:36px;height:36px;border-radius:10px;background:var(--navy);border:none;color:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
-.send-btn.on{background:linear-gradient(135deg,var(--cyan),#0099bb);color:var(--navy)}
-.send-btn i{font-size:16px}
-.inp-hint{font-size:11px;color:var(--text-muted);margin-top:7px;text-align:center}
+/* ══ INPUT AREA ═══════════════════════════════════════════ */
+.chat-input-area{background:var(--white);border-top:1px solid var(--border);padding:12px 16px 14px;flex-shrink:0}
 
+/* Attach preview */
+.attach-preview{display:none;align-items:center;gap:8px;background:#f8f9fc;border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin-bottom:8px}
+.attach-preview.show{display:flex}
+.attach-preview i{color:var(--cyan);font-size:16px}
+.attach-fname{font-size:12px;font-weight:600;color:var(--navy);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.attach-rm{background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:14px;padding:2px;line-height:1}
+
+/* Input box */
+.inp-box{background:#f8f9fc;border:1.5px solid var(--border);border-radius:14px;display:flex;align-items:flex-end;gap:6px;padding:8px 8px 8px 14px;transition:all .2s}
+.inp-box:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,0.08);background:var(--white)}
+.msg-inp{flex:1;border:none;background:transparent;font-size:14px;color:var(--text);resize:none;outline:none;font-family:'DM Sans',sans-serif;max-height:100px;min-height:22px;line-height:1.5;padding:4px 0}
+.msg-inp::placeholder{color:var(--text-muted)}
+
+/* Action buttons inside input */
+.inp-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.inp-btn{width:34px;height:34px;border-radius:8px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all .18s;font-size:16px}
+.inp-btn:hover{background:var(--border);color:var(--navy)}
+.inp-btn.active{background:rgba(239,68,68,0.1);color:var(--danger)}
+.inp-btn.recording{background:rgba(239,68,68,0.1);color:var(--danger);animation:pulse-red 1s infinite}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.3)}50%{box-shadow:0 0 0 6px rgba(239,68,68,0)}}
+.send-btn{width:34px;height:34px;border-radius:8px;border:none;background:var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all .18s;flex-shrink:0}
+.send-btn.on{background:var(--navy);color:var(--white)}
+.send-btn.on:hover{background:var(--navy-light)}
+.send-btn i{font-size:15px}
+
+/* Voice recording status */
+.voice-status{display:none;align-items:center;gap:8px;font-size:12px;color:var(--danger);font-weight:600;margin-top:6px}
+.voice-status.show{display:flex}
+.voice-dot{width:7px;height:7px;border-radius:50%;background:var(--danger);animation:pulse-red 1s infinite;flex-shrink:0}
+
+.inp-hint{font-size:11px;color:var(--text-muted);margin-top:6px;text-align:center}
+
+/* ══ RESPONSIVE ═══════════════════════════════════════════ */
 @media(max-width:768px){
-  .ai-side{display:none}
-  .chat-main{height:calc(100vh - 56px - 64px)}
-  .chat-msgs{padding:14px}
-  .msg{max-width:95%}
-  .chat-input-area{padding:10px 12px 12px}
+  .ai-left{display:none}
+  .ai-main{height:calc(100vh - 56px - 64px)}
+  .ai-nav-item span{display:none}
+  .ai-nav-item{padding:11px 10px}
+  .chat-msgs{padding:12px}
+  .msg{max-width:96%}
 }
 </style>
 </head>
 <body>
 <div class="sidebar" id="sidebar"></div>
+
 <div class="main-wrapper">
+  <!-- Header -->
   <div class="main-header">
     <div>
       <div class="header-title">Q360 AI</div>
@@ -106,88 +159,179 @@
     </div>
   </div>
 
-  <div class="ai-wrap">
+  <div class="ai-root">
 
-    <!-- History sidebar -->
-    <div class="ai-side">
-      <div class="ai-side-top">
-        <button class="btn-new" onclick="newChat()"><i class="ti ti-plus"></i> Mazungumzo Mapya</button>
+    <!-- ══ LEFT SIDEBAR ══ -->
+    <div class="ai-left">
+
+      <!-- App Navigation -->
+      <div class="app-nav">
+        <div class="app-nav-title">Maeneo</div>
+        <a href="ai.html"       class="nav-link active"><i class="ti ti-brand-openai"></i> Q360 AI <span class="nav-badge">AI</span></a>
+        <a href="dashboard.html" class="nav-link"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
+        <a href="personal.html"  class="nav-link"><i class="ti ti-wallet"></i> Kibinafsi</a>
+        <a href="mauzo.html"     class="nav-link"><i class="ti ti-building-store"></i> Biashara</a>
+        <a href="projects.html"  class="nav-link"><i class="ti ti-layout-kanban"></i> Miradi</a>
+        <a href="mipangilio.html"class="nav-link"><i class="ti ti-settings"></i> Mipangilio</a>
       </div>
-      <div class="ai-hist" id="histList">
-        <div style="padding:20px 12px;font-size:12px;color:rgba(255,255,255,0.25);text-align:center">Historia itaonekana hapa</div>
-      </div>
-      <div class="ai-side-plan">
-        <div class="ai-plan-row">
-          <span class="ai-plan-lbl">Mpango Wako</span>
-          <span class="ai-plan-val" id="planLbl">—</span>
+
+      <!-- Chat History -->
+      <div class="ai-hist-section">
+        <div class="hist-head">
+          <div class="hist-head-row">
+            <span class="hist-label">Historia</span>
+            <button class="btn-new" onclick="newChat()"><i class="ti ti-plus" style="font-size:10px"></i> Mpya</button>
+          </div>
         </div>
-        <a href="subscription.html" class="ai-plan-link"><i class="ti ti-crown" style="font-size:12px"></i> Boresha Mpango</a>
+        <div class="ai-hist" id="histList">
+          <div style="padding:16px 8px;font-size:11px;color:rgba(255,255,255,0.2);text-align:center">
+            Historia itaonekana hapa
+          </div>
+        </div>
+      </div>
+
+      <!-- Plan -->
+      <div class="ai-plan">
+        <div class="ai-plan-row">
+          <span style="font-size:10px;color:rgba(255,255,255,0.3)">Mpango</span>
+          <span class="ai-plan-name" id="planLbl">—</span>
+        </div>
+        <a href="subscription.html" class="ai-upgrade">
+          <i class="ti ti-crown" style="font-size:12px"></i> Boresha Mpango
+        </a>
       </div>
     </div>
 
-    <!-- Chat area -->
-    <div class="chat-main">
-      <div class="chat-bar">
-        <div class="chat-status"><span class="chat-dot"></span> Q360 AI inasikiliza</div>
-        <button onclick="newChat()" style="padding:6px 14px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px">
-          <i class="ti ti-trash"></i> Futa
+    <!-- ══ MAIN CHAT ══ -->
+    <div class="ai-main">
+
+      <!-- Inner Navigation Bar -->
+      <div class="ai-nav">
+        <button class="ai-nav-item active" onclick="setView('chat',this)">
+          <i class="ti ti-brand-openai"></i><span>AI Chat</span>
         </button>
+        <div class="ai-nav-divider"></div>
+        <a href="dashboard.html" class="ai-nav-item">
+          <i class="ti ti-layout-dashboard"></i><span>Dashboard</span>
+        </a>
+        <a href="personal.html" class="ai-nav-item">
+          <i class="ti ti-wallet"></i><span>Kibinafsi</span>
+        </a>
+        <a href="mauzo.html" class="ai-nav-item">
+          <i class="ti ti-building-store"></i><span>Biashara</span>
+        </a>
+        <a href="projects.html" class="ai-nav-item">
+          <i class="ti ti-layout-kanban"></i><span>Miradi</span>
+        </a>
+        <a href="reports.html" class="ai-nav-item">
+          <i class="ti ti-chart-bar"></i><span>Ripoti</span>
+        </a>
+        <a href="mipangilio.html" class="ai-nav-item">
+          <i class="ti ti-settings"></i><span>Mipangilio</span>
+        </a>
+        <div style="margin-left:auto;display:flex;align-items:center">
+          <button onclick="newChat()" style="font-size:11px;color:var(--text-muted);border:1px solid var(--border);background:var(--white);border-radius:6px;padding:5px 10px;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:4px">
+            <i class="ti ti-trash" style="font-size:12px"></i> Futa
+          </button>
+        </div>
       </div>
 
+      <!-- Messages -->
       <div class="chat-msgs" id="chatMsgs">
-        <!-- Empty state -->
         <div class="chat-empty" id="emptyState">
-          <div class="empty-ring"><i class="ti ti-brand-openai"></i></div>
-          <div class="empty-name">Habari! Mimi ni Q360 AI</div>
-          <div class="empty-sub">Msaidizi wako wa kibinafsi wa akili bandia. Niulize chochote kuhusu biashara yako, fedha, au miradi.</div>
+          <div class="e-ring"><i class="ti ti-brand-openai"></i></div>
+          <div class="e-title">Habari! Mimi ni Q360 AI</div>
+          <div class="e-sub">Msaidizi wako wa kibinafsi. Niulize chochote — biashara, fedha, miradi, au ushauri wowote.</div>
           <div class="sugg-wrap" id="suggWrap"></div>
         </div>
       </div>
 
+      <!-- Input Area -->
       <div class="chat-input-area">
-        <div class="inp-box">
-          <textarea class="msg-inp" id="msgInp" placeholder="Andika ujumbe wako..." rows="1"
-            onkeydown="handleKey(event)" oninput="onInput(this)"></textarea>
-          <button class="send-btn" id="sendBtn" onclick="sendMsg()"><i class="ti ti-send"></i></button>
+
+        <!-- Attach file preview -->
+        <div class="attach-preview" id="attachPreview">
+          <i class="ti ti-file-text"></i>
+          <div>
+            <div class="attach-fname" id="attachName">faili.pdf</div>
+            <div class="attach-size" id="attachSize"></div>
+          </div>
+          <button class="attach-rm" onclick="removeAttach()"><i class="ti ti-x"></i></button>
         </div>
+
+        <!-- Voice status -->
+        <div class="voice-status" id="voiceStatus">
+          <span class="voice-dot"></span>
+          Inakusikiliza... (sema kisha simama)
+        </div>
+
+        <!-- Input box -->
+        <div class="inp-box">
+          <textarea class="msg-inp" id="msgInp" placeholder="Andika au sema ujumbe wako..." rows="1"
+            onkeydown="handleKey(event)" oninput="onInput(this)"></textarea>
+
+          <!-- Action buttons INSIDE input box -->
+          <div class="inp-actions">
+            <!-- Attach file -->
+            <button class="inp-btn" onclick="triggerFile()" title="Ambatanisha faili">
+              <i class="ti ti-paperclip"></i>
+            </button>
+            <!-- Voice -->
+            <button class="inp-btn" id="voiceBtn" onclick="toggleVoice()" title="Rekodi sauti">
+              <i class="ti ti-microphone" id="voiceIco"></i>
+            </button>
+            <!-- Send -->
+            <button class="send-btn" id="sendBtn" onclick="sendMsg()">
+              <i class="ti ti-send"></i>
+            </button>
+          </div>
+        </div>
+
         <div class="inp-hint">Enter = Tuma &nbsp;·&nbsp; Shift+Enter = Mstari mpya</div>
+
+        <!-- Hidden file input -->
+        <input type="file" id="fileInput" style="display:none"
+          accept=".pdf,.doc,.docx,.xlsx,.csv,.txt,.jpg,.jpeg,.png"
+          onchange="onFileSelect(this)">
       </div>
     </div>
   </div>
 </div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script src="dev-config.js"></script>
 <script>
-// ── STATE ───────────────────────────────────────────────────
-let msgs    = [];
+// ══ STATE ════════════════════════════════════════════════════
+let msgs     = [];
 let thinking = false;
 let profile  = null;
-let histSaved = [];
+let history  = [];
+let attachedFile = null;
+let recognition  = null;
+let isRecording  = false;
 
-// ── DEV MOCK RESPONSES ──────────────────────────────────────
-// Used when ANTHROPIC_API_KEY is not set in Vercel env vars
-const MOCK_RESPONSES = [
-  `Habari! Nimesoma swali lako vizuri.\n\nKwa sasa mimi (Q360 AI) nipo katika **Dev Mode** — majibu yangu ni ya mazoezi tu.\n\nUkiweka **ANTHROPIC_API_KEY** kwenye Vercel → Settings → Environment Variables, nitajibu kwa akili halisi na data ya biashara yako. 🚀`,
-  `Nzuri sana! Hiyo ni swali zuri.\n\n**Q360 AI** itaweza kukusaidia na:\n- 📊 Uchambuzi wa mauzo yako\n- 📦 Hali ya stock\n- 💳 Madeni yanayokudai\n- 📈 Ripoti za biashara\n- 💡 Ushauri wa kibinafsi\n\nSaaaa hivi niko kwenye **Dev Mode** — ongeza API key ili nianze kufanya kazi halisi. 🎯`,
-  `Asante kwa swali lako!\n\n**Dev Mode** inamaanisha mimi sijaunganyishwa na Anthropic Claude API bado.\n\nHatua inayohitajika:\n1. Nenda **Vercel Dashboard**\n2. Project yako → **Settings** → **Environment Variables**\n3. Ongeza: \`ANTHROPIC_API_KEY\` = \`sk-ant-xxx...\`\n4. Redeploy\n\nBaada ya hapo nitakuwa hai kabisa! ⚡`,
-  `Unajua, ukiniuliza swali hilo kwa biashara halisi, ningekuambia:\n\n_"Kulingana na data yako ya leo, mapato yamepanda 12% ukilinganisha na wiki iliyopita. Bidhaa inayoongoza ni..."_\n\nLakini kwa sasa — **Dev Mode** 😄\n\nWeka API key uone uchawi wa kweli wa Q360 AI!`
+// ══ MOCK RESPONSES (dev mode / no API key) ════════════════════
+const MOCKS = [
+  `Habari! Nimepokea swali lako.\n\n**Dev Mode** ipo sasa hivi — majibu yangu ni ya mazoezi.\n\nUkiweka **ANTHROPIC_API_KEY** kwenye Vercel → Settings → Environment Variables, nitaanza kujibu kwa akili halisi na data halisi ya biashara yako. 🚀\n\nWeza kuendelea kuandika ili kuona jinsi interface inavyofanya kazi!`,
+  `Swali zuri! 🎯\n\n**Q360 AI** itakusaidia:\n- 📊 Uchambuzi wa mauzo yako kwa data halisi\n- 📦 Hali ya stock na tahadhari\n- 💳 Madeni na wanaokudai\n- 📈 Ripoti na mwenendo wa biashara\n- 💰 Fedha za kibinafsi\n\n*Dev Mode: Ongeza API key ili nijibu kwa data yako halisi.*`,
+  `Asante! Naelewa unahitaji msaada.\n\n**Hatua ya kuwasha AI halisi:**\n1. Nenda **Vercel Dashboard**\n2. Project → **Settings** → **Environment Variables**\n3. Ongeza \`ANTHROPIC_API_KEY\` na key yako\n4. Bonyeza **Save** → **Redeploy**\n\nBaada ya hapo nitakujibu kwa data yako halisi ya biashara! ⚡`,
+  `Kwa mazingira halisi, ningejibu kitu kama:\n\n_"Kulingana na data yako, mauzo ya wiki hii yamepanda 18% — bidhaa inayoongoza ni **Unga wa Selela**. Stock ya Mafuta ya Rina inakwisha — imebaki tu vitu 3. Nakushauri ujaze kabla ya mwishoni mwa wiki."_\n\nHii ndiyo nguvu ya **Q360 AI** — data yako, akili ya AI. 🎯`
 ];
-let mockIdx = 0;
+let mi = 0;
 
-// ── SUGGESTIONS ─────────────────────────────────────────────
-const SUGGESTIONS = [
+const SUGGESTS = [
   '📊 Biashara yangu imekwenda vipi leo?',
-  '⚠️ Stock zipi zinakwisha?',
+  '⚠️ Stock zipi zinakwisha hivi karibuni?',
   '💰 Nina madeni kiasi gani?',
   '📈 Nionyeshe mwenendo wa mauzo wiki hii',
-  '💡 Nipe ushauri wa kuboresha biashara',
-  '🧾 Tengeneza invoice kwa mteja'
+  '🧾 Tengeneza invoice kwa mteja wangu',
+  '💡 Nipe ushauri wa kuboresha biashara yangu',
 ];
 
-// ── INIT ────────────────────────────────────────────────────
+// ══ INIT ═════════════════════════════════════════════════════
 (async () => {
   const session = await Auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
@@ -196,150 +340,147 @@ const SUGGESTIONS = [
   profile = Auth.getCachedUser() || await DB.profile.get();
   if (profile) Auth.cacheUser(profile);
 
-  // Plan label (no credits)
-  const plans = { free:'Free', starter:'Starter', professional:'Professional', enterprise:'Enterprise' };
-  const planColors = { free:'#9ca3af', starter:'#FFD700', professional:'#00d4ff', enterprise:'#a78bfa' };
-  const plan = profile?.plan || 'free';
-  const plEl = document.getElementById('planLbl');
-  plEl.textContent = plans[plan];
-  plEl.style.color = planColors[plan];
+  // Plan (no credits)
+  const PC = { free:'#9ca3af', starter:'#FFD700', professional:'#00d4ff', enterprise:'#a78bfa' };
+  const PN = { free:'Free', starter:'Starter', professional:'Professional', enterprise:'Enterprise' };
+  const pl = profile?.plan || 'free';
+  const el = document.getElementById('planLbl');
+  el.textContent = PN[pl]; el.style.color = PC[pl];
 
   // Suggestions
-  document.getElementById('suggWrap').innerHTML = SUGGESTIONS.map(s =>
-    `<button class="sugg" onclick="sendSugg(this)">${s}</button>`
-  ).join('');
+  document.getElementById('suggWrap').innerHTML = SUGGESTS.map(s =>
+    `<button class="sugg" onclick="sendSugg(this)">${s}</button>`).join('');
 
-  // Check for prefill from dashboard
+  // Setup voice
+  setupVoice();
+
+  // Prefill from dashboard
   const prefill = sessionStorage.getItem('ai_prefill');
   if (prefill) { sessionStorage.removeItem('ai_prefill'); await doSend(prefill); return; }
 
-  // Welcome message after short delay
+  // Welcome
   setTimeout(() => {
-    const hr = new Date().getHours();
-    const gr = hr < 12 ? 'Habari za Asubuhi' : hr < 17 ? 'Habari za Mchana' : 'Habari za Jioni';
-    addAIMsg(`${gr}, **${profile?.jina?.split(' ')[0] || 'rafiki'}**! 👋\n\nMimi ni Q360 AI, msaidizi wako wa kibinafsi. Leo tarehe **${new Date().toLocaleDateString('sw-TZ', {weekday:'long', day:'2-digit', month:'long'})}**.\n\nNiulize chochote — biashara, fedha, miradi, au ushauri wowote. 🚀`);
-  }, 300);
+    const h  = new Date().getHours();
+    const gr = h<12?'Habari za Asubuhi':h<17?'Habari za Mchana':'Habari za Jioni';
+    addAI(`${gr}, **${profile?.jina?.split(' ')[0]||'rafiki'}**! 👋\n\nMimi ni Q360 AI, msaidizi wako wa kibinafsi. Tumia vitufe vya **📎 faili** au **🎙️ sauti** kwenye input box, au andika swali lako hapa chini.\n\nNiulize chochote! 🚀`);
+  }, 250);
 })();
 
-// ── SEND ────────────────────────────────────────────────────
-function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } }
+// ══ SEND ═════════════════════════════════════════════════════
+function handleKey(e) { if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); sendMsg(); } }
 function onInput(el) {
   el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-  document.getElementById('sendBtn').classList.toggle('on', el.value.trim().length > 0);
+  el.style.height = Math.min(el.scrollHeight, 100)+'px';
+  document.getElementById('sendBtn').classList.toggle('on', el.value.trim().length>0);
 }
 
 async function sendMsg() {
   const inp = document.getElementById('msgInp');
   const txt = inp.value.trim();
-  if (!txt || thinking) return;
-  inp.value = ''; inp.style.height = 'auto';
+  if ((!txt && !attachedFile) || thinking) return;
+  inp.value = ''; inp.style.height='auto';
   document.getElementById('sendBtn').classList.remove('on');
   await doSend(txt);
 }
 
-function sendSugg(btn) {
-  const txt = btn.textContent.replace(/^[^\s]+\s/, '').trim();
-  doSend(txt);
-}
+function sendSugg(btn) { doSend(btn.textContent.replace(/^[^\s]+\s/,'').trim()); }
 
 async function doSend(txt) {
   hideEmpty();
-  addUserMsg(txt);
-  msgs.push({ role: 'user', content: txt });
+
+  // Show attach preview in chat if file selected
+  if (attachedFile) {
+    addFileBubble(attachedFile);
+    const fileCtx = `[Faili limeambatanishwa: ${attachedFile.name} (${fmtSize(attachedFile.size)})]`;
+    txt = txt ? txt+'\n\n'+fileCtx : fileCtx;
+    removeAttach();
+  }
+
+  if (txt) addUser(txt);
+  msgs.push({ role:'user', content: txt || '(faili limeambatanishwa)' });
   await getReply();
 }
 
-// ── AI REPLY ────────────────────────────────────────────────
+// ══ AI REPLY ═════════════════════════════════════════════════
 async function getReply() {
   thinking = true;
   showTyping();
-
   try {
-    // Try real API first
-    const context = await buildAIContext();
+    const ctx = await buildAIContext();
     const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        messages: msgs.slice(-20),
-        context,
-        language: profile?.lugha || 'sw',
-        personality: profile?.personality || 'friendly'
-      })
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ messages: msgs.slice(-20), context: ctx, language: profile?.lugha||'sw', personality: profile?.personality||'friendly' })
     });
-
     removeTyping();
-
     if (res.ok) {
-      const d = await res.json();
-      const txt = d.content || 'Samahani, hakuna jibu. Jaribu tena.';
-      msgs.push({ role: 'assistant', content: txt });
-      addAIMsg(txt);
-      saveToHistory(msgs[0]?.content || 'Mazungumzo');
-    } else {
-      // API not ready — use dev mock
-      useMockResponse();
-    }
-  } catch {
-    removeTyping();
-    useMockResponse();
-  }
-
+      const d   = await res.json();
+      const txt = d.content || 'Samahani, hakuna jibu.';
+      msgs.push({ role:'assistant', content: txt });
+      addAI(txt);
+      saveHist(msgs[0]?.content||'Mazungumzo');
+    } else { mockReply(); }
+  } catch { removeTyping(); mockReply(); }
   thinking = false;
 }
 
-function useMockResponse() {
+function mockReply() {
   removeTyping();
-  const reply = MOCK_RESPONSES[mockIdx % MOCK_RESPONSES.length];
-  mockIdx++;
-  msgs.push({ role: 'assistant', content: reply });
-  addAIMsg(reply);
+  const r = MOCKS[mi++ % MOCKS.length];
+  msgs.push({ role:'assistant', content:r });
+  addAI(r);
+  saveHist(msgs[0]?.content||'Mazungumzo');
 }
 
-// ── MESSAGE BUILDERS ─────────────────────────────────────────
-function addUserMsg(txt) {
-  const init = (profile?.jina || 'U').charAt(0).toUpperCase();
-  const el = document.createElement('div');
-  el.className = 'msg user';
-  el.innerHTML = `
-    <div class="msg-av user">${init}</div>
-    <div>
-      <div class="msg-bub user">${esc(txt)}</div>
-      <div class="msg-time">${time()}</div>
-    </div>`;
-  chatEl().appendChild(el);
-  scrollEnd();
+// ══ MESSAGE RENDERERS ═════════════════════════════════════════
+function addUser(txt) {
+  const init = (profile?.jina||'U').charAt(0).toUpperCase();
+  append(`<div class="msg user">
+    <div class="msg-av usr">${init}</div>
+    <div><div class="msg-bub usr">${esc(txt)}</div><div class="msg-time">${tm()}</div></div>
+  </div>`);
 }
 
-function addAIMsg(txt) {
-  const el = document.createElement('div');
-  el.className = 'msg';
-  el.innerHTML = `
+function addAI(txt) {
+  append(`<div class="msg">
     <div class="msg-av ai"><i class="ti ti-brand-openai" style="font-size:14px"></i></div>
     <div style="flex:1;min-width:0">
       <div class="msg-bub ai">${fmt(txt)}</div>
-      <div class="msg-time">Q360 AI · ${time()}</div>
-    </div>`;
-  chatEl().appendChild(el);
-  scrollEnd();
+      <div class="msg-time">Q360 AI · ${tm()}</div>
+    </div>
+  </div>`);
+}
+
+function addFileBubble(file) {
+  const icon = file.type.startsWith('image')
+    ? 'ti-photo' : file.name.endsWith('.pdf')
+    ? 'ti-file-type-pdf' : 'ti-file-text';
+  const init = (profile?.jina||'U').charAt(0).toUpperCase();
+  append(`<div class="msg user">
+    <div class="msg-av usr">${init}</div>
+    <div>
+      <div class="file-bubble">
+        <i class="ti ${icon}"></i>
+        <div><div class="file-name">${esc(file.name)}</div><div class="file-size">${fmtSize(file.size)}</div></div>
+      </div>
+      <div class="msg-time">${tm()}</div>
+    </div>
+  </div>`);
 }
 
 function showTyping() {
-  const el = document.createElement('div');
-  el.className = 'typing'; el.id = 'typingEl';
-  el.innerHTML = `
+  append(`<div class="typing" id="typEl">
     <div class="msg-av ai"><i class="ti ti-brand-openai" style="font-size:14px"></i></div>
-    <div class="typing-bub"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
-  chatEl().appendChild(el);
-  scrollEnd();
+    <div class="typing-bub"><span class="td"></span><span class="td"></span><span class="td"></span></div>
+  </div>`);
 }
 
-function removeTyping() { document.getElementById('typingEl')?.remove(); }
+function removeTyping() { document.getElementById('typEl')?.remove(); }
 function hideEmpty()    { document.getElementById('emptyState')?.remove(); }
-function chatEl()       { return document.getElementById('chatMsgs'); }
-function scrollEnd()    { const el = chatEl(); el.scrollTop = el.scrollHeight; }
-function time()         { return new Date().toLocaleTimeString('sw-TZ', {hour:'2-digit', minute:'2-digit'}); }
+function msgEl()        { return document.getElementById('chatMsgs'); }
+function append(html)   { const d=document.createElement('div'); d.innerHTML=html; msgEl().appendChild(d.firstElementChild); scroll(); }
+function scroll()       { const e=msgEl(); e.scrollTop=e.scrollHeight; }
+function tm()           { return new Date().toLocaleTimeString('sw-TZ',{hour:'2-digit',minute:'2-digit'}); }
 function esc(t)         { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function fmt(t) {
   return t
@@ -347,48 +488,123 @@ function fmt(t) {
     .replace(/\*(.+?)\*/g,'<em>$1</em>')
     .replace(/`(.+?)`/g,'<code>$1</code>')
     .replace(/^[-•]\s(.+)/gm,'<li>$1</li>')
-    .replace(/<li>/g,'<ul><li>').replace(/<\/li>(?!<li>)/g,'</li></ul>')
+    .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
     .replace(/\n/g,'<br>');
 }
+function fmtSize(b) { return b<1024?b+'B':b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB'; }
 
-// ── HISTORY ─────────────────────────────────────────────────
-function saveToHistory(title) {
-  const item = { title: title.substring(0,40), time: new Date().toLocaleDateString('sw-TZ',{day:'2-digit',month:'short'}), msgs: [...msgs] };
-  histSaved.unshift(item);
-  renderHistory();
+// ══ HISTORY ══════════════════════════════════════════════════
+function saveHist(title) {
+  history.unshift({ title:title.substring(0,38), time:new Date().toLocaleDateString('sw-TZ',{day:'2-digit',month:'short'}), msgs:[...msgs] });
+  renderHist();
 }
-
-function renderHistory() {
-  const el = document.getElementById('histList');
-  el.innerHTML = histSaved.length
-    ? histSaved.map((h,i) => `
+function renderHist() {
+  document.getElementById('histList').innerHTML = history.length
+    ? history.map((h,i)=>`
         <div class="hist-item" onclick="loadHist(${i})">
           <div class="hist-title">${h.title}</div>
           <div class="hist-time">${h.time}</div>
         </div>`).join('')
-    : `<div style="padding:20px 12px;font-size:12px;color:rgba(255,255,255,0.25);text-align:center">Historia itaonekana hapa</div>`;
+    : `<div style="padding:14px 8px;font-size:11px;color:rgba(255,255,255,0.2);text-align:center">Historia itaonekana hapa</div>`;
 }
-
 function loadHist(i) {
-  const h = histSaved[i];
-  if (!h) return;
-  msgs = [...h.msgs];
-  const el = chatEl();
-  el.innerHTML = '';
-  msgs.forEach(m => { if(m.role==='user') addUserMsg(m.content); else addAIMsg(m.content); });
+  const h = history[i]; if(!h) return;
+  msgs=[...h.msgs];
+  msgEl().innerHTML='';
+  msgs.forEach(m=>{ if(m.role==='user') addUser(m.content); else addAI(m.content); });
+}
+function newChat() {
+  if(msgs.length) saveHist(msgs[0]?.content||'Mazungumzo');
+  msgs=[];
+  msgEl().innerHTML=`
+    <div class="chat-empty" id="emptyState">
+      <div class="e-ring"><i class="ti ti-brand-openai"></i></div>
+      <div class="e-title">Mazungumzo Mapya</div>
+      <div class="e-sub">Niulize chochote — biashara, fedha, miradi, au ushauri wowote.</div>
+      <div class="sugg-wrap">${SUGGESTS.map(s=>`<button class="sugg" onclick="sendSugg(this)">${s}</button>`).join('')}</div>
+    </div>`;
 }
 
-function newChat() {
-  if (msgs.length > 0) saveToHistory(msgs[0]?.content || 'Mazungumzo');
-  msgs = [];
-  const el = chatEl();
-  el.innerHTML = `
-    <div class="chat-empty" id="emptyState">
-      <div class="empty-ring"><i class="ti ti-brand-openai"></i></div>
-      <div class="empty-name">Mazungumzo Mapya</div>
-      <div class="empty-sub">Niulize chochote — biashara, fedha, miradi, au ushauri wowote.</div>
-      <div class="sugg-wrap">${SUGGESTIONS.map(s=>`<button class="sugg" onclick="sendSugg(this)">${s}</button>`).join('')}</div>
-    </div>`;
+// ══ ATTACH FILE ═══════════════════════════════════════════════
+function triggerFile() { document.getElementById('fileInput').click(); }
+function onFileSelect(inp) {
+  const file = inp.files[0];
+  if (!file) return;
+  attachedFile = file;
+  document.getElementById('attachName').textContent = file.name;
+  document.getElementById('attachSize') && (document.getElementById('attachSize').textContent = fmtSize(file.size));
+  document.getElementById('attachPreview').classList.add('show');
+  document.getElementById('sendBtn').classList.add('on');
+  inp.value = '';
+  showToast(`Faili limeambatanishwa: ${file.name}`);
+}
+function removeAttach() {
+  attachedFile = null;
+  document.getElementById('attachPreview').classList.remove('show');
+  if (!document.getElementById('msgInp').value.trim()) {
+    document.getElementById('sendBtn').classList.remove('on');
+  }
+}
+
+// ══ VOICE (Web Speech API) ════════════════════════════════════
+function setupVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    document.getElementById('voiceBtn').title = 'Sauti haipatikani kwenye browser hii';
+    document.getElementById('voiceBtn').style.opacity = '0.4';
+    return;
+  }
+  recognition = new SR();
+  recognition.lang          = profile?.lugha === 'en' ? 'en-US' : 'sw-KE';
+  recognition.interimResults = true;
+  recognition.continuous    = false;
+
+  recognition.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r=>r[0].transcript).join('');
+    document.getElementById('msgInp').value = transcript;
+    onInput(document.getElementById('msgInp'));
+  };
+
+  recognition.onend = () => {
+    isRecording = false;
+    document.getElementById('voiceBtn').classList.remove('recording');
+    document.getElementById('voiceIco').className = 'ti ti-microphone';
+    document.getElementById('voiceStatus').classList.remove('show');
+    // Auto send if there's text
+    const txt = document.getElementById('msgInp').value.trim();
+    if (txt) setTimeout(() => sendMsg(), 300);
+  };
+
+  recognition.onerror = (e) => {
+    isRecording = false;
+    document.getElementById('voiceBtn').classList.remove('recording');
+    document.getElementById('voiceIco').className = 'ti ti-microphone';
+    document.getElementById('voiceStatus').classList.remove('show');
+    if (e.error !== 'aborted') showToast('Sauti: '+e.error, 'error');
+  };
+}
+
+function toggleVoice() {
+  if (!recognition) { showToast('Browser hii haisaidii sauti', 'error'); return; }
+  if (isRecording) {
+    recognition.stop();
+  } else {
+    isRecording = true;
+    recognition.lang = profile?.lugha === 'en' ? 'en-US' : 'sw-TZ';
+    recognition.start();
+    document.getElementById('voiceBtn').classList.add('recording');
+    document.getElementById('voiceIco').className = 'ti ti-microphone-off';
+    document.getElementById('voiceStatus').classList.add('show');
+    document.getElementById('msgInp').value = '';
+    document.getElementById('msgInp').placeholder = 'Inakusikiliza...';
+    setTimeout(() => { document.getElementById('msgInp').placeholder = 'Andika au sema ujumbe wako...'; }, 5000);
+  }
+}
+
+// ══ NAV VIEW ═════════════════════════════════════════════════
+function setView(view, el) {
+  document.querySelectorAll('.ai-nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
 }
 </script>
 
