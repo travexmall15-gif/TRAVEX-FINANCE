@@ -287,20 +287,42 @@ const DB = {
     }
   },
 
-  // AI USAGE (NEW)
+  // AI USAGE — Credits reset every 3 hours per plan
   usage: {
     async get() {
       const user = await Auth.getUser();
       const { data } = await supabaseClient.from('ai_usage').select('*').eq('user_id', user.id).single();
+      if (!data) return null;
+      // Auto-reset check — every 3 hours
+      const resetAt = new Date(data.reset_at || 0);
+      if (new Date() > resetAt) {
+        const nextReset = new Date(Date.now() + 3 * 60 * 60 * 1000); // +3 hours
+        await supabaseClient.from('ai_usage').update({ credits_used: 0, reset_at: nextReset.toISOString() }).eq('user_id', user.id);
+        return { ...data, credits_used: 0 };
+      }
       return data;
     },
     async increment(credits) {
       const user = await Auth.getUser();
-      const { data: existing } = await supabaseClient.from('ai_usage').select('*').eq('user_id', user.id).single();
+      const existing = await this.get();
+      const nextReset = new Date(Date.now() + 3 * 60 * 60 * 1000);
       if (existing) {
-        return await supabaseClient.from('ai_usage').update({ credits_used: (existing.credits_used || 0) + credits }).eq('user_id', user.id);
+        return await supabaseClient.from('ai_usage').update({
+          credits_used: (existing.credits_used || 0) + credits,
+          updated_at: new Date().toISOString()
+        }).eq('user_id', user.id);
       }
-      return await supabaseClient.from('ai_usage').insert({ user_id: user.id, credits_used: credits, credits_limit: 100 });
+      return await supabaseClient.from('ai_usage').insert({
+        user_id: user.id, credits_used: credits, credits_limit: 100,
+        reset_at: nextReset.toISOString()
+      });
+    },
+    getResetCountdown(resetAt) {
+      const diff = new Date(resetAt) - new Date();
+      if (diff <= 0) return 'Inafufuka sasa...';
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      return `${h}s ${m}d`;
     }
   },
 
@@ -422,33 +444,62 @@ async function loadSidebar(activePage) {
   `;
 }
 
-// ── AI CONTEXT BUILDER ────────────────────────────────────
+// ── AI CONTEXT ENGINE (Provider-Independent) ─────────────
 async function buildAIContext() {
   const profile = Auth.getCachedUser() || await DB.profile.get();
   const todayDate = today();
 
   try {
-    const [mauzoLeo, allStock, allMadeni] = await Promise.all([
+    const [mauzoLeo, allMauzo, allStock, allMadeni, allPersonal, allProjects] = await Promise.all([
       DB.mauzo.getByDate(todayDate),
+      DB.mauzo.getAll(),
       DB.stock.getAll(),
-      DB.madeni.getAll()
+      DB.madeni.getAll(),
+      DB.personal.getAll().catch(() => []),
+      DB.projects.getAll().catch(() => [])
     ]);
 
+    // Business context
     const mapato = mauzoLeo.filter(m => m.aina === 'mapato').reduce((a, m) => a + Number(m.jumla), 0);
     const matumizi = mauzoLeo.filter(m => m.aina === 'matumizi').reduce((a, m) => a + Number(m.jumla), 0);
-    const stockLow = allStock.filter(s => Number(s.idadi) <= Number(s.kiwango_chini)).length;
+    const stockLow = allStock.filter(s => Number(s.idadi) <= Number(s.kiwango_chini));
     const totalMadeni = allMadeni.filter(m => m.aina === 'unaodai').reduce((a, m) => a + Number(m.kiasi), 0);
+
+    // Monthly sales
+    const now = new Date();
+    const mauzoMwezi = allMauzo.filter(m => {
+      const d = new Date(m.tarehe);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+    const mapatoMwezi = mauzoMwezi.filter(m => m.aina === 'mapato').reduce((a, m) => a + Number(m.jumla), 0);
+
+    // Personal finance context
+    const personalMwezi = allPersonal.filter(p => {
+      const d = new Date(p.tarehe);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+    const personalMapato = personalMwezi.filter(p => p.aina === 'mapato').reduce((a, p) => a + Number(p.kiasi), 0);
+    const personalMatumizi = personalMwezi.filter(p => p.aina === 'matumizi').reduce((a, p) => a + Number(p.kiasi), 0);
+
+    // Projects
+    const miradi_inayoendelea = allProjects.filter(p => p.hali === 'active');
+    const avg_progress = miradi_inayoendelea.length
+      ? Math.round(miradi_inayoendelea.reduce((a, p) => a + (p.progress || 0), 0) / miradi_inayoendelea.length)
+      : 0;
 
     return {
       mtumiaji: {
         jina: profile?.jina || 'Mtumiaji',
         biashara: profile?.biashara || '',
         mkoa: profile?.mkoa || '',
+        nchi: profile?.nchi || 'TZ',
         plan: profile?.plan || 'free',
-        lugha: profile?.lugha || 'sw'
+        lugha: profile?.lugha || 'sw',
+        madhumuni: profile?.purpose || 'both'
       },
       leo: {
         tarehe: todayDate,
+        siku: new Date().toLocaleDateString('sw-TZ', { weekday: 'long' }),
         mapato_leo: mapato,
         matumizi_leo: matumizi,
         faida_leo: mapato - matumizi,
@@ -456,12 +507,31 @@ async function buildAIContext() {
       },
       biashara: {
         bidhaa_jumla: allStock.length,
-        stock_inayokwisha: stockLow,
+        stock_inayokwisha: stockLow.length,
+        stock_majina: stockLow.slice(0,3).map(s => s.jina).join(', '),
         madeni_unaodai: totalMadeni,
-        wadeni_wote: allMadeni.filter(m => m.aina === 'unaodai').length
+        wadeni_wote: allMadeni.filter(m => m.aina === 'unaodai').length,
+        mapato_mwezi_huu: mapatoMwezi,
+        mauzo_mwezi_huu: mauzoMwezi.length
+      },
+      personal: {
+        mapato_mwezi: personalMapato,
+        matumizi_mwezi: personalMatumizi,
+        akiba_mwezi: personalMapato - personalMatumizi,
+        rekodi_zote: allPersonal.length
+      },
+      miradi: {
+        jumla: allProjects.length,
+        inayoendelea: miradi_inayoendelea.length,
+        wastani_maendeleo: avg_progress,
+        miradi_majina: miradi_inayoendelea.slice(0,3).map(p => p.jina).join(', ')
       }
     };
-  } catch {
-    return { mtumiaji: { jina: profile?.jina || 'Mtumiaji' }, leo: { tarehe: todayDate } };
+  } catch (err) {
+    console.warn('buildAIContext error:', err);
+    return {
+      mtumiaji: { jina: profile?.jina || 'Mtumiaji', lugha: profile?.lugha || 'sw' },
+      leo: { tarehe: todayDate }
+    };
   }
 }
