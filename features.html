@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huduma za Q360 AI — AI-First Business Platform Tanzania</title>
+<meta name="description" content="Q360 AI inakupa AI assistant, usimamizi wa biashara, fedha za kibinafsi, miradi, na ripoti — yote mahali pamoja. Kwa wafanyabiashara Tanzania.">
+<meta name="keywords" content="Q360 AI features, AI biashara Tanzania, mauzo, stock, invoice, wafanyakazi, fedha, SME Tanzania">
+<meta property="og:title" content="Huduma za Q360 AI — Smart Life, Smarter Business">
+<meta property="og:description" content="Jifunze huduma zote za Q360 AI — mfumo wa AI wa biashara na maisha ya kibinafsi.">
+<link rel="canonical" href="https://travex-finance.vercel.app/features.html">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0a0f1e;--cyan:#00d4ff;--gold:#FFD700;--white:#fff;--bg:#f0f2f8;--border:#e5e7eb;--text:#1a2332;--muted:#6b7280}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text)}
+a{text-decoration:none;color:inherit}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:var(--navy);position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--white)}
+.nav-logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--cyan),var(--gold));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--navy)}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-size:13px;color:rgba(255,255,255,0.6);font-weight:500;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--white)}
+.nav-cta{display:flex;gap:8px}
+.btn-ghost{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;color:var(--white);border:1px solid rgba(255,255,255,0.2);background:none;cursor:pointer;transition:all 0.2s}
+.btn-cta{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;background:var(--cyan);color:var(--navy);border:none;cursor:pointer;transition:all 0.2s}
+
+.hero-sec{background:var(--navy);padding:72px 48px;text-align:center}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--cyan);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:20px;letter-spacing:0.5px}
+.hero-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:48px;font-weight:800;color:var(--white);margin-bottom:14px;letter-spacing:-1px}
+.hero-title span{color:var(--cyan)}
+.hero-sub{font-size:16px;color:rgba(255,255,255,0.55);max-width:560px;margin:0 auto 28px;line-height:1.7}
+
+.features-section{padding:80px 48px;max-width:1200px;margin:0 auto}
+.section-chip{display:inline-block;background:rgba(0,212,255,0.08);color:var(--cyan);border:1px solid rgba(0,212,255,0.2);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:14px;letter-spacing:0.5px}
+.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:-0.5px}
+.section-sub{font-size:15px;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:48px}
+
+.feat-group{margin-bottom:72px}
+.feat-group-header{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid var(--border)}
+.feat-group-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.feat-group-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--text)}
+.feat-group-desc{font-size:13px;color:var(--muted);margin-top:2px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.feat-item{background:var(--bg);border-radius:14px;padding:20px;border:1px solid var(--border)}
+.feat-item-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.feat-item-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
+.feat-item-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.feat-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-top:8px}
+.feat-badge-new{background:#d1fae5;color:#065f46}
+.feat-badge-ai{background:rgba(0,212,255,0.1);color:#0099bb;border:1px solid rgba(0,212,255,0.2)}
+
+.cta-section{background:var(--navy);padding:72px 48px;text-align:center;margin-top:0}
+.cta-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:800;color:var(--white);margin-bottom:14px}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.5);margin-bottom:28px}
+.btn-cta-lg{padding:16px 36px;background:linear-gradient(135deg,var(--cyan),#0099bb);color:var(--navy);border-radius:12px;font-size:15px;font-weight:700;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+
+footer{background:#070c18;padding:32px 48px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--white)}
+.footer-logo span{color:var(--cyan)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,0.2)}
+
+@media(max-width:768px){nav{padding:0 16px}nav .nav-links{display:none}.hero-sec{padding:48px 16px}.hero-title{font-size:30px}.features-section{padding:48px 16px}.feat-grid{grid-template-columns:1fr}.cta-section{padding:48px 16px}.cta-title{font-size:26px}footer{padding:24px 16px;flex-direction:column;gap:10px;text-align:center}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo" onclick="location.href='index.html'" style="cursor:pointer"><div class="nav-logo-icon">Q3</div>Q360<span> AI</span></div>
+  <div class="nav-links">
+    <a href="index.html">Nyumbani</a>
+    <a href="features.html" class="active">Huduma</a>
+    <a href="index.html#pricing">Bei</a>
+    <a href="about.html">Kuhusu</a>
+  </div>
+  <div class="nav-cta">
+    <button class="btn-ghost" onclick="location.href='login.html'">Ingia</button>
+    <button class="btn-cta" onclick="location.href='signup.html'">Anza Bure</button>
+  </div>
+</nav>
+
+<div class="hero-sec">
+  <div class="chip"><i class="ti ti-sparkles"></i> Huduma Kamili za Q360 AI</div>
+  <h1 class="hero-title">Kila Kitu Unachohitaji<br>Kwenye Mfumo <span>Mmoja</span></h1>
+  <p class="hero-sub">Q360 AI inakupa AI assistant, biashara, fedha za kibinafsi, na miradi — yote yakifanya kazi pamoja kwa akili bandia.</p>
+  <button class="btn-cta" onclick="location.href='signup.html'" style="padding:14px 32px;font-size:14px;border-radius:10px;display:inline-flex;align-items:center;gap:8px"><i class="ti ti-rocket"></i> Anza Bure — Siku 7</button>
+</div>
+
+<div class="features-section">
+  <!-- AI Core -->
+  <div class="feat-group">
+    <div class="feat-group-header">
+      <div class="feat-group-icon" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2)"><i class="ti ti-brand-openai" style="font-size:22px;color:#00d4ff"></i></div>
+      <div><div class="feat-group-title">Q360 AI Assistant</div><div class="feat-group-desc">Msaidizi wako mkuu wa AI — anaelewa biashara yako na maisha yako</div></div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(0,212,255,0.08)"><i class="ti ti-message-circle" style="font-size:18px;color:#00d4ff"></i></div><div class="feat-item-title">Mazungumzo ya Kawaida</div><div class="feat-item-desc">Uliza swali lolote kwa lugha ya kawaida — Kiswahili au Kiingereza. AI itajibu kwa data halisi ya biashara yako.</div><span class="feat-badge feat-badge-ai">AI Powered</span></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(0,212,255,0.08)"><i class="ti ti-database" style="font-size:18px;color:#00d4ff"></i></div><div class="feat-item-title">Context ya Data</div><div class="feat-item-desc">AI inajua mauzo yako, stock, madeni, na wafanyakazi. Majibu yanategemea data halisi — si maelezo ya jumla.</div><span class="feat-badge feat-badge-ai">Live Data</span></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(0,212,255,0.08)"><i class="ti ti-bolt" style="font-size:18px;color:#00d4ff"></i></div><div class="feat-item-title">AI Actions</div><div class="feat-item-desc">AI inaweza kuunda invoice, rekodi mauzo, au ongeza bidhaa kwenye stock — kwa amri ya sauti au maandishi.</div><span class="feat-badge feat-badge-new">Mpya</span></div>
+    </div>
+  </div>
+
+  <!-- Business -->
+  <div class="feat-group">
+    <div class="feat-group-header">
+      <div class="feat-group-icon" style="background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.2)"><i class="ti ti-building-store" style="font-size:22px;color:#FFD700"></i></div>
+      <div><div class="feat-group-title">Biashara</div><div class="feat-group-desc">Moduli zote za biashara katika mfumo mmoja ulioboreshwa</div></div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(255,215,0,0.08)"><i class="ti ti-shopping-cart" style="font-size:18px;color:#e6c200"></i></div><div class="feat-item-title">POS — Mauzo</div><div class="feat-item-desc">Rekodi mauzo haraka, utafutaji wa bidhaa otomatiki, malipo ya taslimu/mpesa/deni, na takwimu za wakati halisi.</div></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(255,215,0,0.08)"><i class="ti ti-package" style="font-size:18px;color:#e6c200"></i></div><div class="feat-item-title">Stock — Bidhaa</div><div class="feat-item-desc">Fuatilia bidhaa, tahadhari za kiwango cha chini, bei ya kununua na kuuza, na thamani ya stock yako yote.</div></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(255,215,0,0.08)"><i class="ti ti-file-invoice" style="font-size:18px;color:#e6c200"></i></div><div class="feat-item-title">Invoice Smart</div><div class="feat-item-desc">Tengeneza invoice nzuri, chapisha, tuma WhatsApp, na fuatilia hali ya malipo — yote kwa sekunde chache.</div></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(255,215,0,0.08)"><i class="ti ti-credit-card" style="font-size:18px;color:#e6c200"></i></div><div class="feat-item-title">Madeni (Pande Mbili)</div><div class="feat-item-desc">Fuatilia watu wanaokudai na wanaokudai, rekodi malipo ya sehemu, na jua hali yako ya madeni kila wakati.</div></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(255,215,0,0.08)"><i class="ti ti-users" style="font-size:18px;color:#e6c200"></i></div><div class="feat-item-title">Wafanyakazi</div><div class="feat-item-desc">Orodha ya wafanyakazi, mfumo wa mishahara kwa mwezi, mahudhurio ya kila siku, na takwimu za gharama.</div></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(255,215,0,0.08)"><i class="ti ti-chart-bar" style="font-size:18px;color:#e6c200"></i></div><div class="feat-item-title">Ripoti za Biashara</div><div class="feat-item-desc">Charts za mauzo, bidhaa zinazoongoza, muhtasari wa AI, na ripoti za PDF — wiki, mwezi, mwaka.</div></div>
+    </div>
+  </div>
+
+  <!-- Personal -->
+  <div class="feat-group">
+    <div class="feat-group-header">
+      <div class="feat-group-icon" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2)"><i class="ti ti-wallet" style="font-size:22px;color:#10b981"></i></div>
+      <div><div class="feat-group-title">Fedha za Kibinafsi</div><div class="feat-group-desc">Sehemu yako ya kibinafsi — kamili na ya faragha</div><span class="feat-badge feat-badge-new" style="font-size:10px">Mpya katika Q360 AI</span></div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(16,185,129,0.08)"><i class="ti ti-trending-up" style="font-size:18px;color:#10b981"></i></div><div class="feat-item-title">Mapato na Matumizi</div><div class="feat-item-desc">Rekodi mapato yako yote — mshahara, biashara, zawadi. Fuatilia matumizi kwa kategoria: chakula, usafiri, elimu, na zaidi.</div></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(16,185,129,0.08)"><i class="ti ti-target" style="font-size:18px;color:#10b981"></i></div><div class="feat-item-title">Malengo ya Kifedha</div><div class="feat-item-desc">Weka lengo la kununua gari, kujenga nyumba, au likizo. AI inakusaidia kufuatilia maendeleo na kutoa ushauri.</div></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(16,185,129,0.08)"><i class="ti ti-chart-pie" style="font-size:18px;color:#10b981"></i></div><div class="feat-item-title">Uchambuzi wa Bajeti</div><div class="feat-item-desc">Angalia wapi unatumia pesa nyingi zaidi, asilimia ya akiba, na jinsi ya kuboresha fedha zako za kila mwezi.</div></div>
+    </div>
+  </div>
+
+  <!-- Projects -->
+  <div class="feat-group">
+    <div class="feat-group-header">
+      <div class="feat-group-icon" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2)"><i class="ti ti-layout-kanban" style="font-size:22px;color:#8b5cf6"></i></div>
+      <div><div class="feat-group-title">Usimamizi wa Miradi</div><div class="feat-group-desc">Miradi ya biashara na kibinafsi katika mfumo mmoja</div></div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(139,92,246,0.08)"><i class="ti ti-clipboard-list" style="font-size:18px;color:#8b5cf6"></i></div><div class="feat-item-title">Kazi na Maendeleo</div><div class="feat-item-desc">Unda kazi, weka tarehe za mwisho, na fuatilia asilimia ya maendeleo ya kila mradi kwa wakati halisi.</div></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(139,92,246,0.08)"><i class="ti ti-coins" style="font-size:18px;color:#8b5cf6"></i></div><div class="feat-item-title">Bajeti ya Mradi</div><div class="feat-item-desc">Weka bajeti kwa kila mradi, rekodi gharama, na ujue kama mradi uko ndani ya mipaka ya bajeti yako.</div></div>
+      <div class="feat-item"><div class="feat-item-icon" style="background:rgba(139,92,246,0.08)"><i class="ti ti-brain" style="font-size:18px;color:#8b5cf6"></i></div><div class="feat-item-title">AI Project Manager</div><div class="feat-item-desc">Uliza AI "Mradi wangu uko vipi?" — itakupa uchambuzi wa maendeleo, hatari, na mapendekezo ya hatua za mbele.</div><span class="feat-badge feat-badge-ai">AI Powered</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2 class="cta-title">Anza Leo — Bure Kabisa</h2>
+  <p class="cta-sub">Jiandikishe sasa na upate siku 7 za majaribio ya Professional plan bila malipo.</p>
+  <button class="btn-cta-lg" onclick="location.href='signup.html'"><i class="ti ti-rocket"></i> Anza Sasa — Bure</button>
+  <p style="font-size:12px;color:rgba(255,255,255,0.25);margin-top:14px">Bila kadi ya benki · Siku 7 za bure · Funika wakati wowote</p>
+</div>
+
+<footer>
+  <div class="footer-logo">Q360<span> AI</span></div>
+  <div class="footer-copy">© 2026 TRAVEX Digital Group · Dar es Salaam, Tanzania</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+(async () => { if (await Auth.isLoggedIn()) { const btn = document.querySelector('.btn-cta'); if (btn) btn.onclick = () => location.href = 'ai.html'; } })();
+</script>
+</body>
+</html>
