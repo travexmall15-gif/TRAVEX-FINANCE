@@ -2,80 +2,119 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ingia — TRAVEX Finance</title>
+<title>Ingia — Q360 AI</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-<link rel="stylesheet" href="shared.css">
 <style>
-body{display:flex;min-height:100vh;background:var(--bg);}
-/* LEFT PANEL */
-.left-panel{width:420px;background:var(--navy);display:flex;flex-direction:column;padding:48px 40px;flex-shrink:0;}
-.left-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--gold);margin-bottom:48px;cursor:pointer;}
-.left-logo small{color:rgba(255,255,255,0.5);font-weight:400;font-size:12px;display:block;margin-top:3px;}
-.left-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:30px;font-weight:800;color:var(--white);line-height:1.3;margin-bottom:14px;}
-.left-title em{color:var(--gold);font-style:normal;}
-.left-sub{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:36px;}
-.testimonial{background:rgba(255,255,255,0.05);border-radius:12px;padding:18px;border-left:3px solid var(--gold);}
-.test-text{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.7;font-style:italic;margin-bottom:8px;}
-.test-author{font-size:11px;color:var(--gold);font-weight:600;}
-.left-footer{margin-top:auto;font-size:11px;color:rgba(255,255,255,0.2);}
-/* RIGHT PANEL */
-.right-panel{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 24px;}
-.login-card{background:var(--white);border-radius:16px;padding:36px;max-width:400px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,0.08);}
-.login-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:4px;}
-.login-sub{font-size:13px;color:var(--text-secondary);margin-bottom:24px;}
-.input-wrap{position:relative;}
-.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:16px;padding:4px;}
-.forgot{font-size:12px;color:var(--navy);font-weight:600;display:block;text-align:right;margin-bottom:20px;margin-top:-8px;}
-.divider{display:flex;align-items:center;gap:12px;margin:16px 0;}
-.divider span{font-size:12px;color:var(--text-muted);}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
-.signup-link{text-align:center;font-size:13px;color:var(--text-secondary);}
-.signup-link a{color:var(--navy);font-weight:700;}
-.alert-box{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px;}
-.alert-box.show{display:flex;}
-.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger);}
-.alert-info{background:var(--info-bg);border:1px solid #93c5fd;color:var(--info-text);}
-/* SPINNER */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0a0f1e;--cyan:#00d4ff;--gold:#FFD700;--white:#fff;--bg:#f0f2f8;--border:#e5e7eb;--text:#1a2332;--muted:#9ca3af;--danger:#ef4444;--danger-bg:#fee2e2;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+/* LEFT */
+.left{width:420px;background:linear-gradient(160deg,#0d1628 0%,#0a0f1e 100%);display:flex;flex-direction:column;padding:48px 40px;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.06);position:relative;overflow:hidden}
+.left::before{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,255,0.06),transparent);pointer-events:none}
+.left-logo{display:flex;align-items:center;gap:10px;margin-bottom:56px;cursor:pointer}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--cyan),var(--gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif}
+.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--white)}
+.logo-text span{color:var(--cyan)}
+.left-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;color:var(--white);line-height:1.25;margin-bottom:14px}
+.left-title em{color:var(--cyan);font-style:normal}
+.left-sub{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:40px}
+.testimonial{background:rgba(255,255,255,0.04);border-radius:14px;padding:20px;border-left:3px solid var(--cyan)}
+.test-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;font-style:italic;margin-bottom:10px}
+.test-author{font-size:12px;color:var(--cyan);font-weight:600}
+.left-footer{margin-top:auto;font-size:11px;color:rgba(255,255,255,0.2)}
+.features-list{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.feature-item{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.6)}
+.feature-item i{font-size:16px;color:var(--cyan)}
+
+/* RIGHT */
+.right{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 24px;background:var(--bg)}
+.login-card{background:var(--white);border-radius:20px;padding:40px;max-width:420px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.card-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.form-control{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;color:var(--text);background:var(--white);outline:none;transition:border-color 0.2s;font-family:'DM Sans',sans-serif}
+.form-control:focus{border-color:var(--cyan)}
+.input-wrap{position:relative}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:4px}
+.forgot{font-size:12px;color:var(--text);font-weight:600;display:block;text-align:right;margin-bottom:20px;margin-top:-8px}
+.btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,#111827,#1a2332);color:var(--white);border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;margin-bottom:12px}
+.btn-primary:hover{opacity:0.9}
+.btn-google{width:100%;padding:12px;background:var(--white);color:var(--text);border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;margin-bottom:16px}
+.btn-google:hover{background:#f9fafb;border-color:#d1d5db}
+.btn-google img{width:18px;height:18px}
+.divider{display:flex;align-items:center;gap:12px;margin:16px 0}
+.divider span{font-size:12px;color:var(--muted)}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.signup-link{text-align:center;font-size:13px;color:var(--muted)}
+.signup-link a{color:var(--text);font-weight:700}
+.alert{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px}
+.alert.show{display:flex}
+.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger)}
+.alert-info{background:#dbeafe;border:1px solid #93c5fd;color:#1e40af}
+
+/* LOADER */
+.page-loader{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.3s}
+.page-loader.hide{opacity:0;pointer-events:none}
+.loader-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--cyan);margin-bottom:16px;text-align:center}
+.loader-spin{width:32px;height:32px;border:3px solid rgba(0,212,255,0.2);border-top-color:var(--cyan);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* SESSION CHECK */
-.sc{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;}
-.sc-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--gold);margin-bottom:20px;}
-.sc-spin{width:32px;height:32px;border:3px solid rgba(255,215,0,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+
 /* MOBILE */
 @media(max-width:768px){
-  body{flex-direction:column;}
-  .left-panel{width:100%;padding:20px 16px;flex-direction:row;align-items:center;gap:12px;min-height:auto;}
-  .left-logo{margin-bottom:0;}
-  .left-title,.left-sub,.testimonial,.left-footer{display:none;}
-  .right-panel{padding:20px 16px;align-items:flex-start;flex:1;}
-  .login-card{padding:24px 20px;max-width:100%;}
-  .login-title{font-size:20px;}
+  body{flex-direction:column}
+  .left{width:100%;padding:20px 16px;flex-direction:row;align-items:center;gap:12px;min-height:auto}
+  .left-logo{margin-bottom:0}
+  .left-title,.left-sub,.testimonial,.left-footer,.features-list{display:none}
+  .right{padding:20px 16px;align-items:flex-start}
+  .login-card{padding:24px 20px;max-width:100%;border-radius:16px}
 }
 </style>
 </head>
 <body>
-<div class="sc" id="sc">
-  <div class="sc-logo">TX TRAVEX Finance</div>
-  <div class="sc-spin"></div>
+<div class="page-loader" id="loader">
+  <div><div class="loader-logo">Q360 AI</div><div class="loader-spin"></div></div>
 </div>
 
-<div class="left-panel" id="leftPanel" style="display:none">
-  <div class="left-logo" onclick="location.href='index.html'">TX TRAVEX Finance<small>Smart Finance for Every Business</small></div>
-  <h2 class="left-title">Karibu Tena<br>kwenye<br><em>TRAVEX Finance</em></h2>
-  <p class="left-sub">Simamia fedha za biashara yako, fuatilia mauzo na jua faida yako kila siku.</p>
-  <div class="testimonial">
-    <div class="test-text">"Tangu nilitumia TRAVEX Finance, sasa najua faida yangu kila siku. Simu moja — kila kitu kipo!"</div>
-    <div class="test-author">— Amina Hassan, Arusha</div>
+<div class="left" id="leftPanel" style="display:none">
+  <div class="left-logo" onclick="location.href='index.html'">
+    <div class="logo-icon">Q3</div>
+    <div class="logo-text">Q360<span> AI</span></div>
   </div>
-  <div class="left-footer">© 2026 TRAVEX Digital Group</div>
+  <h2 class="left-title">Karibu Tena<br>kwenye<br><em>Q360 AI</em></h2>
+  <p class="left-sub">Msaidizi wako wa AI unaokusaidia kusimamia biashara, fedha, na maisha yako kwa urahisi.</p>
+  <div class="features-list">
+    <div class="feature-item"><i class="ti ti-brand-openai"></i> AI Assistant ya kibinafsi</div>
+    <div class="feature-item"><i class="ti ti-chart-bar"></i> Uchambuzi wa data ya biashara yako</div>
+    <div class="feature-item"><i class="ti ti-wallet"></i> Fedha za kibinafsi na biashara</div>
+    <div class="feature-item"><i class="ti ti-layout-kanban"></i> Usimamizi wa miradi</div>
+  </div>
+  <div class="testimonial">
+    <div class="test-text">"Q360 AI imebadilisha jinsi ninavyosimamia biashara yangu. Sasa najua faida yangu kila wakati!"</div>
+    <div class="test-author">— Fatuma Ally, Dar es Salaam</div>
+  </div>
+  <div class="left-footer" style="margin-top:auto;padding-top:24px">© 2026 TRAVEX Digital Group</div>
 </div>
 
-<div class="right-panel" id="rightPanel" style="display:none">
+<div class="right" id="rightPanel" style="display:none">
   <div class="login-card">
-    <div class="login-title">Ingia Akaunti Yako</div>
-    <div class="login-sub">Ingiza taarifa zako ili uendelee</div>
-    <div class="alert-box alert-error" id="alertError"><i class="ti ti-alert-circle"></i><span id="alertMsg"></span></div>
-    <div class="alert-box alert-info" id="alertInfo"><i class="ti ti-info-circle"></i><span id="alertInfoMsg"></span></div>
+    <div class="card-title">Ingia Akaunti Yako</div>
+    <div class="card-sub">Karibu tena — tumia email au Google</div>
+
+    <div class="alert alert-error" id="alertError"><i class="ti ti-alert-circle"></i><span id="alertMsg"></span></div>
+    <div class="alert alert-info" id="alertInfo"><i class="ti ti-info-circle"></i><span id="alertInfoMsg"></span></div>
+
+    <!-- Google Login -->
+    <button class="btn-google" onclick="doGoogleLogin()" id="googleBtn">
+      <img src="https://www.google.com/favicon.ico" alt="G">
+      Endelea na Google
+    </button>
+
+    <div class="divider"><span>au tumia email</span></div>
+
     <div class="form-group">
       <label class="form-label">Barua Pepe (Email)</label>
       <input type="email" class="form-control" id="fEmail" placeholder="mfano@email.com" autocomplete="email">
@@ -88,65 +127,61 @@ body{display:flex;min-height:100vh;background:var(--bg);}
       </div>
     </div>
     <a href="reset.html" class="forgot">Umesahau neno la siri?</a>
-    <button class="btn btn-navy" style="width:100%;justify-content:center;padding:13px;font-size:15px;margin-bottom:16px" id="loginBtn" onclick="doLogin()">
+    <button class="btn-primary" id="loginBtn" onclick="doLogin()">
       <i class="ti ti-login"></i> Ingia
     </button>
-    <div class="divider"><span>au</span></div>
-    <div class="signup-link">Huna akaunti? <a href="signup.html">Jiandikishe hapa — Bure siku 7</a></div>
+    <div class="signup-link">Huna akaunti? <a href="signup.html">Jiandikishe — Bure</a></div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script>
-(async()=>{
+(async () => {
   const session = await Auth.getSession();
-  if(session){ window.location.replace('dashboard.html'); return; }
-  document.getElementById('sc').style.display='none';
-  document.getElementById('leftPanel').style.display='flex';
-  document.getElementById('rightPanel').style.display='flex';
-  // Check if coming from email confirmation
-  if(window.location.hash.includes('access_token')||new URLSearchParams(window.location.search).get('confirmed')){
+  document.getElementById('loader').classList.add('hide');
+  if (session) { window.location.replace('dashboard.html'); return; }
+  document.getElementById('leftPanel').style.display = 'flex';
+  document.getElementById('rightPanel').style.display = 'flex';
+  if (window.location.hash.includes('access_token') || new URLSearchParams(window.location.search).get('confirmed')) {
     showInfo('✅ Akaunti yako imethibitishwa! Ingia sasa.');
   }
 })();
 
-function togglePass(){
-  const i=document.getElementById('fPassword');
-  const ic=document.getElementById('eyeIcon');
-  i.type=i.type==='password'?'text':'password';
-  ic.className=i.type==='password'?'ti ti-eye':'ti ti-eye-off';
+function togglePass() {
+  const i = document.getElementById('fPassword');
+  const ic = document.getElementById('eyeIcon');
+  i.type = i.type === 'password' ? 'text' : 'password';
+  ic.className = i.type === 'password' ? 'ti ti-eye' : 'ti ti-eye-off';
 }
 
-async function doLogin(){
-  const email=document.getElementById('fEmail').value.trim();
-  const pass=document.getElementById('fPassword').value;
-  if(!email||!pass){showError('Jaza email na neno la siri');return;}
-  const btn=document.getElementById('loginBtn');
-  btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Ingia...';
-  btn.style.pointerEvents='none';
-  const {error}=await Auth.login(email,pass);
-  if(error){
-    btn.innerHTML='<i class="ti ti-login"></i> Ingia';
-    btn.style.pointerEvents='';
-    if(error.message.includes('not confirmed')) showError('Thibisha email yako kwanza — angalia inbox');
-    else if(error.message.includes('Invalid')) showError('Email au neno la siri si sahihi');
+async function doGoogleLogin() {
+  const btn = document.getElementById('googleBtn');
+  btn.innerHTML = '<div style="width:18px;height:18px;border:2px solid #d1d5db;border-top-color:#1a2332;border-radius:50%;animation:spin 0.8s linear infinite"></div> Inaelekeza...';
+  btn.style.pointerEvents = 'none';
+  await Auth.loginWithGoogle();
+}
+
+async function doLogin() {
+  const email = document.getElementById('fEmail').value.trim();
+  const pass = document.getElementById('fPassword').value;
+  if (!email || !pass) { showError('Jaza email na neno la siri'); return; }
+  const btn = document.getElementById('loginBtn');
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Ingia...';
+  btn.style.pointerEvents = 'none';
+  const { error } = await Auth.login(email, pass);
+  if (error) {
+    btn.innerHTML = '<i class="ti ti-login"></i> Ingia';
+    btn.style.pointerEvents = '';
+    if (error.message.includes('not confirmed')) showError('Thibisha email yako kwanza — angalia inbox');
+    else if (error.message.includes('Invalid')) showError('Email au neno la siri si sahihi');
     else showError(error.message);
     return;
   }
   window.location.replace('dashboard.html');
 }
-
-function showError(msg){
-  document.getElementById('alertInfo').classList.remove('show');
-  document.getElementById('alertMsg').textContent=msg;
-  document.getElementById('alertError').classList.add('show');
-}
-function showInfo(msg){
-  document.getElementById('alertError').classList.remove('show');
-  document.getElementById('alertInfoMsg').textContent=msg;
-  document.getElementById('alertInfo').classList.add('show');
-}
+function showError(msg) { document.getElementById('alertInfo').classList.remove('show'); document.getElementById('alertMsg').textContent = msg; document.getElementById('alertError').classList.add('show'); }
+function showInfo(msg) { document.getElementById('alertError').classList.remove('show'); document.getElementById('alertInfoMsg').textContent = msg; document.getElementById('alertInfo').classList.add('show'); }
 </script>
 </body>
 </html>
