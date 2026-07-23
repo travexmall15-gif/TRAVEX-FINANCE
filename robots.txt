@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /ai.html
+Disallow: /mauzo.html
+Disallow: /stock.html
+Disallow: /madeni.html
+Disallow: /invoice.html
+Disallow: /wafanyakazi.html
+Disallow: /personal.html
+Disallow: /projects.html
+Disallow: /reports.html
+Disallow: /subscription.html
+Disallow: /mipangilio.html
+Disallow: /api/
+
+Sitemap: https://travex-finance.vercel.app/sitemap.xml
