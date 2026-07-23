@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miradi — Q360 AI</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:24px}
+.proj-card{background:var(--white);border-radius:var(--radius-lg);border:1.5px solid var(--border);padding:20px;transition:all 0.2s;cursor:pointer}
+.proj-card:hover{border-color:var(--cyan);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.proj-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.proj-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;padding:3px 10px;border-radius:20px}
+.proj-type.business{background:var(--gold-dim);color:#92400e}
+.proj-type.personal{background:var(--cyan-glow);color:var(--cyan-dim)}
+.proj-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.proj-desc{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:14px}
+.proj-stats{display:flex;gap:12px;margin-bottom:12px}
+.proj-stat{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px}
+.proj-stat strong{color:var(--navy)}
+.proj-progress{margin-bottom:12px}
+.proj-progress-top{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px}
+.proj-actions{display:flex;gap:6px;justify-content:flex-end}
+
+.task-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.task-item{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg);border-radius:var(--radius-sm);font-size:12px}
+.task-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.task-check.done{background:var(--success);border-color:var(--success)}
+.task-text{flex:1;color:var(--text)}
+.task-text.done{text-decoration:line-through;color:var(--text-muted)}
+.task-due{font-size:10px;color:var(--text-muted);flex-shrink:0}
+
+.empty-projects{text-align:center;padding:60px 20px;color:var(--text-muted)}
+.empty-projects i{font-size:48px;display:block;margin-bottom:12px;color:var(--border)}
+</style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main-wrapper">
+  <div class="main-header">
+    <div>
+      <div class="header-title">Miradi</div>
+      <div class="header-sub">Simamia miradi ya kibinafsi na biashara</div>
+    </div>
+    <div class="header-right">
+      <a href="ai.html" class="btn btn-ai btn-sm"><i class="ti ti-brand-openai"></i> Uliza AI</a>
+      <button class="btn btn-gold" onclick="openModal('modalProj')"><i class="ti ti-plus"></i> Mradi Mpya</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid" style="margin-bottom:20px"></div>
+
+    <!-- Filter -->
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all',this)">Yote</button>
+      <button class="filter-btn" onclick="setFilter('business',this)">Biashara</button>
+      <button class="filter-btn" onclick="setFilter('personal',this)">Kibinafsi</button>
+      <button class="filter-btn" onclick="setFilter('active',this)">Inaendelea</button>
+      <button class="filter-btn" onclick="setFilter('done',this)">Imekamilika</button>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="projects-grid" id="projGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--text-muted)">
+        <i class="ti ti-loader-2 spin" style="font-size:24px;display:block;margin-bottom:8px"></i>Inapakia...
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: New Project -->
+<div class="modal-overlay" id="modalProj">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="projModalTitle">Mradi Mpya</div>
+      <button class="modal-close" onclick="closeModal('modalProj')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="form-group"><label class="form-label">Jina la Mradi *</label><input class="form-control" id="pJina" placeholder="Mfano: Kujenga Duka, Likizo ya Familia"></div>
+    <div class="form-group"><label class="form-label">Maelezo</label><textarea class="form-control" id="pDesc" rows="2" placeholder="Mradi huu unahusu nini?"></textarea></div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label class="form-label">Aina</label>
+        <select class="form-control" id="pAina">
+          <option value="business">Biashara</option>
+          <option value="personal">Kibinafsi</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hali</label>
+        <select class="form-control" id="pHali">
+          <option value="active">Inaendelea</option>
+          <option value="planning">Mipango</option>
+          <option value="done">Imekamilika</option>
+          <option value="paused">Imesimama</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label class="form-label">Bajeti (TZS)</label><input type="number" class="form-control" id="pBajeti" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Tarehe ya Mwisho</label><input type="date" class="form-control" id="pDeadline"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Maendeleo (%)</label><input type="range" id="pProgress" min="0" max="100" value="0" oninput="document.getElementById('pProgressVal').textContent=this.value+'%'" style="width:100%"><div id="pProgressVal" style="font-size:12px;color:var(--text-muted);text-align:right">0%</div></div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px" onclick="saveProject()"><i class="ti ti-check"></i> Hifadhi Mradi</button>
+  </div>
+</div>
+
+<!-- MODAL: Project Detail -->
+<div class="modal-overlay" id="modalDetail">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div class="modal-title" id="detailTitle">Maelezo ya Mradi</div>
+      <button class="modal-close" onclick="closeModal('modalDetail')"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="detailBody"></div>
+    <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+      <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px">Kazi za Mradi</div>
+      <div id="taskList"></div>
+      <div class="flex gap-8" style="margin-top:10px">
+        <input class="form-control" id="newTaskInput" placeholder="Kazi mpya..." style="flex:1">
+        <input type="date" class="form-control" id="newTaskDate" style="width:140px">
+        <button class="btn btn-navy btn-sm" onclick="addTask()"><i class="ti ti-plus"></i> Ongeza</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">
+      <button class="btn btn-danger btn-sm" id="deleteProjectBtn">Futa Mradi</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+let allProjects = [];
+let currentFilter = 'all';
+let currentProjectId = null;
+
+(async () => {
+  const session = await Auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  await loadSidebar('projects');
+  initTabs();
+  await loadProjects();
+})();
+
+async function loadProjects() {
+  allProjects = await DB.projects.getAll();
+  renderStats();
+  renderProjects();
+}
+
+function renderStats() {
+  const active = allProjects.filter(p=>p.hali==='active').length;
+  const done = allProjects.filter(p=>p.hali==='done').length;
+  const totalBajeti = allProjects.reduce((a,p)=>a+Number(p.bajeti||0),0);
+  const avgProgress = allProjects.length ? Math.round(allProjects.reduce((a,p)=>a+Number(p.progress||0),0)/allProjects.length) : 0;
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Miradi Yote</div><div class="stat-value">${allProjects.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Inayoendelea</div><div class="stat-value" style="color:var(--cyan)">${active}</div></div>
+    <div class="stat-card"><div class="stat-label">Imekamilika</div><div class="stat-value" style="color:var(--success)">${done}</div></div>
+    <div class="stat-card"><div class="stat-label">Wastani Maendeleo</div><div class="stat-value">${avgProgress}%</div></div>
+  `;
+}
+
+function renderProjects() {
+  let projects = allProjects;
+  if (currentFilter==='business') projects = projects.filter(p=>p.aina==='business');
+  else if (currentFilter==='personal') projects = projects.filter(p=>p.aina==='personal');
+  else if (currentFilter==='active') projects = projects.filter(p=>p.hali==='active');
+  else if (currentFilter==='done') projects = projects.filter(p=>p.hali==='done');
+
+  const haliColors = { active:'badge-cyan', planning:'badge-info', done:'badge-success', paused:'badge-warning' };
+  const haliNames = { active:'Inaendelea', planning:'Mipango', done:'Imekamilika', paused:'Imesimama' };
+
+  document.getElementById('projGrid').innerHTML = projects.length ? projects.map(p=>`
+    <div class="proj-card" onclick="openDetail(${p.id})">
+      <div class="proj-header">
+        <span class="proj-type ${p.aina}">${p.aina==='business'?'Biashara':'Kibinafsi'}</span>
+        <span class="badge ${haliColors[p.hali]||'badge-gray'}">${haliNames[p.hali]||p.hali}</span>
+      </div>
+      <div class="proj-name">${p.jina}</div>
+      ${p.maelezo?`<div class="proj-desc">${p.maelezo}</div>`:''}
+      <div class="proj-stats">
+        ${p.bajeti?`<div class="proj-stat"><i class="ti ti-wallet" style="font-size:12px"></i> Bajeti: <strong>${formatTZS(p.bajeti)}</strong></div>`:''}
+        ${p.deadline?`<div class="proj-stat"><i class="ti ti-calendar" style="font-size:12px"></i> <strong>${formatDate(p.deadline)}</strong></div>`:''}
+      </div>
+      <div class="proj-progress">
+        <div class="proj-progress-top">
+          <span style="font-size:11px;color:var(--text-muted)">Maendeleo</span>
+          <span style="font-size:11px;font-weight:700;color:var(--navy)">${p.progress||0}%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${p.progress||0}%;background:${(p.progress||0)>=80?'var(--success)':(p.progress||0)>=40?'var(--cyan)':'var(--warning)'}"></div></div>
+      </div>
+      <div class="proj-actions">
+        <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openDetail(${p.id})"><i class="ti ti-pencil"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteProject(${p.id})"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>
+  `).join('') : `
+    <div class="empty-projects" style="grid-column:1/-1">
+      <i class="ti ti-layout-kanban"></i>
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px">Bado huna miradi</div>
+      <div style="font-size:13px;margin-bottom:16px">Unda mradi wako wa kwanza — biashara au kibinafsi</div>
+      <button class="btn btn-gold" onclick="openModal('modalProj')"><i class="ti ti-plus"></i> Mradi Mpya</button>
+    </div>`;
+}
+
+async function saveProject() {
+  const jina = document.getElementById('pJina').value.trim();
+  if (!jina) { showToast('Jaza jina la mradi','error'); return; }
+  await DB.projects.add({
+    jina,
+    maelezo: document.getElementById('pDesc').value.trim(),
+    aina: document.getElementById('pAina').value,
+    hali: document.getElementById('pHali').value,
+    bajeti: parseFloat(document.getElementById('pBajeti').value)||0,
+    deadline: document.getElementById('pDeadline').value,
+    progress: parseInt(document.getElementById('pProgress').value)||0
+  });
+  closeModal('modalProj');
+  document.getElementById('pJina').value='';
+  document.getElementById('pDesc').value='';
+  showToast('Mradi umehifadhiwa!');
+  await loadProjects();
+}
+
+async function openDetail(id) {
+  currentProjectId = id;
+  const proj = allProjects.find(p=>p.id===id);
+  if (!proj) return;
+  const tasks = await DB.tasks.getByProject(id);
+  document.getElementById('detailTitle').textContent = proj.jina;
+  document.getElementById('detailBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div style="background:var(--bg);border-radius:10px;padding:12px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:4px">Bajeti</div>
+        <div style="font-size:16px;font-weight:700;color:var(--navy)">${formatTZS(proj.bajeti)}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:10px;padding:12px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:4px">Mwisho</div>
+        <div style="font-size:16px;font-weight:700;color:var(--navy)">${proj.deadline?formatDate(proj.deadline):'—'}</div>
+      </div>
+    </div>
+    <div style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+        <span style="color:var(--text-muted)">Maendeleo</span>
+        <span style="font-weight:700;color:var(--navy)">${proj.progress||0}%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${proj.progress||0}%;background:var(--cyan)"></div></div>
+    </div>`;
+  renderTaskList(tasks);
+  document.getElementById('deleteProjectBtn').onclick = ()=>deleteProject(id);
+  document.getElementById('newTaskDate').value = today();
+  openModal('modalDetail');
+}
+
+function renderTaskList(tasks) {
+  document.getElementById('taskList').innerHTML = tasks.length ? tasks.map(t=>`
+    <div class="task-item">
+      <div class="task-check ${t.imekamilika?'done':''}" onclick="toggleTask(${t.id},${!t.imekamilika})">
+        ${t.imekamilika?'<i class="ti ti-check" style="font-size:10px;color:white"></i>':''}
+      </div>
+      <span class="task-text ${t.imekamilika?'done':''}">${t.jina}</span>
+      ${t.deadline?`<span class="task-due">${formatDate(t.deadline)}</span>`:''}
+      <button onclick="deleteTask(${t.id})" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px"><i class="ti ti-x"></i></button>
+    </div>`).join('')
+    : '<div style="font-size:12px;color:var(--text-muted);padding:8px 0">Bado hakuna kazi. Ongeza kazi hapa chini.</div>';
+}
+
+async function addTask() {
+  const jina = document.getElementById('newTaskInput').value.trim();
+  if (!jina || !currentProjectId) return;
+  await DB.tasks.add({ jina, project_id: currentProjectId, imekamilika: false, deadline: document.getElementById('newTaskDate').value });
+  document.getElementById('newTaskInput').value='';
+  const tasks = await DB.tasks.getByProject(currentProjectId);
+  renderTaskList(tasks);
+  showToast('Kazi imeongezwa!');
+}
+
+async function toggleTask(id, done) {
+  await DB.tasks.update(id, { imekamilika: done });
+  const tasks = await DB.tasks.getByProject(currentProjectId);
+  renderTaskList(tasks);
+  // Update progress
+  const pct = tasks.length ? Math.round((tasks.filter(t=>t.imekamilika).length/tasks.length)*100) : 0;
+  await DB.projects.update(currentProjectId, { progress: pct });
+  await loadProjects();
+}
+
+async function deleteTask(id) {
+  await DB.tasks.delete(id);
+  const tasks = await DB.tasks.getByProject(currentProjectId);
+  renderTaskList(tasks);
+}
+
+async function deleteProject(id) {
+  if (!confirm('Futa mradi huu na kazi zake zote?')) return;
+  await DB.projects.delete(id);
+  closeModal('modalDetail');
+  showToast('Mradi umefutwa');
+  await loadProjects();
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProjects();
+}
+</script>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html"><i class="ti ti-home"></i><span>Nyumbani</span></a>
+  <a href="ai.html"><i class="ti ti-brand-openai"></i><span>AI</span></a>
+  <a href="personal.html"><i class="ti ti-wallet"></i><span>Fedha</span></a>
+  <a href="projects.html" class="active"><i class="ti ti-layout-kanban"></i><span>Miradi</span></a>
+  <a href="mipangilio.html"><i class="ti ti-settings"></i><span>Zaidi</span></a>
+</nav>
+</body>
+</html>
