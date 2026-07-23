@@ -5,133 +5,97 @@
 <title>Ingia — Q360 AI</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--navy:#0a0f1e;--cyan:#00d4ff;--gold:#FFD700;--white:#fff;--bg:#f0f2f8;--border:#e5e7eb;--text:#1a2332;--muted:#9ca3af;--danger:#ef4444;--danger-bg:#fee2e2;}
-body{font-family:'DM Sans',sans-serif;background:var(--navy);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}
+body{font-family:'DM Sans',sans-serif;background:#0a0f1e;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-font-smoothing:antialiased}
 
-/* LEFT */
-.left{width:420px;background:linear-gradient(160deg,#0d1628 0%,#0a0f1e 100%);display:flex;flex-direction:column;padding:48px 40px;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.06);position:relative;overflow:hidden}
-.left::before{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,255,0.06),transparent);pointer-events:none}
-.left-logo{display:flex;align-items:center;gap:10px;margin-bottom:56px;cursor:pointer}
-.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--cyan),var(--gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif}
-.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--white)}
-.logo-text span{color:var(--cyan)}
-.left-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;color:var(--white);line-height:1.25;margin-bottom:14px}
-.left-title em{color:var(--cyan);font-style:normal}
-.left-sub{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:40px}
-.testimonial{background:rgba(255,255,255,0.04);border-radius:14px;padding:20px;border-left:3px solid var(--cyan)}
-.test-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;font-style:italic;margin-bottom:10px}
-.test-author{font-size:12px;color:var(--cyan);font-weight:600}
-.left-footer{margin-top:auto;font-size:11px;color:rgba(255,255,255,0.2)}
-.features-list{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
-.feature-item{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.6)}
-.feature-item i{font-size:16px;color:var(--cyan)}
+.card{background:#fff;border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.card-logo{display:flex;align-items:center;gap:8px;margin-bottom:28px;cursor:pointer}
+.logo-sq{width:30px;height:30px;background:linear-gradient(135deg,#00d4ff,#FFD700);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#0a0f1e;font-family:'Plus Jakarta Sans',sans-serif}
+.logo-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:#0a0f1e}
+.logo-name span{color:#00d4ff}
+h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#0a0f1e;margin-bottom:4px}
+.sub{font-size:13px;color:#9ca3af;margin-bottom:24px}
 
-/* RIGHT */
-.right{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 24px;background:var(--bg)}
-.login-card{background:var(--white);border-radius:20px;padding:40px;max-width:420px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
-.card-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:4px}
-.card-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
-.form-group{margin-bottom:16px}
-.form-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
-.form-control{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;color:var(--text);background:var(--white);outline:none;transition:border-color 0.2s;font-family:'DM Sans',sans-serif}
-.form-control:focus{border-color:var(--cyan)}
-.input-wrap{position:relative}
-.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:4px}
-.forgot{font-size:12px;color:var(--text);font-weight:600;display:block;text-align:right;margin-bottom:20px;margin-top:-8px}
-.btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,#111827,#1a2332);color:var(--white);border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;margin-bottom:12px}
-.btn-primary:hover{opacity:0.9}
-.btn-google{width:100%;padding:12px;background:var(--white);color:var(--text);border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;margin-bottom:16px}
-.btn-google:hover{background:#f9fafb;border-color:#d1d5db}
+.form-group{margin-bottom:14px}
+label{display:block;font-size:13px;font-weight:600;color:#0a0f1e;margin-bottom:5px}
+.inp-wrap{position:relative}
+input{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;color:#0a0f1e;background:#fff;outline:none;transition:border-color 0.2s;font-family:'DM Sans',sans-serif}
+input:focus{border-color:#00d4ff}
+.eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:16px;padding:2px}
+
+.forgot{display:block;text-align:right;font-size:12px;color:#6b7280;font-weight:600;margin-top:4px;margin-bottom:16px;cursor:pointer}
+.forgot:hover{color:#0a0f1e}
+
+.btn-main{width:100%;padding:13px;background:#0a0f1e;color:#fff;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;margin-bottom:12px}
+.btn-main:hover{opacity:0.9}
+.btn-main:disabled{opacity:0.6;cursor:not-allowed}
+
+.divider{display:flex;align-items:center;gap:10px;margin:14px 0}
+.divider span{font-size:12px;color:#9ca3af;white-space:nowrap}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
+
+.btn-google{width:100%;padding:12px;background:#fff;color:#0a0f1e;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #e5e7eb;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;transition:all 0.2s}
+.btn-google:hover{background:#f9fafb}
 .btn-google img{width:18px;height:18px}
-.divider{display:flex;align-items:center;gap:12px;margin:16px 0}
-.divider span{font-size:12px;color:var(--muted)}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.signup-link{text-align:center;font-size:13px;color:var(--muted)}
-.signup-link a{color:var(--text);font-weight:700}
-.alert{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px}
-.alert.show{display:flex}
-.alert-error{background:var(--danger-bg);border:1px solid #fca5a5;color:var(--danger)}
-.alert-info{background:#dbeafe;border:1px solid #93c5fd;color:#1e40af}
 
-/* LOADER */
-.page-loader{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.3s}
-.page-loader.hide{opacity:0;pointer-events:none}
-.loader-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--cyan);margin-bottom:16px;text-align:center}
-.loader-spin{width:32px;height:32px;border:3px solid rgba(0,212,255,0.2);border-top-color:var(--cyan);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto}
+.err{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;border-radius:8px;padding:10px 14px;font-size:13px;display:none;align-items:center;gap:8px;margin-bottom:14px}
+.err.show{display:flex}
+
+.signup-row{text-align:center;font-size:13px;color:#9ca3af;margin-top:16px}
+.signup-row a{color:#0a0f1e;font-weight:700;cursor:pointer}
+.signup-row a:hover{color:#00d4ff}
+
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* MOBILE */
-@media(max-width:768px){
-  body{flex-direction:column}
-  .left{width:100%;padding:20px 16px;flex-direction:row;align-items:center;gap:12px;min-height:auto}
-  .left-logo{margin-bottom:0}
-  .left-title,.left-sub,.testimonial,.left-footer,.features-list{display:none}
-  .right{padding:20px 16px;align-items:flex-start}
-  .login-card{padding:24px 20px;max-width:100%;border-radius:16px}
-}
+/* Loader overlay */
+.overlay{position:fixed;inset:0;background:#0a0f1e;display:flex;align-items:center;justify-content:center;z-index:999;transition:opacity 0.3s}
+.overlay.off{opacity:0;pointer-events:none}
+.ov-txt{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#00d4ff;text-align:center}
+.ov-spin{width:28px;height:28px;border:2.5px solid rgba(0,212,255,0.2);border-top-color:#00d4ff;border-radius:50%;animation:spin 0.7s linear infinite;margin:14px auto 0}
 </style>
 </head>
 <body>
-<div class="page-loader" id="loader">
-  <div><div class="loader-logo">Q360 AI</div><div class="loader-spin"></div></div>
+
+<div class="overlay" id="overlay">
+  <div><div class="ov-txt">Q360 AI</div><div class="ov-spin"></div></div>
 </div>
 
-<div class="left" id="leftPanel" style="display:none">
-  <div class="left-logo" onclick="location.href='index.html'">
-    <div class="logo-icon">Q3</div>
-    <div class="logo-text">Q360<span> AI</span></div>
+<div class="card" id="mainCard" style="display:none">
+  <div class="card-logo" onclick="location.href='index.html'">
+    <div class="logo-sq">Q3</div>
+    <div class="logo-name">Q360<span> AI</span></div>
   </div>
-  <h2 class="left-title">Karibu Tena<br>kwenye<br><em>Q360 AI</em></h2>
-  <p class="left-sub">Msaidizi wako wa AI unaokusaidia kusimamia biashara, fedha, na maisha yako kwa urahisi.</p>
-  <div class="features-list">
-    <div class="feature-item"><i class="ti ti-brand-openai"></i> AI Assistant ya kibinafsi</div>
-    <div class="feature-item"><i class="ti ti-chart-bar"></i> Uchambuzi wa data ya biashara yako</div>
-    <div class="feature-item"><i class="ti ti-wallet"></i> Fedha za kibinafsi na biashara</div>
-    <div class="feature-item"><i class="ti ti-layout-kanban"></i> Usimamizi wa miradi</div>
+
+  <h2>Karibu Tena</h2>
+  <p class="sub">Ingia kwenye akaunti yako</p>
+
+  <div class="err" id="errBox"><i class="ti ti-alert-circle"></i><span id="errMsg"></span></div>
+
+  <button class="btn-google" onclick="doGoogle()" id="googleBtn">
+    <img src="https://www.google.com/favicon.ico" alt="G"> Endelea na Google
+  </button>
+
+  <div class="divider"><span>au</span></div>
+
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" id="fEmail" placeholder="mfano@email.com" autocomplete="email">
   </div>
-  <div class="testimonial">
-    <div class="test-text">"Q360 AI imebadilisha jinsi ninavyosimamia biashara yangu. Sasa najua faida yangu kila wakati!"</div>
-    <div class="test-author">— Fatuma Ally, Dar es Salaam</div>
-  </div>
-  <div class="left-footer" style="margin-top:auto;padding-top:24px">© 2026 TRAVEX Digital Group</div>
-</div>
-
-<div class="right" id="rightPanel" style="display:none">
-  <div class="login-card">
-    <div class="card-title">Ingia Akaunti Yako</div>
-    <div class="card-sub">Karibu tena — tumia email au Google</div>
-
-    <div class="alert alert-error" id="alertError"><i class="ti ti-alert-circle"></i><span id="alertMsg"></span></div>
-    <div class="alert alert-info" id="alertInfo"><i class="ti ti-info-circle"></i><span id="alertInfoMsg"></span></div>
-
-    <!-- Google Login -->
-    <button class="btn-google" onclick="doGoogleLogin()" id="googleBtn">
-      <img src="https://www.google.com/favicon.ico" alt="G">
-      Endelea na Google
-    </button>
-
-    <div class="divider"><span>au tumia email</span></div>
-
-    <div class="form-group">
-      <label class="form-label">Barua Pepe (Email)</label>
-      <input type="email" class="form-control" id="fEmail" placeholder="mfano@email.com" autocomplete="email">
+  <div class="form-group">
+    <label>Neno la Siri</label>
+    <div class="inp-wrap">
+      <input type="password" id="fPass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="eye" onclick="toggleEye()" type="button"><i class="ti ti-eye" id="eyeIco"></i></button>
     </div>
-    <div class="form-group">
-      <label class="form-label">Neno la Siri</label>
-      <div class="input-wrap">
-        <input type="password" class="form-control" id="fPassword" placeholder="Neno la siri" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
-        <button class="eye-btn" onclick="togglePass()" type="button"><i class="ti ti-eye" id="eyeIcon"></i></button>
-      </div>
-    </div>
-    <a href="reset.html" class="forgot">Umesahau neno la siri?</a>
-    <button class="btn-primary" id="loginBtn" onclick="doLogin()">
-      <i class="ti ti-login"></i> Ingia
-    </button>
-    <div class="signup-link">Huna akaunti? <a href="signup.html">Jiandikishe — Bure</a></div>
   </div>
+  <a class="forgot" onclick="location.href='reset.html'">Umesahau neno la siri?</a>
+
+  <button class="btn-main" id="loginBtn" onclick="doLogin()">
+    <i class="ti ti-login"></i> Ingia
+  </button>
+
+  <div class="signup-row">Huna akaunti? <a onclick="location.href='signup.html'">Jiandikishe Bure</a></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -139,49 +103,55 @@ a{text-decoration:none;color:inherit}
 <script>
 (async () => {
   const session = await Auth.getSession();
-  document.getElementById('loader').classList.add('hide');
-  if (session) { window.location.replace('dashboard.html'); return; }
-  document.getElementById('leftPanel').style.display = 'flex';
-  document.getElementById('rightPanel').style.display = 'flex';
-  if (window.location.hash.includes('access_token') || new URLSearchParams(window.location.search).get('confirmed')) {
-    showInfo('✅ Akaunti yako imethibitishwa! Ingia sasa.');
-  }
+  if (session) { window.location.replace('ai.html'); return; }
+  document.getElementById('overlay').classList.add('off');
+  document.getElementById('mainCard').style.display = 'block';
+  // Check for OAuth return
+  if (window.location.hash.includes('access_token')) window.location.replace('ai.html');
 })();
 
-function togglePass() {
-  const i = document.getElementById('fPassword');
-  const ic = document.getElementById('eyeIcon');
+function toggleEye() {
+  const i = document.getElementById('fPass');
+  const ic = document.getElementById('eyeIco');
   i.type = i.type === 'password' ? 'text' : 'password';
   ic.className = i.type === 'password' ? 'ti ti-eye' : 'ti ti-eye-off';
 }
 
-async function doGoogleLogin() {
+async function doGoogle() {
   const btn = document.getElementById('googleBtn');
-  btn.innerHTML = '<div style="width:18px;height:18px;border:2px solid #d1d5db;border-top-color:#1a2332;border-radius:50%;animation:spin 0.8s linear infinite"></div> Inaelekeza...';
-  btn.style.pointerEvents = 'none';
+  btn.innerHTML = '<div style="width:16px;height:16px;border:2px solid #e5e7eb;border-top-color:#0a0f1e;border-radius:50%;animation:spin 0.7s linear infinite"></div> Inaelekeza...';
+  btn.disabled = true;
   await Auth.loginWithGoogle();
 }
 
 async function doLogin() {
   const email = document.getElementById('fEmail').value.trim();
-  const pass = document.getElementById('fPassword').value;
-  if (!email || !pass) { showError('Jaza email na neno la siri'); return; }
+  const pass  = document.getElementById('fPass').value;
+  if (!email || !pass) { showErr('Jaza email na neno la siri'); return; }
+
   const btn = document.getElementById('loginBtn');
-  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite"></i> Ingia...';
-  btn.style.pointerEvents = 'none';
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.7s linear infinite"></i> Inaingia...';
+
   const { error } = await Auth.login(email, pass);
+
   if (error) {
+    btn.disabled = false;
     btn.innerHTML = '<i class="ti ti-login"></i> Ingia';
-    btn.style.pointerEvents = '';
-    if (error.message.includes('not confirmed')) showError('Thibisha email yako kwanza — angalia inbox');
-    else if (error.message.includes('Invalid')) showError('Email au neno la siri si sahihi');
-    else showError(error.message);
+    if (error.message.includes('not confirmed')) showErr('Thibisha email yako kwanza — angalia inbox');
+    else if (error.message.includes('Invalid')) showErr('Email au neno la siri si sahihi');
+    else showErr(error.message);
     return;
   }
-  window.location.replace('dashboard.html');
+
+  // ✅ Redirect moja kwa moja
+  window.location.replace('ai.html');
 }
-function showError(msg) { document.getElementById('alertInfo').classList.remove('show'); document.getElementById('alertMsg').textContent = msg; document.getElementById('alertError').classList.add('show'); }
-function showInfo(msg) { document.getElementById('alertError').classList.remove('show'); document.getElementById('alertInfoMsg').textContent = msg; document.getElementById('alertInfo').classList.add('show'); }
+
+function showErr(msg) {
+  document.getElementById('errMsg').textContent = msg;
+  document.getElementById('errBox').classList.add('show');
+}
 </script>
 </body>
 </html>
